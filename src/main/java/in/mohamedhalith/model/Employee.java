@@ -39,7 +39,7 @@ public class Employee {
 	}
 	public void setCasualLeave(int casualLeave) {
 		if(casualLeave <0 || casualLeave >3) {
-			throw new IllegalArgumentException("Invalid no. of sickleaves");
+			throw new IllegalArgumentException("Invalid no. of casual leaves");
 		}
 		this.casualLeave = casualLeave;
 	}
@@ -48,7 +48,7 @@ public class Employee {
 	}
 	public void setEarnLeave(int earnLeave) {
 		if(earnLeave <0 || earnLeave >1) {
-			throw new IllegalArgumentException("Invalid no. of sickleaves");
+			throw new IllegalArgumentException("Invalid no. of earn leaves");
 		}
 		this.earnLeave = earnLeave;
 	}
