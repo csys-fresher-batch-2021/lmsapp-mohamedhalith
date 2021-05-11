@@ -3,8 +3,9 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="ISO-8859-1">
 <title>Employees</title>
@@ -14,6 +15,7 @@
 	<main class="container-fluid">
 		<h3>List Employees</h3>
 		<table class="table table-bordered">
+		<caption>List of Employees</caption>
 		<thead>
 		<tr>
 		<th id="serial">S.No</th>
