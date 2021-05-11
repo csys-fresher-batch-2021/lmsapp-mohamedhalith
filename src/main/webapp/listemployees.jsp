@@ -15,7 +15,10 @@
 		<h3>List Employees</h3>
 		<table class="table table-bordered">
 		<thead>
-		<tr><th>S.No</th><th>Name</th><th>Id</th>
+		<tr>
+		<th id="serial">S.No</th>
+		<th id="name">Name</th>
+		<th id="id">Id</th>
 		</thead>
 		<tbody>
 		<%
