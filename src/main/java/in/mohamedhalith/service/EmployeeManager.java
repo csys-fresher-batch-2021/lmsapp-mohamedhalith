@@ -6,18 +6,18 @@ import java.util.List;
 import in.mohamedhalith.model.Employee;
 
 public class EmployeeManager {
+	
+	private EmployeeManager() {
+		//Default Constructor
+	}
 
-	private static List<Employee> employeeList = new ArrayList<Employee>();
+	private static List<Employee> employeeList = new ArrayList<>();
 	
 	static {
-		Employee employee1 = new Employee();
-		employee1.setName("Mohamed");
-		employee1.setId(2627);
+		Employee employee1 = new Employee("Mohamed",2627);
 		employeeList.add(employee1);
 		
-		Employee employee2 = new Employee();
-		employee2.setName("Halith");
-		employee2.setId(2628);
+		Employee employee2 = new Employee("Halith",2728);
 		employeeList.add(employee2);
 	}
 	

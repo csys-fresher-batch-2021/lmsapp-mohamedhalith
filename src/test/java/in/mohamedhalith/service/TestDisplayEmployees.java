@@ -9,10 +9,10 @@ import org.junit.Test;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.service.EmployeeManager;
 
-public class testDisplayEmployees {
+public class TestDisplayEmployees {
 
 	@Test
-	public void test() {
+	public void testGetEmployeeList() {
 		List<Employee> employeeList = EmployeeManager.getEmployeeList();
 		assertEquals(2,employeeList.size());
 	}

@@ -7,6 +7,15 @@ public class Employee {
 	private int casualLeave = 2;
 	private int earnLeave = 1;
 	
+	public Employee(String name,int id) {
+		setName(name);
+		setId(id);
+	}
+	
+	public Employee() {
+		
+	}
+	
 	public String getName() {
 		return name;
 	}
