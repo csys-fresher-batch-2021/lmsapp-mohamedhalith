@@ -5,7 +5,7 @@ public class Employee {
 	private int id;
 	private int sickLeave = 2;
 	private int casualLeave = 2;
-	private int earnLeave = 1;
+	private int earnedLeave = 1;
 	
 	public Employee(String name,int id) {
 		setName(name);
@@ -53,16 +53,16 @@ public class Employee {
 		this.casualLeave = casualLeave;
 	}
 	public int getEarnLeave() {
-		return earnLeave;
+		return earnedLeave;
 	}
 	public void setEarnLeave(int earnLeave) {
 		if(earnLeave <0 || earnLeave >1) {
 			throw new IllegalArgumentException("Invalid no. of earn leaves");
 		}
-		this.earnLeave = earnLeave;
+		this.earnedLeave = earnLeave;
 	}
 	public String toString() {
 		return "Employee [Name" + name + "Id" + id + "SickLeave" + sickLeave 
-				+"Casual Leave" + casualLeave +"Earn Leave" + earnLeave +"]";
+				+"Casual Leave" + casualLeave +"Earn Leave" + earnedLeave +"]";
 	}
 }
