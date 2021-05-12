@@ -52,17 +52,17 @@ public class Employee {
 		}
 		this.casualLeave = casualLeave;
 	}
-	public int getEarnLeave() {
+	public int getEarnedLeave() {
 		return earnedLeave;
 	}
-	public void setEarnLeave(int earnLeave) {
-		if(earnLeave <0 || earnLeave >1) {
-			throw new IllegalArgumentException("Invalid no. of earn leaves");
+	public void setEarnedLeave(int earnedLeave) {
+		if(earnedLeave <0 || earnedLeave >1) {
+			throw new IllegalArgumentException("Invalid no. of earned leaves");
 		}
-		this.earnedLeave = earnLeave;
+		this.earnedLeave = earnedLeave;
 	}
 	public String toString() {
 		return "Employee [Name" + name + "Id" + id + "SickLeave" + sickLeave 
-				+"Casual Leave" + casualLeave +"Earn Leave" + earnedLeave +"]";
+				+"Casual Leave" + casualLeave +"EarnedLeave" + earnedLeave +"]";
 	}
 }
