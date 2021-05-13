@@ -6,7 +6,7 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<main class="container-fluid">
-		<h3>Welcome To Project</h3>
+		<h3>Welcome To Leave Management System</h3>
 	</main>
 </body>
 </html>
