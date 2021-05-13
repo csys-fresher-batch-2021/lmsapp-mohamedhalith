@@ -27,13 +27,9 @@ public class LoginValidator {
 		boolean valid = false;
 		// Checks for valid user-name,password and role
 		if (UsernameValidator.isValidUsername(username) && PasswordValidator.isValidPassword(password)
-				&& StringValidator.isValidString(role)) {
-			if (role.equalsIgnoreCase("admin")) {
-				// Verifies user details with the admin credentials
-				if (username.equals("hradmin") && password.equals("realadmin")) {
-					valid = true;
-				}
-			}
+				&& StringValidator.isValidString(role) && role.equalsIgnoreCase("admin") && username.equals("hradmin")
+				&& password.equals("realadmin")) {
+			valid = true;
 		}
 		return valid;
 	}
@@ -53,16 +49,13 @@ public class LoginValidator {
 		boolean valid = false;
 		// Checks for valid user-name, password and role
 		if (UsernameValidator.isValidUsername(username) && PasswordValidator.isValidPassword(password)
-				&& StringValidator.isValidString(role)) {
-			if (role.equalsIgnoreCase("employee")) {
-				// Verifies user name and password with employee list
-				List<Employee> employeeList = EmployeeManager.getEmployeeList();
-				for (Employee employee : employeeList) {
-					if (username.equals(employee.getUsername()) && password.equals(employee.getPassword())) {
-						valid = true;
-					}
+				&& StringValidator.isValidString(role) && role.equalsIgnoreCase("employee")) {
+			// Verifies user name and password with employee list
+			List<Employee> employeeList = EmployeeManager.getEmployeeList();
+			for (Employee employee : employeeList) {
+				if (username.equals(employee.getUsername()) && password.equals(employee.getPassword())) {
+					valid = true;
 				}
-
 			}
 		}
 		return valid;

@@ -1,7 +1,6 @@
 package in.mohamedhalith.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,28 +21,28 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String role = request.getParameter("role");
-		PrintWriter output = response.getWriter();
+		String message;
 		try {
 			boolean admin = LoginValidator.adminVerification(username, password, role);
 			boolean employee = LoginValidator.employeeVerification(username, password, role);
 			if (admin) {
-				output.println("Successfully Logged In");
-				output.println("Welcome Admin");
+				message = "Admin Logged In Successfully";
+				response.sendRedirect("login.jsp?infoMessage=" + message);
 			} else if (employee) {
-				output.println("Successfully Logged In");
-				output.println("Welcome "+username);
+				message = "Employee Logged In Successfully";
+				response.sendRedirect("login.jsp?infoMessage=" + message);
 			} else {
-				String message = "Invalid Credentials";
+				message = "Invalid Credentials";
 				response.sendRedirect("login.jsp?infoMessage=" + message);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			String message = e.getMessage();
+			message = e.getMessage();
 			response.sendRedirect("login.jsp?errorMessage=" + message);
 		}
 	}
