@@ -79,7 +79,7 @@ public class TestLoginValidator {
 	@Test
 	public void testEmployeeVerificationWithValidCredentials() {
 		String username="moha2627";
-		String password = "pass1234";
+		String password = "2627moha";
 		String role = "employee";
 		boolean result = LoginValidator.employeeVerification(username, password, role);
 		assertTrue(result);
@@ -88,7 +88,7 @@ public class TestLoginValidator {
 	@Test
 	public void testEmployeeVerificationWithValidUsernamePasswordAndInvalidRole() {
 		String username="moha2627";
-		String password = "pass1234";
+		String password = "2627moha";
 		String role = "user";
 		boolean result = LoginValidator.employeeVerification(username, password, role);
 		assertFalse(result);
@@ -115,7 +115,7 @@ public class TestLoginValidator {
 	@Test
 	public void testEmployeeVerificationWithInvalidUsernameAndValidRoleAndPassword() {
 		String username="mohamed";
-		String password = "pass1234";
+		String password = "2627moha";
 		String role = "employee";
 		boolean result = LoginValidator.employeeVerification(username, password, role);
 		assertFalse(result);
@@ -123,7 +123,7 @@ public class TestLoginValidator {
 	@Test
 	public void testEmployeeVerificationWithInvalidUsernameAndRoleAndValidPassword() {
 		String username="mohamed";
-		String password = "pass1234";
+		String password = "2627moha";
 		String role = "user";
 		boolean result = LoginValidator.employeeVerification(username, password, role);
 		assertFalse(result);
