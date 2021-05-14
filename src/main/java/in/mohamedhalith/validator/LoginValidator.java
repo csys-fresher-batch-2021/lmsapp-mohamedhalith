@@ -26,7 +26,7 @@ public class LoginValidator {
 	public static boolean adminVerification(String username, String password, String role) {
 		boolean valid = false;
 		// Checks for valid user-name,password and role
-		if (UsernameValidator.isValidUsername(username) && PasswordValidator.isValidPassword(password)
+		if (StringValidator.isValidUsername(username) && StringValidator.isValidPassword(password)
 				&& StringValidator.isValidString(role) && role.equalsIgnoreCase("admin") && username.equals("hradmin")
 				&& password.equals("realadmin")) {
 			valid = true;
@@ -48,7 +48,7 @@ public class LoginValidator {
 	public static boolean employeeVerification(String username, String password, String role) {
 		boolean valid = false;
 		// Checks for valid user-name, password and role
-		if (UsernameValidator.isValidUsername(username) && PasswordValidator.isValidPassword(password)
+		if (StringValidator.isValidUsername(username) && StringValidator.isValidPassword(password)
 				&& StringValidator.isValidString(role) && role.equalsIgnoreCase("employee")) {
 			// Verifies user name and password with employee list
 			List<Employee> employeeList = EmployeeManager.getEmployeeList();

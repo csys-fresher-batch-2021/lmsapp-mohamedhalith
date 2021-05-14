@@ -5,6 +5,11 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Login</title>
+<style>
+i{
+margin-left : -30px;
+}
+</style>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
@@ -17,7 +22,9 @@
 			pattern="[A-Za-z0-9]{7,}" autofocus required/><br/> 
 		<label>Password</label>
 		<input type="password" name="password" id="password" 
-			pattern="[A-Za-z0-9]{8,}" placeholder="Enter password" required/><br/>
+			pattern="[A-Za-z0-9]{8,}" placeholder="Enter password" required/>
+		<i class="fas fa-eye" id="eyefull"></i>
+		<br/>
 		<input type="radio" value="admin" name="role" id="admin" required/>
 		<label for="role">Admin</label>
 		<input type="radio" value ="employee" name="role" id="employee" required/>
@@ -26,5 +33,16 @@
 		<button class="btn btn-primary">Reset</button>
 	</form>
 	</main>
+	<script type="text/javascript">
+	let eyefull = document.getElementById('eyefull');
+	let password = document.getElementById("password");
+	eyefull.addEventListener('click',function(){
+		let type = password.getAttribute('type') === 'password' ?'text' : 'password';
+		password.setAttribute('type',type);
+		let className = eyefull.getAttribute('class') === 'fas fa-eye' ? 'fas fa-eye-slash' : 'fas fa-eye';
+		className === 'fas fa-eye' ? className = 'fas fa-eye-slash' : className = 'fas fa-eye';
+		eyefull.setAttribute('class',className);
+	});
+	</script>
 </body>
 </html>

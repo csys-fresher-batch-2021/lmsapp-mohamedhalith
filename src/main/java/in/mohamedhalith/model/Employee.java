@@ -1,8 +1,6 @@
 package in.mohamedhalith.model;
 
 import in.mohamedhalith.util.StringValidator;
-import in.mohamedhalith.validator.PasswordValidator;
-import in.mohamedhalith.validator.UsernameValidator;
 
 public class Employee {
 	private String name;
@@ -84,7 +82,7 @@ public class Employee {
 	}
 
 	public void setUsername(String username) {
-		if (!UsernameValidator.isValidUsername(username)) {
+		if (!StringValidator.isValidUsername(username)) {
 			throw new IllegalArgumentException("Invalid Username");
 		}
 		this.username = username;
@@ -95,14 +93,14 @@ public class Employee {
 	}
 
 	public void setPassword(String password) {
-		if (!PasswordValidator.isValidPassword(password)) {
+		if (!StringValidator.isValidPassword(password)) {
 			throw new IllegalArgumentException("Invalid Password");
 		}
 		this.password = password;
 	}
 
 	public String toString() {
-		return "Employee [Name" + name + "Id" + id + "SickLeave" + sickLeave + "Casual Leave" + casualLeave
-				+ "EarnedLeave" + earnedLeave + "]";
+		return "Employee [Name " + name + "Id " + id + "Sick Leave " + sickLeave + "Casual Leave " + casualLeave
+				+ "Earned Leave" + earnedLeave + "]";
 	}
 }
