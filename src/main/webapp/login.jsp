@@ -39,10 +39,8 @@ margin-left : -30px;
 	eyefull.addEventListener('click',function(){
 		let type = password.getAttribute('type') === 'password' ?'text' : 'password';
 		password.setAttribute('type',type);
-		console.log(eyefull.getAttribute('class'));
 		let className = eyefull.getAttribute('class') === 'fas fa-eye' ? 'fas fa-eye-slash' : 'fas fa-eye';
 		eyefull.setAttribute('class',className);
-		console.log(eyefull.getAttribute('class'));
 	});
 	</script>
 </body>
