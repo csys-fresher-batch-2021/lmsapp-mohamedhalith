@@ -23,7 +23,7 @@ margin-left : -30px;
 		<label>Password</label>
 		<input type="password" name="password" id="password" 
 			pattern="[A-Za-z0-9]{8,}" placeholder="Enter password" required/>
-		<span class="fas fa-eye" id="eyefull"></span>
+		<span class="fas fa-eye-slash" id="eyefull"></span>
 		<br/>
 		<input type="radio" value="admin" name="role" id="admin" required/>
 		<label for="role">Admin</label>
@@ -39,9 +39,10 @@ margin-left : -30px;
 	eyefull.addEventListener('click',function(){
 		let type = password.getAttribute('type') === 'password' ?'text' : 'password';
 		password.setAttribute('type',type);
+		console.log(eyefull.getAttribute('class'));
 		let className = eyefull.getAttribute('class') === 'fas fa-eye' ? 'fas fa-eye-slash' : 'fas fa-eye';
-		className === 'fas fa-eye' ? className = 'fas fa-eye-slash' : className = 'fas fa-eye';
 		eyefull.setAttribute('class',className);
+		console.log(eyefull.getAttribute('class'));
 	});
 	</script>
 </body>
