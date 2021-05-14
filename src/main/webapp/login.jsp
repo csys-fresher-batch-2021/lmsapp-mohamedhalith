@@ -6,7 +6,7 @@
 <meta charset="ISO-8859-1">
 <title>Login</title>
 <style>
-i{
+span{
 margin-left : -30px;
 }
 </style>
@@ -23,7 +23,7 @@ margin-left : -30px;
 		<label>Password</label>
 		<input type="password" name="password" id="password" 
 			pattern="[A-Za-z0-9]{8,}" placeholder="Enter password" required/>
-		<i class="fas fa-eye" id="eyefull"></i>
+		<span class="fas fa-eye" id="eyefull"></span>
 		<br/>
 		<input type="radio" value="admin" name="role" id="admin" required/>
 		<label for="role">Admin</label>

@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="ISO-8859-1">
 <title>Leave Balance</title>
@@ -16,6 +16,7 @@ Employee employee = EmployeeManager.getEmployee(username);
 %>
 <main class="container-fluid">
 <table class="table table-bordered">
+<caption>Remaining Leaves</caption>
 <thead class="table-primary">
 <tr>
 <th id="name">Name</th>
