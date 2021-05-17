@@ -32,19 +32,14 @@ public class LoginServlet extends HttpServlet {
 		try {
 			boolean admin = LoginValidator.adminVerification(username, password, role);
 			boolean employee = LoginValidator.employeeVerification(username, password, role);
-			if (admin) {
-				HttpSession session = request.getSession();
-				session.setAttribute("ROLE", role);
-				session.setAttribute("LOGGEDIN_USERNAME", username);
-				response.sendRedirect("index.jsp");
-			} else if (employee) {
-				HttpSession session = request.getSession();
-				session.setAttribute("ROLE", role);
-				session.setAttribute("LOGGEDIN_USERNAME", username);
-				response.sendRedirect("index.jsp");
-			} else {
+			if(!admin && !employee) {
 				message = "Invalid Credentials";
 				response.sendRedirect("login.jsp?infoMessage=" + message);
+			}else {
+				HttpSession session = request.getSession();
+				session.setAttribute("ROLE", role);
+				session.setAttribute("LOGGEDIN_USERNAME", username);
+				response.sendRedirect("index.jsp");
 			}
 		} catch (Exception e) {
 			message = e.getMessage();

@@ -50,7 +50,7 @@ public class Employee {
 
 	public void setSickLeave(int sickLeave) {
 		if (sickLeave < 0 || sickLeave > 3) {
-			throw new IllegalArgumentException("Invalid no. of sickleaves");
+			throw new IllegalArgumentException("Invalid no. of sick leaves");
 		}
 		this.sickLeave = sickLeave;
 	}
@@ -99,8 +99,9 @@ public class Employee {
 		this.password = password;
 	}
 
+	@Override
 	public String toString() {
-		return "Employee [Name " + name + "Id " + id + "Sick Leave " + sickLeave + "Casual Leave " + casualLeave
-				+ "Earned Leave" + earnedLeave + "]";
+		return "Employee [Name " + name + " Id " + id + " Username " + username + " Password " + password
+				+ " Sick Leave " + sickLeave + " Casual Leave " + casualLeave + " Earned Leave " + earnedLeave + "]";
 	}
 }
