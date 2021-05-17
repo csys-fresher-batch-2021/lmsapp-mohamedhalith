@@ -12,8 +12,8 @@ public class TestGetSetPassword {
 	@Test
 	public void testWithValidPassword() {
 		String password = "pass1234";
-		employee.setUsername(password);
-		String checkPassword = employee.getUsername();
+		employee.setPassword(password);
+		String checkPassword = employee.getPassword();
 		assertEquals(password, checkPassword);
 	}
 	
