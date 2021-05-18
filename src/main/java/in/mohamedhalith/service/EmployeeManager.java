@@ -22,10 +22,12 @@ public class EmployeeManager {
 	public static List<Employee> getEmployeeList() {
 		return employeeDAO.getEmployeeList();
 	}
+
 	/**
 	 * This method checks is used to get employee from the DAO.
 	 * 
 	 * Returns null if employee not found
+	 * 
 	 * @param username
 	 * @return
 	 */
