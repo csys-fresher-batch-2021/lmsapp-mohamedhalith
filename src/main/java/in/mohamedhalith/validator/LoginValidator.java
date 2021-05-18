@@ -49,7 +49,8 @@ public class LoginValidator {
 		boolean valid = false;
 		// Checks for valid user-name, password and role
 		if (StringValidator.isValidUsername(username) && StringValidator.isValidPassword(password)
-				&& StringValidator.isValidString(role) && role.equalsIgnoreCase("employee")) {
+				&& StringValidator.isValidString(role) && role.equalsIgnoreCase("employee")
+				&& EmployeeValidator.isEmployee(username)) {
 			// Verifies user name and password with employee list
 			List<Employee> employeeList = EmployeeManager.getEmployeeList();
 			for (Employee employee : employeeList) {

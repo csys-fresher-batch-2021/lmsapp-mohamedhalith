@@ -1,8 +1,9 @@
 package in.mohamedhalith.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import in.mohamedhalith.dao.EmployeeDAO;
+import in.mohamedhalith.validator.EmployeeValidator;
 import in.mohamedhalith.model.Employee;
 
 public class EmployeeManager {
@@ -11,19 +12,7 @@ public class EmployeeManager {
 		// Default Constructor
 	}
 
-	private static final List<Employee> employeeList = new ArrayList<>();
-
-	static {
-		Employee employee1 = new Employee("Mohamed", 2627);
-		employee1.setUsername("moha2627");
-		employee1.setPassword("2627moha");
-		employeeList.add(employee1);
-
-		Employee employee2 = new Employee("Halith", 2728);
-		employee2.setUsername("hali2628");
-		employee2.setPassword("2628hali");
-		employeeList.add(employee2);
-	}
+	private static EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
 
 	/**
 	 * This method is used to return the list of employees
@@ -31,25 +20,20 @@ public class EmployeeManager {
 	 * @return List<Employee>
 	 */
 	public static List<Employee> getEmployeeList() {
-		return employeeList;
+		return employeeDAO.getEmployeeList();
 	}
-
 	/**
-	 * This method is used to return a specific employee. Employee username is
-	 * obtained and returns employee with that username.
+	 * This method checks is used to get employee from the DAO.
 	 * 
+	 * Returns null if employee not found
 	 * @param username
 	 * @return
 	 */
 	public static Employee getEmployee(String username) {
-		Employee getEmployee = null;
-		for (Employee employee : employeeList) {
-			if (employee.getUsername().equals(username)) {
-				getEmployee = employee;
-				break;
-			}
+		if (EmployeeValidator.isEmployee(username)) {
+			return employeeDAO.getEmployee(username);
 		}
-		return getEmployee;
+		return null;
 	}
 
 }
