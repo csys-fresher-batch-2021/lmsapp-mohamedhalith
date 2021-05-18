@@ -30,10 +30,11 @@ public class EmployeeManager {
 	 * @return
 	 */
 	public static Employee getEmployee(String username) {
+		Employee employee = null;
 		if (EmployeeValidator.isEmployee(username)) {
-			return employeeDAO.getEmployee(username);
+			employee = employeeDAO.getEmployee(username);
 		}
-		return null;
+		return employee;
 	}
 
 }
