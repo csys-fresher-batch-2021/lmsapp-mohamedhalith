@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import in.mohamedhalith.validator.LoginValidator;
 
@@ -31,17 +32,17 @@ public class LoginServlet extends HttpServlet {
 		try {
 			boolean admin = LoginValidator.adminVerification(username, password, role);
 			boolean employee = LoginValidator.employeeVerification(username, password, role);
-			if (admin) {
-				message = "Admin Logged In Successfully";
-				response.sendRedirect("login.jsp?infoMessage=" + message);
-			} else if (employee) {
-				message = "Employee Logged In Successfully";
-				response.sendRedirect("login.jsp?infoMessage=" + message);
-			} else {
+			if(!admin && !employee) {
 				message = "Invalid Credentials";
 				response.sendRedirect("login.jsp?infoMessage=" + message);
+			}else {
+				HttpSession session = request.getSession();
+				session.setAttribute("ROLE", role);
+				session.setAttribute("LOGGEDIN_USERNAME", username);
+				response.sendRedirect("index.jsp");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			message = e.getMessage();
 			response.sendRedirect("login.jsp?errorMessage=" + message);
 		}
