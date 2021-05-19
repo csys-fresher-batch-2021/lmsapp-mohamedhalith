@@ -28,8 +28,10 @@
       <li class="nav-item">
         <a class="nav-link" href="viewbalance.jsp">Leave Balance</a>
       </li>
-      <%} %>
+      <li class="nav-item">
+        <a class="nav-link" href="applyleave.jsp">Apply for Leave</a>
       </li>
+      <%} %>
     </ul>
     <%
     if(loggedInUsername == null){

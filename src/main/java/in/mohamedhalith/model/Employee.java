@@ -1,5 +1,6 @@
 package in.mohamedhalith.model;
 
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.util.StringValidator;
 
 public class Employee {
@@ -27,10 +28,12 @@ public class Employee {
 	}
 
 	public void setName(String name) {
-		if (!StringValidator.isValidString(name)) {
+		try {
+			StringValidator.isValidString(name);
+			this.name = name;
+		} catch (ValidationException e) {
 			throw new IllegalArgumentException("Name cannot be empty or null");
 		}
-		this.name = name;
 	}
 
 	public int getId() {
@@ -82,10 +85,12 @@ public class Employee {
 	}
 
 	public void setUsername(String username) {
-		if (!StringValidator.isValidUsername(username)) {
+		try {
+			StringValidator.isValidUsername(username);
+			this.username = username;
+		} catch (ValidationException e) {
 			throw new IllegalArgumentException("Invalid Username");
 		}
-		this.username = username;
 	}
 
 	public String getPassword() {
@@ -93,10 +98,12 @@ public class Employee {
 	}
 
 	public void setPassword(String password) {
-		if (!StringValidator.isValidPassword(password)) {
+		try {
+			StringValidator.isValidPassword(password);
+			this.password = password;
+		} catch (ValidationException e) {
 			throw new IllegalArgumentException("Invalid Password");
 		}
-		this.password = password;
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import in.mohamedhalith.exception.ValidationException;
+
 public class TestStringValidator {
 
 	/**
@@ -11,23 +13,35 @@ public class TestStringValidator {
 	 */
 	@Test
 	public void testIsValidStringWithEmptyString() {
-		String word = "";
-		boolean result = StringValidator.isValidString(word);
-		assertFalse(result);
+		try {
+			String word = "";
+			StringValidator.isValidString(word);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
+		}
 	}
 
 	@Test
 	public void testIsValidStringWithWhiteSpaces() {
-		String word = "   ";
-		boolean result = StringValidator.isValidString(word);
-		assertFalse(result);
+		try {
+			String word = "   ";
+			StringValidator.isValidString(word);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("String should not be null or empty",e.getMessage());
+		}
 	}
 
 	@Test
 	public void testIsValidStringWithValidString() {
-		String word = "mohamed";
-		boolean result = StringValidator.isValidString(word);
-		assertTrue(result);
+		try {
+			String word = "mohamed";
+			StringValidator.isValidString(word);
+			assertTrue(true);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -35,51 +49,79 @@ public class TestStringValidator {
 	 */
 	@Test
 	public void testIsValidPasswordWithEightCharacters() {
-		String password = "pass1234";
-		boolean result = StringValidator.isValidPassword(password);
-		assertTrue(result);
+		try {
+			String password = "pass1234";
+			StringValidator.isValidPassword(password);
+			assertTrue(true);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testIsValidPasswordWithEightCharactersWithoutNumbers() {
-		String password = "password";
-		boolean result = StringValidator.isValidPassword(password);
-		assertTrue(result);
+		try {
+			String password = "password";
+			StringValidator.isValidPassword(password);
+			assertTrue(true);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testIsValidPasswordWithMoreThanEightCharacters() {
-		String password = "password123";
-		boolean result = StringValidator.isValidPassword(password);
-		assertTrue(result);
+		try {
+			String password = "password123";
+			StringValidator.isValidPassword(password);
+			assertTrue(true);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testIsValidPasswordWithLessThanEightCharacters() {
-		String password = "pass";
-		boolean result = StringValidator.isValidPassword(password);
-		assertFalse(result);
+		try {
+			String password = "pass";
+			StringValidator.isValidPassword(password);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Given password is invalid", e.getMessage());
+		}
 	}
 
 	@Test
 	public void testIsValidPasswordWithInvalidPasswordMoreThanEightCharacters() {
-		String password = "password@123";
-		boolean result = StringValidator.isValidPassword(password);
-		assertFalse(result);
+		try {
+			String password = "password@123";
+			StringValidator.isValidPassword(password);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Given password is invalid", e.getMessage());
+		}
 	}
 
 	@Test
 	public void testIsValidPasswordWithInvalidPasswordLessThanEightCharacters() {
-		String password = "pass@1";
-		boolean result = StringValidator.isValidPassword(password);
-		assertFalse(result);
+		try {
+			String password = "pass@1";
+			StringValidator.isValidPassword(password);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Given password is invalid", e.getMessage());
+		}
 	}
 
 	@Test
 	public void testIsValidPasswordWithInvalidPasswordWithEightCharacters() {
-		String password = "pass@123";
-		boolean result = StringValidator.isValidPassword(password);
-		assertFalse(result);
+		try {
+			String password = "pass@123";
+			StringValidator.isValidPassword(password);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Given password is invalid", e.getMessage());
+		}
 	}
 
 	/**
@@ -87,50 +129,78 @@ public class TestStringValidator {
 	 */
 	@Test
 	public void testIsValidUsernameWithSevenCharacters() {
-		String username = "user123";
-		boolean result = StringValidator.isValidUsername(username);
-		assertTrue(result);
+		try {
+			String username = "user123";
+			StringValidator.isValidUsername(username);
+			assertTrue(true);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testIsValidUsernameWithSevenCharactersWithoutNumbers() {
-		String username = "usernam";
-		boolean result = StringValidator.isValidUsername(username);
-		assertTrue(result);
+		try {
+			String username = "usernam";
+			StringValidator.isValidUsername(username);
+			assertTrue(true);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testIsValidUsernameWithMoreThanSevenCharacters() {
-		String username = "username123";
-		boolean result = StringValidator.isValidUsername(username);
-		assertTrue(result);
+		try {
+			String username = "username123";
+			StringValidator.isValidUsername(username);
+			assertTrue(true);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testIsValidUsernameWithLessThanSevenCharacters() {
-		String username = "user";
-		boolean result = StringValidator.isValidUsername(username);
-		assertFalse(result);
+		try {
+			String username = "user";
+			StringValidator.isValidUsername(username);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Invalid username", e.getMessage());
+		}
 	}
 
 	@Test
 	public void testIsValidUsernameWithInvalidUsernameMoreThanSeventCharacters() {
-		String username = "username@123";
-		boolean result = StringValidator.isValidUsername(username);
-		assertFalse(result);
+		try {
+			String username = "username@123";
+			StringValidator.isValidUsername(username);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Invalid username", e.getMessage());
+		}
 	}
 
 	@Test
 	public void testIsValidUsernameWithInvalidUsernameLessThanSevenCharacters() {
-		String username = "user@1";
-		boolean result = StringValidator.isValidUsername(username);
-		assertFalse(result);
+		try {
+			String username = "user@1";
+			StringValidator.isValidUsername(username);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Invalid username", e.getMessage());
+		}
 	}
 
 	@Test
 	public void testIsValidUsernameWithInvalidUsernameWithSevenCharacters() {
-		String username = "user@123";
-		boolean result = StringValidator.isValidUsername(username);
-		assertFalse(result);
+		try {
+			String username = "user@123";
+			StringValidator.isValidUsername(username);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Invalid username", e.getMessage());
+		}
 	}
 }

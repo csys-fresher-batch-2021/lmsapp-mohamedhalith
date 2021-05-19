@@ -3,6 +3,7 @@ package in.mohamedhalith.service;
 import java.util.List;
 
 import in.mohamedhalith.dao.EmployeeDAO;
+import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.validator.EmployeeValidator;
 import in.mohamedhalith.model.Employee;
 
@@ -29,14 +30,19 @@ public class EmployeeManager {
 	 * Returns null if employee not found
 	 * 
 	 * @param username
-	 * @return
+	 * @return Employee
+	 * @throws ServiceException
 	 */
-	public static Employee getEmployee(String username) {
+	public static Employee getEmployee(String username) throws ServiceException {
 		Employee employee = null;
-		if (EmployeeValidator.isEmployee(username)) {
+		try {
+			EmployeeValidator.isEmployee(username);
 			employee = employeeDAO.getEmployee(username);
+			return employee;
+		} catch (Exception e) {
+			throw new ServiceException(e, "No employee is found for given details");
 		}
-		return employee;
+
 	}
 
 }
