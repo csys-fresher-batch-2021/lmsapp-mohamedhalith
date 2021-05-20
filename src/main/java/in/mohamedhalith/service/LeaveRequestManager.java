@@ -36,8 +36,7 @@ public class LeaveRequestManager {
 	public static List<LeaveRequest> getEmployeeRequests(String username) throws ServiceException {
 		try {
 			Employee employee = EmployeeManager.getEmployee(username);
-			List<LeaveRequest> employeeRequest = leaveRequestDAO.getEmployeeRequests(employee);
-			return employeeRequest;
+			return leaveRequestDAO.getEmployeeRequests(employee);
 		} catch (ServiceException e) {
 			throw new ServiceException(e, e.getMessage());
 		}

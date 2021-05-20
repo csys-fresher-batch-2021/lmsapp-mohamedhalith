@@ -36,6 +36,7 @@ public class LoginValidator {
 				valid = true;
 			}
 		} catch (ValidationException e) {
+			e.printStackTrace();
 		}
 		return valid;
 	}
@@ -70,6 +71,7 @@ public class LoginValidator {
 				}
 			}
 		} catch (ValidationException e) {
+			e.printStackTrace();
 		}
 		return valid;
 	}

@@ -92,8 +92,6 @@ public class TestLeaveRequestManagerApplyLeave {
 	@Test
 	public void testApplyRequestWithDuplicateRequest() {
 		try {
-			leaveRequest.setEmployeeName("Mohamed");
-			leaveRequest.setEmployeeId(2627);
 			LocalDate fromDate = LocalDate.parse("2022-06-01");
 			leaveRequest.setFromDate(fromDate);
 			LocalDate toDate = LocalDate.parse("2022-01-01");
@@ -101,6 +99,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
 			LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha2627");
+			LeaveRequest leaveRequest1 = new LeaveRequest();
 			LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha2627");
 			fail();
 		} catch (ServiceException e) {
