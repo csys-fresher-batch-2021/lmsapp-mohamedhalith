@@ -12,12 +12,21 @@ public class LeaveRequestValidator {
 	private LeaveRequestValidator() {
 		// Default constructor
 	}
-	
-	
+
+	/**
+	 * This method checks given request is valid or not. Valid in the sense that
+	 * there is no similar or duplicate requests present and the leave request is
+	 * not in violation of allowed leaves.
+	 * 
+	 * @param leaveRequest
+	 * @param employee
+	 * @param employeeRequests
+	 * @throws ValidationException
+	 */
 	public static void isValidRequest(LeaveRequest leaveRequest, Employee employee, List<LeaveRequest> employeeRequests)
 			throws ValidationException {
-		findDuplicateRequest(leaveRequest,employeeRequests);
-		isValidDuration(leaveRequest,employee);
+		findDuplicateRequest(leaveRequest, employeeRequests);
+		isValidDuration(leaveRequest, employee);
 	}
 
 	/**
@@ -42,39 +51,39 @@ public class LeaveRequestValidator {
 			throw new ValidationException("Leave request found for mentioned date(s).");
 		}
 	}
-	
+
 	/**
 	 * This method is used to verify whether the applied leave duration is within
 	 * the permitted leave days.
 	 * 
 	 * @param leaveRequest
 	 * @param employee
-	 * @throws ValidationException 
+	 * @throws ValidationException
 	 */
-	public static void isValidDuration(LeaveRequest leaveRequest,Employee employee) throws ValidationException {
+	public static void isValidDuration(LeaveRequest leaveRequest, Employee employee) throws ValidationException {
 		boolean invalid = false;
 		int duration = leaveRequest.getDuration();
-		switch(leaveRequest.getType()) {
-		case "SickLeave" : 
-			if(duration > employee.getSickLeave()) {
-				invalid=true;
-			}
-			break;
-		case "CasualLeave" :
-			if(duration > employee.getCasualLeave()) {
+		switch (leaveRequest.getType()) {
+		case "SickLeave":
+			if (duration > employee.getSickLeave()) {
 				invalid = true;
 			}
 			break;
-		case "EarnedLeave" :
-			if(duration > employee.getEarnedLeave()) {
+		case "CasualLeave":
+			if (duration > employee.getCasualLeave()) {
+				invalid = true;
+			}
+			break;
+		case "EarnedLeave":
+			if (duration > employee.getEarnedLeave()) {
 				invalid = true;
 			}
 			break;
 		default:
 			throw new ValidationException("Invalid leave type");
 		}
-		
-		if(invalid) {
+
+		if (invalid) {
 			throw new ValidationException("Leave duration exceeds the permitted leave days");
 		}
 	}

@@ -39,6 +39,15 @@ public class LeaveRequestDAO {
 		return requestList;
 	}
 
+	/**
+	 * This method is used to obtain the leave requests applied by a particular
+	 * employee.
+	 * 
+	 * Return a list of leave request of an employee
+	 * 
+	 * @param employee
+	 * @return
+	 */
 	public List<LeaveRequest> getEmployeeRequests(Employee employee) {
 		int id = employee.getId();
 		List<LeaveRequest> employeeRequests = new ArrayList<>();
@@ -98,7 +107,7 @@ public class LeaveRequestDAO {
 				}
 				break;
 			default:
-				message = "Invalid type";
+				message = "Invalid leave type";
 			}
 			// If blocks is executes only if the leave request is applied, otherwise else
 			// block is executed

@@ -27,7 +27,9 @@ public class LeaveRequestManager {
 	}
 
 	/**
-	 * This method is used to get leave request of a particular employee.
+	 * This method is used to get leave requests of a particular employee.
+	 * 
+	 * Returns the list of leave requests applied by an employee
 	 * 
 	 * @param username
 	 * @return List<LeaveRequest>
@@ -45,6 +47,8 @@ public class LeaveRequestManager {
 
 	/**
 	 * This method is used to apply for leave.
+	 * 
+	 * Returns a message if applied successfully, else exception was thrown
 	 * 
 	 * @param leaveRequest
 	 * @param username

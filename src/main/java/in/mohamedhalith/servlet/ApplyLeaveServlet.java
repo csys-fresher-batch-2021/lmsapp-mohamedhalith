@@ -53,12 +53,7 @@ public class ApplyLeaveServlet extends HttpServlet {
 
 			// Sending to the backend manager
 			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, username);
-			String errorMessage = "Failed to apply leave request";
-			if (errorMessage.equals(message)) {
-				response.sendRedirect(errorRedirect + message);
-			} else {
-				response.sendRedirect("applyleave.jsp?infoMessage=" + message);
-			}
+			response.sendRedirect("applyleave.jsp?infoMessage=" + message);
 		} catch (NumberFormatException | ServiceException | IOException e) {
 			response.sendRedirect(errorRedirect+ e.getMessage());
 		}

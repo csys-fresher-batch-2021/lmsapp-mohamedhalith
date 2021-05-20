@@ -12,7 +12,7 @@ import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.EmployeeManager;
-import in.mohamedhalith.service.LeaveRequestManager;
+
 
 public class TestLeaveRequestDAO {
 
@@ -21,7 +21,7 @@ public class TestLeaveRequestDAO {
 
 	@Test
 	public void testGetInstance() {
-		LeaveRequestDAO leaveRequestDAO;
+		LeaveRequestDAO leaveRequestDAO = null;
 		leaveRequestDAO = LeaveRequestDAO.getInstance();
 		if (leaveRequestDAO == null) {
 			fail();

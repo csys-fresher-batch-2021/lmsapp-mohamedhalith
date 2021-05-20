@@ -10,6 +10,12 @@ public class EmployeeValidator {
 		// Default Constructor
 	}
 
+	/**
+	 * This method is used to verify whether the user is an employee or not
+	 * 
+	 * @param username
+	 * @throws ValidationException
+	 */
 	public static void isEmployee(String username) throws ValidationException {
 		EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
 		try {
@@ -18,6 +24,6 @@ public class EmployeeValidator {
 		} catch (DBException | ValidationException e) {
 			throw new ValidationException(e, e.getMessage());
 		}
-		
+
 	}
 }

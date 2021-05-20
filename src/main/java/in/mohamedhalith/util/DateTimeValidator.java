@@ -13,10 +13,7 @@ public class DateTimeValidator {
 	/**
 	 * This method is used to check the given date is not a past date.
 	 * 
-	 * Returns true if given date comes after present date.
-	 * 
 	 * @param date
-	 * @return boolean
 	 * @throws ValidationException 
 	 */
 	public static void isValidDate(LocalDate date) throws ValidationException {

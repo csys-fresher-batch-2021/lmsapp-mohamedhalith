@@ -21,9 +21,7 @@ public class StringValidator {
 	 * This method is used to validate the given password and return true if it satifies the 
 	 * regular expression.
 	 * 
-	 * Return true for a password with 8 or more alphanumeric characters.
 	 * @param password
-	 * @return boolean
 	 * @throws ValidationException 
 	 */
 	public static void isValidPassword(String password) throws ValidationException {
@@ -42,10 +40,7 @@ public class StringValidator {
 	 * This method is used to validate the given username and returns true if it
 	 * matches the required pattern.
 	 * 
-	 * Returns true for a username with 7 or more alphanumeric characters.
-	 * 
 	 * @param username
-	 * @return boolean
 	 * @throws ValidationException 
 	 */
 	public static void isValidUsername(String username) throws ValidationException {
