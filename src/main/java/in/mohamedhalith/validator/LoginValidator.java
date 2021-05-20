@@ -36,7 +36,6 @@ public class LoginValidator {
 				valid = true;
 			}
 		} catch (ValidationException e) {
-			valid = false;
 		}
 		return valid;
 	}
@@ -71,7 +70,6 @@ public class LoginValidator {
 				}
 			}
 		} catch (ValidationException e) {
-			valid = false;
 		}
 		return valid;
 	}

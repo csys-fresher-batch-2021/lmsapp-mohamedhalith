@@ -1,6 +1,5 @@
 package in.mohamedhalith.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import in.mohamedhalith.dao.LeaveRequestDAO;
 import in.mohamedhalith.exception.DBException;
@@ -36,9 +35,8 @@ public class LeaveRequestManager {
 	 */
 	public static List<LeaveRequest> getEmployeeRequests(String username) throws ServiceException {
 		try {
-			List<LeaveRequest> employeeRequest = new ArrayList<>();
 			Employee employee = EmployeeManager.getEmployee(username);
-			employeeRequest = leaveRequestDAO.getEmployeeRequests(employee);
+			List<LeaveRequest> employeeRequest = leaveRequestDAO.getEmployeeRequests(employee);
 			return employeeRequest;
 		} catch (ServiceException e) {
 			throw new ServiceException(e, e.getMessage());
@@ -57,7 +55,7 @@ public class LeaveRequestManager {
 	public static String applyLeaveRequest(LeaveRequest leaveRequest, String username) throws ServiceException {
 
 		try {
-			String message = "Failed to apply leave request";
+			String message;
 			Employee employee = EmployeeManager.getEmployee(username);
 			List<LeaveRequest> employeeRequests = LeaveRequestManager.getEmployeeRequests(username);
 			LeaveRequestValidator.isValidRequest(leaveRequest, employee, employeeRequests);

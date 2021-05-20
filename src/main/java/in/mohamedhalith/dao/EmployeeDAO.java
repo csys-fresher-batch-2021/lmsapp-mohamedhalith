@@ -58,7 +58,7 @@ public class EmployeeDAO {
 				}
 			}
 			if (getEmployee == null) {
-				throw new RuntimeException("Employee Not found");
+				throw new DBException("Employee Not found");
 			}
 			return getEmployee;
 		} catch (Exception e) {

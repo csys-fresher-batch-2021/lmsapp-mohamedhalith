@@ -97,6 +97,8 @@ public class LeaveRequestDAO {
 					isApplied = true;
 				}
 				break;
+			default:
+				message = "Invalid type";
 			}
 			// If blocks is executes only if the leave request is applied, otherwise else
 			// block is executed

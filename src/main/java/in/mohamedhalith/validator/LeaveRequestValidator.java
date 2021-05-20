@@ -70,7 +70,10 @@ public class LeaveRequestValidator {
 				invalid = true;
 			}
 			break;
+		default:
+			throw new ValidationException("Invalid leave type");
 		}
+		
 		if(invalid) {
 			throw new ValidationException("Leave duration exceeds the permitted leave days");
 		}
