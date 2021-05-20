@@ -112,41 +112,34 @@ public class TestLeaveRequestManagerApplyLeave {
 	@Test
 	public void testApplyRequestTillZeroLeave() {
 		try {
-			leaveRequest.setEmployeeName("Mohamed");
-			leaveRequest.setEmployeeId(2627);
 			leaveRequest.setType("SickLeave");
-			leaveRequest.setReason("Leave");
 			LocalDate fromDate = LocalDate.parse("2022-06-15");
 			leaveRequest.setFromDate(fromDate);
 			LocalDate toDate = LocalDate.parse("2022-01-21");
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setDuration(1);
-			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha2627");
+			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, "hali2628");
+			assertEquals("Successfully Applied!... You have 1 remaining SickLeaves",message);
 			LeaveRequest leaveRequest1 = new LeaveRequest();
-			leaveRequest1.setEmployeeName("Mohamed");
-			leaveRequest1.setEmployeeId(2627);
 			leaveRequest1.setType("SickLeave");
-			leaveRequest1.setReason("Leave");
 			fromDate = LocalDate.parse("2022-06-11");
 			leaveRequest1.setFromDate(fromDate);
 			toDate = LocalDate.parse("2022-01-12");
 			leaveRequest1.setToDate(toDate);
-			leaveRequest.setDuration(1);
-			message = LeaveRequestManager.applyLeaveRequest(leaveRequest1, "moha2627");
+			leaveRequest1.setDuration(1);
+			message = LeaveRequestManager.applyLeaveRequest(leaveRequest1, "hali2628");
+			assertEquals("Successfully Applied!... You have 0 remaining SickLeaves",message);
 			LeaveRequest leaveRequest2 = new LeaveRequest();
-			leaveRequest2.setEmployeeName("Mohamed");
-			leaveRequest2.setEmployeeId(2627);
 			leaveRequest2.setType("SickLeave");
-			leaveRequest2.setReason("Leave");
 			fromDate = LocalDate.parse("2022-06-23");
 			leaveRequest2.setFromDate(fromDate);
 			toDate = LocalDate.parse("2022-01-22");
 			leaveRequest2.setToDate(toDate);
-			leaveRequest.setDuration(1);
-			message = LeaveRequestManager.applyLeaveRequest(leaveRequest2, "moha2627");
-			assertEquals("You have used all your SickLeaves",message);
-		} catch (ServiceException e) {
+			leaveRequest2.setDuration(1);
+			message = LeaveRequestManager.applyLeaveRequest(leaveRequest2, "hali2628");
 			fail();
+		} catch (ServiceException e) {
+			assertEquals("Leave duration exceeds the permitted leave days",e.getMessage());
 		}
 	}
 }

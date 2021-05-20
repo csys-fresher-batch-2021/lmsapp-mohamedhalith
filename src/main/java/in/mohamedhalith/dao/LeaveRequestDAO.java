@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 
@@ -58,8 +59,9 @@ public class LeaveRequestDAO {
 	 * @param leaveRequest
 	 * @param employee
 	 * @return String
+	 * @throws DBException
 	 */
-	public String applyLeaveRequest(LeaveRequest leaveRequest, Employee employee) {
+	public String applyLeaveRequest(LeaveRequest leaveRequest, Employee employee) throws DBException {
 		String message = "Failed to add";
 		String type = leaveRequest.getType();
 		int duration = leaveRequest.getDuration();
@@ -103,11 +105,9 @@ public class LeaveRequestDAO {
 				leaveRequest.setAppliedTime(LocalDateTime.now());
 				requestList.add(leaveRequest);
 				message = "Successfully Applied!... You have " + remainingLeaves + " remaining " + type + "s";
-			} else {
-				message = "You have used all your " + type + "s";
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new DBException(e, e.getMessage());
 		}
 		return message;
 	}

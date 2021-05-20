@@ -3,11 +3,11 @@ package in.mohamedhalith.service;
 import java.util.ArrayList;
 import java.util.List;
 import in.mohamedhalith.dao.LeaveRequestDAO;
+import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
-import in.mohamedhalith.validator.EmployeeValidator;
 import in.mohamedhalith.validator.LeaveRequestValidator;
 
 public class LeaveRequestManager {
@@ -60,12 +60,11 @@ public class LeaveRequestManager {
 			String message = "Failed to apply leave request";
 			Employee employee = EmployeeManager.getEmployee(username);
 			List<LeaveRequest> employeeRequests = LeaveRequestManager.getEmployeeRequests(username);
-			LeaveRequestValidator.isValidRequest(leaveRequest,employee,employeeRequests);
+			LeaveRequestValidator.isValidRequest(leaveRequest, employee, employeeRequests);
 			message = leaveRequestDAO.applyLeaveRequest(leaveRequest, employee);
 			return message;
-		} catch (ServiceException | ValidationException e) {
+		} catch (ServiceException | ValidationException | DBException e) {
 			throw new ServiceException(e, e.getMessage());
 		}
-
 	}
 }

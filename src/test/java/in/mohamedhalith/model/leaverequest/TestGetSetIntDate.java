@@ -1,6 +1,7 @@
 package in.mohamedhalith.model.leaverequest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
@@ -135,6 +136,32 @@ public class TestGetSetIntDate {
 			fail();
 		} catch (Exception e) {
 			assertEquals("Date cannot be a past date", e.getMessage());
+		}
+	}
+	
+	// Test cases for GetSetDuration
+	
+	@Test
+	public void testGetSetDurationWithValidValue() {
+		try {
+			int duration = 2;
+			leaveRequest.setDuration(duration);
+			duration =0;
+			leaveRequest.setDuration(duration);
+			assertTrue(true);
+		} catch (Exception e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void testGetSetDurationWithNegativeValue() {
+		try {
+			int duration = -2;
+			leaveRequest.setDuration(duration);
+			fail();
+		} catch (Exception e) {
+			assertEquals("Leave duration cannot be negative",e.getMessage());
 		}
 	}
 }

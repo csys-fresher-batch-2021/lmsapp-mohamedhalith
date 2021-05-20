@@ -25,9 +25,9 @@ public class TestEmployeeManager {
 			Employee employee = EmployeeManager.getEmployee(username);
 			assertEquals("Mohamed", employee.getName());
 			assertEquals("2627moha", employee.getPassword());
-			assertEquals(2, employee.getSickLeave());
-			assertEquals(2, employee.getCasualLeave());
-			assertEquals(1, employee.getEarnedLeave());
+			assertEquals(0, employee.getSickLeave());
+			assertEquals(0, employee.getCasualLeave());
+			assertEquals(0, employee.getEarnedLeave());
 		} catch (ServiceException e) {
 			fail();
 		}
@@ -40,9 +40,9 @@ public class TestEmployeeManager {
 			Employee employee = EmployeeManager.getEmployee(username);
 			assertEquals("Halith", employee.getName());
 			assertEquals("2628hali", employee.getPassword());
-			assertEquals(2, employee.getSickLeave());
-			assertEquals(2, employee.getCasualLeave());
-			assertEquals(1, employee.getEarnedLeave());
+			assertEquals(0, employee.getSickLeave());
+			assertEquals(0, employee.getCasualLeave());
+			assertEquals(0, employee.getEarnedLeave());
 		} catch (ServiceException e) {
 			fail();
 		}
