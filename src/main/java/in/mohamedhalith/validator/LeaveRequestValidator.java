@@ -42,6 +42,8 @@ public class LeaveRequestValidator {
 		LocalDate fromDate = leaveRequest.getFromDate();
 		LocalDate toDate = leaveRequest.getToDate();
 		for (LeaveRequest requestLeave : employeeRequests) {
+			System.out.println(requestLeave.getFromDate());
+			System.out.println(requestLeave.getToDate());
 			if (fromDate.isEqual(requestLeave.getFromDate()) || toDate.isEqual(requestLeave.getToDate())) {
 				duplicate = true;
 				break;

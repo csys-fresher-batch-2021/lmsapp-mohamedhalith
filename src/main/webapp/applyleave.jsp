@@ -26,7 +26,7 @@ if(employee!=null){
 						readonly required/><br/>
 						
 					<label>Employee Id</label>
-					<input type="text" name="employeeId" id="employeeId" value="<%= employee.getId() %>"
+					<input type="text" name="employeeId" id="employeeId" value="<%= employee.getEmployeeId() %>"
 						readonly required/><br/>
 						
 					<label>From Date</label>

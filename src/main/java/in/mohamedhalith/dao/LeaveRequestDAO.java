@@ -1,16 +1,21 @@
 package in.mohamedhalith.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import in.mohamedhalith.exception.DBException;
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
+import in.mohamedhalith.util.ConnectionUtil;
 
 public class LeaveRequestDAO {
-
-	private static final List<LeaveRequest> requestList = new ArrayList<>();
 
 	private LeaveRequestDAO() {
 		// Default Constructor
@@ -34,9 +39,44 @@ public class LeaveRequestDAO {
 	 * Returns list of leave requests.
 	 * 
 	 * @return List<LeaveRequest>
+	 * @throws DBException 
 	 */
-	public List<LeaveRequest> getRequestList() {
-		return requestList;
+	public List<LeaveRequest> getRequestList() throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+
+		try {
+			connection = ConnectionUtil.getConnection();
+
+			String query = "select * from leaverequests";
+
+			statement = connection.prepareStatement(query);
+
+			result = statement.executeQuery();
+			List<LeaveRequest> requestList = new ArrayList<>();
+			while (result.next()) {
+				LeaveRequest leaveRequest = new LeaveRequest();
+				leaveRequest.setLeaveId(result.getInt("id"));
+				leaveRequest.setEmployeeName(result.getString("employeename"));
+				leaveRequest.setEmployeeId(result.getInt("employeeid"));
+				leaveRequest.setFromDate(result.getObject("fromdate", LocalDate.class));
+				leaveRequest.setToDate(result.getObject("todate", LocalDate.class));
+				leaveRequest.setDuration(result.getInt("duration"));
+				leaveRequest.setType(result.getString("type"));
+				leaveRequest.setAppliedTime(result.getObject("appliedtime", LocalDateTime.class));
+				leaveRequest.setCancelledTime(result.getObject("cancelledtime", LocalDateTime.class));
+				leaveRequest.setReviewedTime(result.getObject("reviewedtime", LocalDateTime.class));
+				requestList.add(leaveRequest);
+			}
+			return requestList;
+		} catch (ValidationException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Failed to fetch leave requests");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+
 	}
 
 	/**
@@ -47,16 +87,45 @@ public class LeaveRequestDAO {
 	 * 
 	 * @param employee
 	 * @return
+	 * @throws DBException 
 	 */
-	public List<LeaveRequest> getEmployeeRequests(Employee employee) {
-		int id = employee.getId();
-		List<LeaveRequest> employeeRequests = new ArrayList<>();
-		for (LeaveRequest leaveRequest : requestList) {
-			if (leaveRequest.getEmployeeId() == id) {
-				employeeRequests.add(leaveRequest);
+	public List<LeaveRequest> getEmployeeRequests(Employee employee) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+
+		try {
+			connection = ConnectionUtil.getConnection();
+
+			String query = "select * from leaverequests where employeeid = ?";
+
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, employee.getEmployeeId());
+
+			result = statement.executeQuery();
+			List<LeaveRequest> requestList = new ArrayList<>();
+			while (result.next()) {
+				LeaveRequest leaveRequest = new LeaveRequest();
+				leaveRequest.setLeaveId(result.getInt("id"));
+				leaveRequest.setEmployeeName(result.getString("employeename"));
+				leaveRequest.setEmployeeId(result.getInt("employeeid"));
+				leaveRequest.setFromDate(result.getObject("fromdate", LocalDate.class));
+				leaveRequest.setToDate(result.getObject("todate", LocalDate.class));
+				leaveRequest.setDuration(result.getInt("duration"));
+				leaveRequest.setType(result.getString("type"));
+				leaveRequest.setAppliedTime(result.getObject("appliedtime", LocalDateTime.class));
+				leaveRequest.setCancelledTime(result.getObject("cancelledtime", LocalDateTime.class));
+				leaveRequest.setReviewedTime(result.getObject("reviewedtime", LocalDateTime.class));
+				requestList.add(leaveRequest);
+				System.out.println(leaveRequest);
 			}
+			return requestList;
+		} catch (ValidationException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Failed to fetch leave requests of employee");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
 		}
-		return employeeRequests;
 	}
 
 	/**
@@ -70,56 +139,33 @@ public class LeaveRequestDAO {
 	 * @return String
 	 * @throws DBException
 	 */
-	public String applyLeaveRequest(LeaveRequest leaveRequest, Employee employee) throws DBException {
-		String message = "Failed to add";
-		String type = leaveRequest.getType();
-		int duration = leaveRequest.getDuration();
-		int remainingLeaves = -1;
-		boolean isApplied = false;
+	public String applyLeaveRequest(LeaveRequest leaveRequest) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		leaveRequest.setAppliedTime(LocalDateTime.now());
 		try {
-			// Reducing the no of leaves of respective type
-			switch (type) {
-			case "SickLeave":
-				int sickLeave = employee.getSickLeave();
-				if (sickLeave != 0 && sickLeave >= duration) {
-					sickLeave -= duration;
-					employee.setSickLeave(sickLeave);
-					remainingLeaves = sickLeave;
-					isApplied = true;
-				}
-				break;
-			case "CasualLeave":
-				int casualLeave = employee.getCasualLeave();
-				if (casualLeave != 0 && casualLeave >= duration) {
-					casualLeave -= duration;
-					employee.setCasualLeave(casualLeave);
-					remainingLeaves = casualLeave;
-					isApplied = true;
-				}
-				break;
-			case "EarnedLeave":
-				int earnedLeave = employee.getEarnedLeave();
-				if (earnedLeave != 0 && earnedLeave >= duration) {
-					earnedLeave -= duration;
-					employee.setEarnedLeave(earnedLeave);
-					remainingLeaves = earnedLeave;
-					isApplied = true;
-				}
-				break;
-			default:
-				message = "Invalid leave type";
-			}
-			// If blocks is executes only if the leave request is applied, otherwise else
-			// block is executed
-			if (isApplied && remainingLeaves != -1) {
-				leaveRequest.setLeaveId(requestList.size() + 1);
-				leaveRequest.setAppliedTime(LocalDateTime.now());
-				requestList.add(leaveRequest);
-				message = "Successfully Applied!... You have " + remainingLeaves + " remaining " + type + "s";
-			}
-		} catch (Exception e) {
-			throw new DBException(e, e.getMessage());
+			connection = ConnectionUtil.getConnection();
+			String query = "insert into leaverequests (employeename,employeeid,fromdate,todate,duration,type,reason,appliedtime)"
+						+ "values(?,?,?,?,?,?,?,?)";
+
+			statement = connection.prepareStatement(query);
+			statement.setString(1, leaveRequest.getEmployeeName());
+			statement.setInt(2, leaveRequest.getEmployeeId());
+			statement.setObject(3, leaveRequest.getFromDate());
+			statement.setObject(4, leaveRequest.getToDate());
+			statement.setInt(5, leaveRequest.getDuration());
+			statement.setString(6, leaveRequest.getType());
+			statement.setString(7, leaveRequest.getReason());
+			statement.setObject(8, leaveRequest.getAppliedTime());
+			
+			int rows = statement.executeUpdate();
+			System.out.println(rows);
+			ConnectionUtil.closeConnection(connection, statement);
+			return "Leave Applied Successfully";
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e,e.getMessage());
+		}finally {
+			ConnectionUtil.closeConnection(connection, statement);
 		}
-		return message;
 	}
 }

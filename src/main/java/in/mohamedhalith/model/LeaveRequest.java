@@ -19,6 +19,7 @@ public class LeaveRequest {
 	private String reason;
 	private String status = "Waiting for approval";
 	private LocalDateTime cancelledTime;
+	private LocalDateTime reviewedTime;
 	private LocalDateTime appliedTime;
 
 	public int getLeaveId() {
@@ -36,13 +37,9 @@ public class LeaveRequest {
 		return employeeName;
 	}
 
-	public void setEmployeeName(String employeeName) {
-		try {
-			StringValidator.isValidString(employeeName);
-			this.employeeName = employeeName;
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Employee name cannot be empty or null");
-		}
+	public void setEmployeeName(String employeeName) throws ValidationException {
+		StringValidator.isValidString(employeeName);
+		this.employeeName = employeeName;
 	}
 
 	public int getEmployeeId() {
@@ -60,12 +57,9 @@ public class LeaveRequest {
 		return fromDate;
 	}
 
-	public void setFromDate(LocalDate fromDate) {
-		try {
-			DateTimeValidator.isValidDate(fromDate);
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Date cannot be a past date");
-		}
+	public void setFromDate(LocalDate fromDate) throws ValidationException {
+		DateTimeValidator.isValidDate(fromDate);
+
 		this.fromDate = fromDate;
 	}
 
@@ -73,12 +67,8 @@ public class LeaveRequest {
 		return toDate;
 	}
 
-	public void setToDate(LocalDate toDate) {
-		try {
-			DateTimeValidator.isValidDate(toDate);
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Date cannot be a past date");
-		}
+	public void setToDate(LocalDate toDate) throws ValidationException {
+		DateTimeValidator.isValidDate(toDate);
 		this.toDate = toDate;
 	}
 
@@ -86,39 +76,30 @@ public class LeaveRequest {
 		return type;
 	}
 
-	public void setType(String type) {
-		try {
-			StringValidator.isValidString(type);
-			this.type = type;
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Invalid Leave type");
-		}
+	public void setType(String type) throws ValidationException {
+		StringValidator.isValidString(type);
+		this.type = type;
+
 	}
 
 	public String getReason() {
 		return reason;
 	}
 
-	public void setReason(String reason) {
-		try {
-			StringValidator.isValidString(reason);
-			this.reason = reason;
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Reason should not be null or empty");
-		}
+	public void setReason(String reason) throws ValidationException {
+		StringValidator.isValidString(reason);
+		this.reason = reason;
+
 	}
 
 	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
-		try {
-			StringValidator.isValidString(status);
-			this.status = status;
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Invalid leave status");
-		}
+	public void setStatus(String status) throws ValidationException {
+		StringValidator.isValidString(status);
+		this.status = status;
+
 	}
 
 	public LocalDateTime getCancelledTime() {
@@ -127,6 +108,14 @@ public class LeaveRequest {
 
 	public void setCancelledTime(LocalDateTime cancelledTime) {
 		this.cancelledTime = cancelledTime;
+	}
+
+	public LocalDateTime getReviewedTime() {
+		return reviewedTime;
+	}
+
+	public void setReviewedTime(LocalDateTime reviewedTime) {
+		this.reviewedTime = reviewedTime;
 	}
 
 	public LocalDateTime getAppliedTime() {
@@ -142,7 +131,7 @@ public class LeaveRequest {
 	}
 
 	public void setDuration(int duration) {
-		if(duration < 0) {
+		if (duration < 0) {
 			throw new IllegalArgumentException("Leave duration cannot be negative");
 		}
 		this.duration = duration;
@@ -151,7 +140,7 @@ public class LeaveRequest {
 	@Override
 	public String toString() {
 		return "LeaveRequest leaveId " + leaveId + " employeeName " + employeeName + " employeeId " + employeeId
-				+ " fromDate " + fromDate + " toDate " + toDate + " type " + type + " reason " + reason
-				+ " status " + status + " cancelledTime " + cancelledTime + " appliedTime " + appliedTime;
+				+ " fromDate " + fromDate + " toDate " + toDate + " type " + type + " reason " + reason + " status "
+				+ status + " cancelledTime " + cancelledTime + " appliedTime " + appliedTime;
 	}
 }

@@ -19,8 +19,8 @@
 		<thead>
 		<tr>
 		<th id="serial">S.No</th>
-		<th id="name">Name</th>
 		<th id="id">Id</th>
+		<th id="name">Name</th>
 		</thead>
 		<tbody>
 		<%
@@ -30,8 +30,8 @@
 		%>
 		<tr>
 		<td><%=serial%></td>
+		<td><%=employee.getEmployeeId() %></td>
 		<td><%=employee.getName() %></td>
-		<td><%=employee.getId() %></td>
 		<%
 		serial++;
 		}
