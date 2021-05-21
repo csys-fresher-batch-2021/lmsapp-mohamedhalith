@@ -3,6 +3,7 @@ package in.mohamedhalith.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.model.Employee;
 
 public class EmployeeDAO {
@@ -20,7 +21,7 @@ public class EmployeeDAO {
 		employee1.setPassword("2627moha");
 		employeeList.add(employee1);
 
-		Employee employee2 = new Employee("Halith", 2728);
+		Employee employee2 = new Employee("Halith", 2628);
 		employee2.setUsername("hali2628");
 		employee2.setPassword("2628hali");
 		employeeList.add(employee2);
@@ -45,14 +46,23 @@ public class EmployeeDAO {
 	 * 
 	 * @param username
 	 * @return
+	 * @throws DBException
 	 */
-	public Employee getEmployee(String username) {
+	public Employee getEmployee(String username) throws DBException {
 		Employee getEmployee = null;
-		for (Employee employee : employeeList) {
-			if (employee.getUsername().equals(username)) {
-				getEmployee = employee;
+		try {
+			for (Employee employee : employeeList) {
+				if (employee.getUsername().equals(username)) {
+					getEmployee = employee;
+					break;
+				}
 			}
+			if (getEmployee == null) {
+				throw new DBException("Employee Not found");
+			}
+			return getEmployee;
+		} catch (Exception e) {
+			throw new DBException(e, e.getMessage());
 		}
-		return getEmployee;
 	}
 }

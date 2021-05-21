@@ -1,18 +1,29 @@
 package in.mohamedhalith.validator;
 
 import in.mohamedhalith.dao.EmployeeDAO;
+import in.mohamedhalith.exception.DBException;
+import in.mohamedhalith.exception.ValidationException;
+import in.mohamedhalith.util.StringValidator;
 
 public class EmployeeValidator {
 	private EmployeeValidator() {
 		// Default Constructor
 	}
-	
-	public static boolean isEmployee(String username) {
+
+	/**
+	 * This method is used to verify whether the user is an employee or not
+	 * 
+	 * @param username
+	 * @throws ValidationException
+	 */
+	public static void isEmployee(String username) throws ValidationException {
 		EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
-		boolean isEmployee = false;
-		if(employeeDAO.getEmployee(username) != null) {
-			isEmployee = true;
+		try {
+			StringValidator.isValidUsername(username);
+			employeeDAO.getEmployee(username);
+		} catch (DBException | ValidationException e) {
+			throw new ValidationException(e, e.getMessage());
 		}
-		return isEmployee;
+
 	}
 }
