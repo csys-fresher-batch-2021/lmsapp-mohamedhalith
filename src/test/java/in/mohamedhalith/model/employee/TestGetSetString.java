@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 
 public class TestGetSetString {
@@ -13,10 +14,14 @@ public class TestGetSetString {
 	// Test cases for GetSetName
 	@Test
 	public void testGetSetNameWithValidName() {
-		String name = "Mohamed";
-		employee.setName(name);
-		String checkName = employee.getName();
-		assertEquals(name, checkName);
+		try {
+			String name = "Mohamed";
+			employee.setName(name);
+			String checkName = employee.getName();
+			assertEquals(name, checkName);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -25,8 +30,8 @@ public class TestGetSetString {
 			String name = "";
 			employee.setName(name);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Name cannot be empty or null", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -36,8 +41,8 @@ public class TestGetSetString {
 			String name = " ";
 			employee.setName(name);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Name cannot be empty or null", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -47,18 +52,22 @@ public class TestGetSetString {
 			String name = " ";
 			employee.setName(name);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Name cannot be empty or null", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
 	// Test cases for GetSetPassword
 	@Test
 	public void testGetSetPasswordWithValidPassword() {
-		String password = "pass1234";
-		employee.setPassword(password);
-		String checkPassword = employee.getPassword();
-		assertEquals(password, checkPassword);
+		try {
+			String password = "pass1234";
+			employee.setPassword(password);
+			String checkPassword = employee.getPassword();
+			assertEquals(password, checkPassword);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -67,8 +76,8 @@ public class TestGetSetString {
 			String password = "";
 			employee.setPassword(password);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Invalid Password", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -78,8 +87,8 @@ public class TestGetSetString {
 			String password = "";
 			employee.setPassword(password);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Invalid Password", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -89,18 +98,22 @@ public class TestGetSetString {
 			String password = null;
 			employee.setPassword(password);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Invalid Password", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
 	// Test cases for GetSetUsername
 	@Test
 	public void testGetSetUsernameWithValidUsername() {
-		String username = "username";
-		employee.setUsername(username);
-		String checkUsername = employee.getUsername();
-		assertEquals(username, checkUsername);
+		try {
+			String username = "username";
+			employee.setUsername(username);
+			String checkUsername = employee.getUsername();
+			assertEquals(username, checkUsername);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -109,8 +122,8 @@ public class TestGetSetString {
 			String username = "";
 			employee.setUsername(username);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Invalid Username", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -120,8 +133,8 @@ public class TestGetSetString {
 			String username = "   ";
 			employee.setUsername(username);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Invalid Username", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -131,23 +144,27 @@ public class TestGetSetString {
 			String username = null;
 			employee.setUsername(username);
 			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals("Invalid Username", e.getMessage());
+		} catch (IllegalArgumentException | ValidationException e) {
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
 	// Test cases for toString
 	@Test
 	public void testToString() {
-		employee.setUsername("mohamed");
-		employee.setPassword("password");
-		employee.setName("Mohamed");
-		employee.setId(2627);
-		employee.setSickLeave(3);
-		employee.setCasualLeave(3);
-		employee.setEarnedLeave(1);
-		String result = employee.toString();
-		assertEquals(result, "Employee [Name Mohamed Id 2627 Username mohamed Password password"
-				+ " Sick Leave 3 Casual Leave 3 Earned Leave 1]");
+		try {
+			employee.setUsername("mohamed");
+			employee.setPassword("password");
+			employee.setName("Mohamed");
+			employee.setId(2627);
+			employee.setSickLeave(3);
+			employee.setCasualLeave(3);
+			employee.setEarnedLeave(1);
+			String result = employee.toString();
+			assertEquals(result, "Employee [Name Mohamed Id 2627 Username mohamed Password password"
+					+ " Sick Leave 3 Casual Leave 3 Earned Leave 1]");
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 }

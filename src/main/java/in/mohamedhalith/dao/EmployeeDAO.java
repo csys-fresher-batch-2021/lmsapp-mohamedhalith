@@ -113,6 +113,8 @@ public class EmployeeDAO {
 			return getEmployee;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException("Failed to get employee");
+		}finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}
 	

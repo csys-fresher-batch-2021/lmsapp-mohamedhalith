@@ -7,14 +7,19 @@ import java.util.List;
 import org.junit.Test;
 
 import in.mohamedhalith.exception.ServiceException;
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 
 public class TestEmployeeManager {
 
 	@Test
 	public void testGetEmployeeList() {
-		List<Employee> employeeList = EmployeeManager.getEmployeeList();
-		assertEquals(2, employeeList.size());
+		try {
+			List<Employee> employeeList = EmployeeManager.getEmployeeList();
+			assertEquals(2, employeeList.size());
+		} catch (ServiceException | ValidationException e) {
+			fail();
+		}
 	}
 
 	// Test cases for GetEmployee
@@ -28,7 +33,7 @@ public class TestEmployeeManager {
 			assertEquals(2, employee.getSickLeave());
 			assertEquals(2, employee.getCasualLeave());
 			assertEquals(1, employee.getEarnedLeave());
-		} catch (ServiceException e) {
+		} catch (ServiceException | ValidationException e) {
 			fail();
 		}
 	}
@@ -43,7 +48,7 @@ public class TestEmployeeManager {
 			assertEquals(2, employee.getSickLeave());
 			assertEquals(2, employee.getCasualLeave());
 			assertEquals(1, employee.getEarnedLeave());
-		} catch (ServiceException e) {
+		} catch (ServiceException | ValidationException e) {
 			fail();
 		}
 	}
@@ -54,8 +59,8 @@ public class TestEmployeeManager {
 			String username = "halith";
 			EmployeeManager.getEmployee(username);
 			fail();
-		} catch (ServiceException e) {
-			assertEquals("No employee is found for given details", e.getMessage());
+		} catch (ServiceException | ValidationException e) {
+			assertEquals("Invalid username", e.getMessage());
 		}
 	}
 }

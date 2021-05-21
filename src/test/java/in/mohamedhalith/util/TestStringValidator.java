@@ -203,4 +203,28 @@ public class TestStringValidator {
 			assertEquals("Invalid username", e.getMessage());
 		}
 	}
+	
+	// Test cases for isValidEmail
+	
+	@Test 
+	public void testIsValidEmailWithValidEmail() {
+		try {
+			String email = "mohamedhalith@gmail.com";
+			StringValidator.isValidEmail(email);
+			assertTrue(true);
+		} catch (ValidationException e) {
+			fail();
+		}
+	}
+	
+	@Test 
+	public void testIsValidEmailWithInvalidEmail() {
+		try {
+			String email = "mohamedhalithgmailcom";
+			StringValidator.isValidEmail(email);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals("Invalid email",e.getMessage());
+		}
+	}
 }

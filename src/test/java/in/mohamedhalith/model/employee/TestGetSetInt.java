@@ -14,8 +14,8 @@ public class TestGetSetInt {
 	@Test
 	public void testGetSetIdWithValidId() {
 		int id = 2627;
-		employee.setId(id);
-		int checkId = employee.getId();
+		employee.setEmployeeId(id);
+		int checkId = employee.getEmployeeId();
 		assertEquals(2627, checkId);
 	}
 
@@ -23,7 +23,7 @@ public class TestGetSetInt {
 	public void testGetSetIdWithNegativeId() {
 		try {
 			int id = -22;
-			employee.setId(id);
+			employee.setEmployeeId(id);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
@@ -34,7 +34,7 @@ public class TestGetSetInt {
 	public void testGetSetIdWithOneDigitId() {
 		try {
 			int id = 4;
-			employee.setId(id);
+			employee.setEmployeeId(id);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
@@ -45,7 +45,7 @@ public class TestGetSetInt {
 	public void testGetSetIdWithTwoDigitId() {
 		try {
 			int id = 22;
-			employee.setId(id);
+			employee.setEmployeeId(id);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
@@ -56,7 +56,7 @@ public class TestGetSetInt {
 	public void testGetSetIdWithThreeDigitId() {
 		try {
 			int id = 123;
-			employee.setId(id);
+			employee.setEmployeeId(id);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
@@ -67,7 +67,7 @@ public class TestGetSetInt {
 	public void testGetSetIdWithMoreThanFourDigitId() {
 		try {
 			int id = 123456789;
-			employee.setId(id);
+			employee.setEmployeeId(id);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());

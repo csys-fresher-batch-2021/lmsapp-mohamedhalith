@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.EmployeeManager;
@@ -30,8 +31,12 @@ public class TestLeaveRequestDAO {
 
 	@Test
 	public void testGetRequestList() {
-		List<LeaveRequest> requestList = leaveRequestDA.getRequestList();
-		assertEquals(0, requestList.size());
+		try {
+			List<LeaveRequest> requestList = leaveRequestDA.getRequestList();
+			assertEquals(0, requestList.size());
+		} catch (DBException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -39,8 +44,11 @@ public class TestLeaveRequestDAO {
 		try {
 			Employee employee = EmployeeManager.getEmployee("moha2627");
 			List<LeaveRequest> requestList = leaveRequestDA.getEmployeeRequests(employee);
+			for (LeaveRequest leaveRequest : requestList) {
+				System.out.println(leaveRequest);
+			}
 			assertTrue(true);
-		} catch (ServiceException e) {
+		} catch (ServiceException | ValidationException | DBException e) {
 			fail();
 		}
 	}
@@ -60,9 +68,9 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
 			Employee employee = EmployeeManager.getEmployee("moha2627");
-			String message = leaveRequestDA.applyLeaveRequest(leaveRequest, employee);
+			String message = leaveRequestDA.applyLeaveRequest(leaveRequest);
 			assertEquals("Successfully Applied!... You have 1 remaining SickLeaves", message);
-		} catch (ServiceException | DBException e) {
+		} catch (ServiceException | DBException | ValidationException e) {
 			fail();
 		}
 
@@ -81,9 +89,9 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setType("EarnedLeave");
 			leaveRequest.setReason("Leave");
 			Employee employee = EmployeeManager.getEmployee("moha2627");
-			String message = leaveRequestDA.applyLeaveRequest(leaveRequest, employee);
+			String message = leaveRequestDA.applyLeaveRequest(leaveRequest);
 			assertEquals("Successfully Applied!... You have 1 remaining EarnedLeaves", message);
-		} catch (ServiceException | DBException e) {
+		} catch (ServiceException | DBException | ValidationException e) {
 			fail();
 		}
 	}
@@ -101,9 +109,9 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setType("CasualLeave");
 			leaveRequest.setReason("Leave");
 			Employee employee = EmployeeManager.getEmployee("moha2627");
-			String message = leaveRequestDA.applyLeaveRequest(leaveRequest, employee);
+			String message = leaveRequestDA.applyLeaveRequest(leaveRequest);
 			assertEquals("Successfully Applied!... You have 1 remaining CasualLeaves", message);
-		} catch (ServiceException | DBException e) {
+		} catch (ServiceException | DBException | ValidationException e) {
 			fail();
 		}
 	}

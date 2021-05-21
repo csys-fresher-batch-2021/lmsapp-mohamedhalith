@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 
 public class TestEmployeeValidator {
@@ -14,7 +15,7 @@ public class TestEmployeeValidator {
 		try {
 			EmployeeValidator.isEmployee(username);
 			assertTrue(true);
-		} catch (ValidationException e) {
+		} catch (ValidationException | ServiceException e) {
 			fail();
 		}
 	}
@@ -25,7 +26,7 @@ public class TestEmployeeValidator {
 		try {
 			EmployeeValidator.isEmployee(username);
 			fail();
-		} catch (ValidationException e) {
+		} catch (ValidationException | ServiceException e) {
 			assertEquals("Employee Not found",e.getMessage());
 		}
 	}
@@ -36,7 +37,7 @@ public class TestEmployeeValidator {
 		try {
 			EmployeeValidator.isEmployee(username);
 			fail();
-		} catch (ValidationException e) {
+		} catch (ValidationException | ServiceException e) {
 			assertEquals("Invalid username",e.getMessage());
 		}
 	}

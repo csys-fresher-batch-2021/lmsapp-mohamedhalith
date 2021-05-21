@@ -19,7 +19,7 @@ public class DateTimeValidator {
 	public static void isValidDate(LocalDate date) throws ValidationException {
 		LocalDate today = LocalDate.now();
 		if (date.isBefore(today)) {
-			throw new ValidationException("Date cannot be past");
+			throw new ValidationException("Date cannot be past date");
 		}
 	}
 }
