@@ -7,20 +7,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ConnectionUtil {
+	
+	private ConnectionUtil() {
+		//Default constructor
+	}
 
-	private static final String DRIVER_NAME = "org.postgresql.Driver";
 	private static final String DATABASE_NAME = "lms-app";
 	private static final String HOST = "localhost";
 	private static final int PORT = 5432;
 	private static final String USERNAME = "postgres";
 	private static final String PASSWORD = "postgres";
 	// jdbc:postgresql:5432//localhost/lms-app
-	private static final String url = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE_NAME;
-
+	private static final String URL = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE_NAME;
+	
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection connection = null;
-		Class.forName(DRIVER_NAME);
-		connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
+		connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		return connection;
 	}
 

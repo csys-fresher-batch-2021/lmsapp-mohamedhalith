@@ -117,7 +117,6 @@ public class LeaveRequestDAO {
 				leaveRequest.setCancelledTime(result.getObject("cancelledtime", LocalDateTime.class));
 				leaveRequest.setReviewedTime(result.getObject("reviewedtime", LocalDateTime.class));
 				requestList.add(leaveRequest);
-				System.out.println(leaveRequest);
 			}
 			return requestList;
 		} catch (ValidationException | ClassNotFoundException | SQLException e) {
@@ -157,9 +156,7 @@ public class LeaveRequestDAO {
 			statement.setString(6, leaveRequest.getType());
 			statement.setString(7, leaveRequest.getReason());
 			statement.setObject(8, leaveRequest.getAppliedTime());
-			
-			int rows = statement.executeUpdate();
-			System.out.println(rows);
+			statement.executeUpdate();
 			ConnectionUtil.closeConnection(connection, statement);
 			return "Leave Applied Successfully";
 		} catch (ClassNotFoundException | SQLException e) {

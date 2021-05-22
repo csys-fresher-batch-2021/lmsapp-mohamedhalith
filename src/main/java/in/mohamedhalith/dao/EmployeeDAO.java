@@ -13,8 +13,6 @@ import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.util.ConnectionUtil;
 
 public class EmployeeDAO {
-//	private static final List<Employee> employeeList = new ArrayList<>();
-
 	private EmployeeDAO() {
 		// Default constructor
 	}
@@ -29,8 +27,8 @@ public class EmployeeDAO {
 	 * This method is used to return the list of employees
 	 * 
 	 * @return List<Employee>
-	 * @throws DBException 
-	 * @throws ValidationException 
+	 * @throws DBException
+	 * @throws ValidationException
 	 */
 	public List<Employee> getEmployeeList() throws DBException, ValidationException {
 		Connection connection = null;
@@ -43,11 +41,11 @@ public class EmployeeDAO {
 			String query = "select * from employees";
 			// Converting query to statement
 			statement = connection.prepareStatement(query);
-			//Executing query
+			// Executing query
 			result = statement.executeQuery();
-			List<Employee> employeeList = new ArrayList<Employee>();
+			List<Employee> employeeList = new ArrayList<>();
 
-			while(result.next()) {
+			while (result.next()) {
 				Employee employee = new Employee();
 				employee.setName(result.getString("name"));
 				employee.setId(result.getInt("id"));
@@ -63,10 +61,10 @@ public class EmployeeDAO {
 				employeeList.add(employee);
 			}
 			return employeeList;
-			
+
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e,"Failed to get Employee list");
-		}finally {
+			throw new DBException(e, "Failed to get Employee list");
+		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}
@@ -78,24 +76,24 @@ public class EmployeeDAO {
 	 * @param username
 	 * @return
 	 * @throws DBException
-	 * @throws ValidationException 
+	 * @throws ValidationException
 	 */
 	public Employee getEmployee(String username) throws DBException, ValidationException {
-		
+
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
-		
+
 		try {
 			connection = ConnectionUtil.getConnection();
 			String query = "select * from employees where username = ?";
-			
+
 			statement = connection.prepareStatement(query);
 			statement.setString(1, username);
-			
+
 			result = statement.executeQuery();
 			Employee getEmployee = new Employee();
-			if(result.next()) {
+			if (result.next()) {
 				getEmployee.setName(result.getString("name"));
 				getEmployee.setId(result.getInt("id"));
 				getEmployee.setEmployeeId(result.getInt("employeeid"));
@@ -107,27 +105,27 @@ public class EmployeeDAO {
 				getEmployee.setSickLeave(result.getInt("sickleave"));
 				getEmployee.setCasualLeave(result.getInt("casualleave"));
 				getEmployee.setEarnedLeave(result.getInt("earnedleave"));
-			}else {
+			} else {
 				throw new SQLException("Employee not found");
 			}
 			return getEmployee;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException("Failed to get employee");
-		}finally {
+		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}
-	
-	public void updateLeaveBalance(Employee employee,String type,int duration) throws DBException {
+
+	public void updateLeaveBalance(Employee employee, String type, int duration) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
-		String username= employee.getUsername();
+		String username = employee.getUsername();
 		String query = null;
 		int leave = -1;
-		
+
 		try {
 			connection = ConnectionUtil.getConnection();
-			switch(type) {
+			switch (type) {
 			case "SickLeave":
 				leave = employee.getSickLeave();
 				leave -= duration;
@@ -146,16 +144,14 @@ public class EmployeeDAO {
 			default:
 				throw new DBException("Invalid Leave Type");
 			}
-			
+
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, leave);
 			statement.setString(2, username);
-			
-			int rows = statement.executeUpdate();
-			System.out.println("No of rows changed" + rows);
+			statement.executeUpdate();
 		} catch (DBException | ClassNotFoundException | SQLException e) {
 			throw new DBException("Cannot apply the leave request");
-		}finally {
+		} finally {
 			ConnectionUtil.closeConnection(connection, statement);
 		}
 	}

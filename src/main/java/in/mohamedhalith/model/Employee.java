@@ -69,8 +69,8 @@ public class Employee {
 		if (mobile.length() != 10) {
 			throw new IllegalArgumentException("Invalid mobile number");
 		}
-		long mobileNumber = Long.parseLong(mobile);
-		this.mobileNumber = mobileNumber;
+		long mobileNo = Long.parseLong(mobile);
+		this.mobileNumber = mobileNo;
 	}
 
 	public void setEmail(String email) throws ValidationException {
