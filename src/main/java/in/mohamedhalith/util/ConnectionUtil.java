@@ -24,7 +24,6 @@ public class ConnectionUtil {
 		Class.forName(DRIVER_NAME);
 		Connection connection = null;
 		connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-		System.out.println(connection);
 		return connection;
 	}
 
