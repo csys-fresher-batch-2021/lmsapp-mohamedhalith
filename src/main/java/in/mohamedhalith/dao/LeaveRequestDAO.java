@@ -39,7 +39,7 @@ public class LeaveRequestDAO {
 	 * Returns list of leave requests.
 	 * 
 	 * @return List<LeaveRequest>
-	 * @throws DBException 
+	 * @throws DBException
 	 */
 	public List<LeaveRequest> getRequestList() throws DBException {
 		Connection connection = null;
@@ -56,17 +56,7 @@ public class LeaveRequestDAO {
 			result = statement.executeQuery();
 			List<LeaveRequest> requestList = new ArrayList<>();
 			while (result.next()) {
-				LeaveRequest leaveRequest = new LeaveRequest();
-				leaveRequest.setLeaveId(result.getInt("id"));
-				leaveRequest.setEmployeeName(result.getString("employeename"));
-				leaveRequest.setEmployeeId(result.getInt("employeeid"));
-				leaveRequest.setFromDate(result.getObject("fromdate", LocalDate.class));
-				leaveRequest.setToDate(result.getObject("todate", LocalDate.class));
-				leaveRequest.setDuration(result.getInt("duration"));
-				leaveRequest.setType(result.getString("type"));
-				leaveRequest.setAppliedTime(result.getObject("appliedtime", LocalDateTime.class));
-				leaveRequest.setCancelledTime(result.getObject("cancelledtime", LocalDateTime.class));
-				leaveRequest.setReviewedTime(result.getObject("reviewedtime", LocalDateTime.class));
+				LeaveRequest leaveRequest = returnLeaveRequest(result);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
@@ -80,6 +70,30 @@ public class LeaveRequestDAO {
 	}
 
 	/**
+	 * This method is used to convert the result set obtained from the database into
+	 * an instance of LeaveRequest class.
+	 * 
+	 * @param result
+	 * @return	LeaveRequest
+	 * @throws SQLException
+	 * @throws ValidationException
+	 */
+	public LeaveRequest returnLeaveRequest(ResultSet result) throws SQLException, ValidationException {
+		LeaveRequest leaveRequest = new LeaveRequest();
+		leaveRequest.setLeaveId(result.getInt("id"));
+		leaveRequest.setEmployeeName(result.getString("employeename"));
+		leaveRequest.setEmployeeId(result.getInt("employeeid"));
+		leaveRequest.setFromDate(result.getObject("fromdate", LocalDate.class));
+		leaveRequest.setToDate(result.getObject("todate", LocalDate.class));
+		leaveRequest.setDuration(result.getInt("duration"));
+		leaveRequest.setType(result.getString("type"));
+		leaveRequest.setAppliedTime(result.getObject("appliedtime", LocalDateTime.class));
+		leaveRequest.setCancelledTime(result.getObject("cancelledtime", LocalDateTime.class));
+		leaveRequest.setReviewedTime(result.getObject("reviewedtime", LocalDateTime.class));
+		return leaveRequest;
+	}
+
+	/**
 	 * This method is used to obtain the leave requests applied by a particular
 	 * employee.
 	 * 
@@ -87,7 +101,7 @@ public class LeaveRequestDAO {
 	 * 
 	 * @param employee
 	 * @return
-	 * @throws DBException 
+	 * @throws DBException
 	 */
 	public List<LeaveRequest> getEmployeeRequests(Employee employee) throws DBException {
 		Connection connection = null;
@@ -105,17 +119,7 @@ public class LeaveRequestDAO {
 			result = statement.executeQuery();
 			List<LeaveRequest> requestList = new ArrayList<>();
 			while (result.next()) {
-				LeaveRequest leaveRequest = new LeaveRequest();
-				leaveRequest.setLeaveId(result.getInt("id"));
-				leaveRequest.setEmployeeName(result.getString("employeename"));
-				leaveRequest.setEmployeeId(result.getInt("employeeid"));
-				leaveRequest.setFromDate(result.getObject("fromdate", LocalDate.class));
-				leaveRequest.setToDate(result.getObject("todate", LocalDate.class));
-				leaveRequest.setDuration(result.getInt("duration"));
-				leaveRequest.setType(result.getString("type"));
-				leaveRequest.setAppliedTime(result.getObject("appliedtime", LocalDateTime.class));
-				leaveRequest.setCancelledTime(result.getObject("cancelledtime", LocalDateTime.class));
-				leaveRequest.setReviewedTime(result.getObject("reviewedtime", LocalDateTime.class));
+				LeaveRequest leaveRequest = returnLeaveRequest(result);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
@@ -145,7 +149,7 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 			String query = "insert into leaverequests (employeename,employeeid,fromdate,todate,duration,type,reason,appliedtime)"
-						+ "values(?,?,?,?,?,?,?,?)";
+					+ "values(?,?,?,?,?,?,?,?)";
 
 			statement = connection.prepareStatement(query);
 			statement.setString(1, leaveRequest.getEmployeeName());
@@ -160,8 +164,8 @@ public class LeaveRequestDAO {
 			ConnectionUtil.closeConnection(connection, statement);
 			return "Leave Applied Successfully";
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e,e.getMessage());
-		}finally {
+			throw new DBException(e, e.getMessage());
+		} finally {
 			ConnectionUtil.closeConnection(connection, statement);
 		}
 	}

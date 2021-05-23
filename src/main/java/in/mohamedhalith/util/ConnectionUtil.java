@@ -11,7 +11,7 @@ public class ConnectionUtil {
 	private ConnectionUtil() {
 		//Default constructor
 	}
-
+	private static final String DRIVER_NAME = "org.postgresql.Driver";
 	private static final String DATABASE_NAME = "lms-app";
 	private static final String HOST = "localhost";
 	private static final int PORT = 5432;
@@ -21,8 +21,10 @@ public class ConnectionUtil {
 	private static final String URL = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE_NAME;
 	
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
+		Class.forName(DRIVER_NAME);
 		Connection connection = null;
 		connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		System.out.println(connection);
 		return connection;
 	}
 
