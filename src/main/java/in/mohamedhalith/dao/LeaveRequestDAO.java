@@ -57,7 +57,7 @@ public class LeaveRequestDAO {
 			result = statement.executeQuery();
 			List<LeaveRequest> requestList = new ArrayList<>();
 			while (result.next()) {
-				LeaveRequest leaveRequest = returnLeaveRequest(result);
+				LeaveRequest leaveRequest = returnAsLeaveRequest(result);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
@@ -79,7 +79,7 @@ public class LeaveRequestDAO {
 	 * @throws SQLException
 	 * @throws ValidationException
 	 */
-	public LeaveRequest returnLeaveRequest(ResultSet result) throws SQLException, ValidationException {
+	public LeaveRequest returnAsLeaveRequest(ResultSet result) throws SQLException, ValidationException {
 		LeaveRequest leaveRequest = new LeaveRequest();
 		leaveRequest.setLeaveId(result.getInt("id"));
 		leaveRequest.setEmployeeName(result.getString("employeename"));
@@ -120,7 +120,7 @@ public class LeaveRequestDAO {
 			result = statement.executeQuery();
 			List<LeaveRequest> requestList = new ArrayList<>();
 			while (result.next()) {
-				LeaveRequest leaveRequest = returnLeaveRequest(result);
+				LeaveRequest leaveRequest = returnAsLeaveRequest(result);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
