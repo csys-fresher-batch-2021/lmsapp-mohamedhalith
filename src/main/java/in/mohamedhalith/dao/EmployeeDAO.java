@@ -98,8 +98,7 @@ public class EmployeeDAO {
 
 			result = statement.executeQuery();
 			if (result.next()) {
-				Employee employee = returnAsEmployee(result);
-				return employee;
+				return returnAsEmployee(result);
 			} else {
 				throw new SQLException("Employee not found");
 			}
