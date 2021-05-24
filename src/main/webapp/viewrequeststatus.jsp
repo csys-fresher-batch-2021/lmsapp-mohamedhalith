@@ -1,5 +1,4 @@
 <%@page import="java.time.LocalDate"%>
-<%@page import="in.mohamedhalith.service.LeaveRequestManager"%>
 <%@page import="in.mohamedhalith.model.LeaveRequest"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
