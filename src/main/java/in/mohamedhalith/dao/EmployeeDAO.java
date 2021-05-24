@@ -125,7 +125,6 @@ public class EmployeeDAO {
 	 * @param duration
 	 * @throws DBException
 	 */
-	// TODO
 	public void updateLeaveBalance(Employee employee, String type, int duration) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
