@@ -31,6 +31,9 @@
       <li class="nav-item">
         <a class="nav-link" href="applyleave.jsp">Apply for Leave</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="RequestStatusServlet">View Status</a>
+      </li>
       <%} %>
     </ul>
     <%
