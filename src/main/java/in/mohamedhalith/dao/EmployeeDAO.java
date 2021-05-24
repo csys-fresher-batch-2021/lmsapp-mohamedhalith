@@ -46,18 +46,7 @@ public class EmployeeDAO {
 			List<Employee> employeeList = new ArrayList<>();
 
 			while (result.next()) {
-				Employee employee = new Employee();
-				employee.setName(result.getString("name"));
-				employee.setId(result.getInt("id"));
-				employee.setEmployeeId(result.getInt("employeeid"));
-				employee.setUsername(result.getString("username"));
-				employee.setPassword(result.getString("password"));
-				employee.setEmail(result.getString("email"));
-				String mobile = String.valueOf(result.getLong("mobilenumber"));
-				employee.setMobileNumber(mobile);
-				employee.setSickLeave(result.getInt("sickleave"));
-				employee.setCasualLeave(result.getInt("casualleave"));
-				employee.setEarnedLeave(result.getInt("earnedleave"));
+				Employee employee = returnAsEmployee(result);
 				employeeList.add(employee);
 			}
 			return employeeList;
@@ -67,6 +56,22 @@ public class EmployeeDAO {
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
+	}
+
+	private Employee returnAsEmployee(ResultSet result) throws ValidationException, SQLException {
+		Employee employee = new Employee();
+		employee.setName(result.getString("name"));
+		employee.setId(result.getInt("id"));
+		employee.setEmployeeId(result.getInt("employeeid"));
+		employee.setUsername(result.getString("username"));
+		employee.setPassword(result.getString("password"));
+		employee.setEmail(result.getString("email"));
+		String mobile = String.valueOf(result.getLong("mobilenumber"));
+		employee.setMobileNumber(mobile);
+		employee.setSickLeave(result.getInt("sickleave"));
+		employee.setCasualLeave(result.getInt("casualleave"));
+		employee.setEarnedLeave(result.getInt("earnedleave"));
+		return employee;
 	}
 
 	/**
@@ -92,23 +97,12 @@ public class EmployeeDAO {
 			statement.setString(1, username);
 
 			result = statement.executeQuery();
-			Employee getEmployee = new Employee();
 			if (result.next()) {
-				getEmployee.setName(result.getString("name"));
-				getEmployee.setId(result.getInt("id"));
-				getEmployee.setEmployeeId(result.getInt("employeeid"));
-				getEmployee.setUsername(result.getString("username"));
-				getEmployee.setPassword(result.getString("password"));
-				getEmployee.setEmail(result.getString("email"));
-				String mobile = String.valueOf(result.getLong("mobilenumber"));
-				getEmployee.setMobileNumber(mobile);
-				getEmployee.setSickLeave(result.getInt("sickleave"));
-				getEmployee.setCasualLeave(result.getInt("casualleave"));
-				getEmployee.setEarnedLeave(result.getInt("earnedleave"));
+				Employee employee = returnAsEmployee(result);
+				return employee;
 			} else {
 				throw new SQLException("Employee not found");
 			}
-			return getEmployee;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException(e, "Failed to get employee");
 		} finally {
