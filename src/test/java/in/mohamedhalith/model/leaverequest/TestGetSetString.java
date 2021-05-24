@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 import org.junit.Test;
 
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveRequest;
 
 public class TestGetSetString {
@@ -15,10 +16,14 @@ public class TestGetSetString {
 
 	@Test
 	public void testGetSetNameWithValidName() {
-		String name = "Mohamed";
-		leaveRequest.setEmployeeName(name);
-		String checkName = leaveRequest.getEmployeeName();
-		assertEquals(name, checkName);
+		try {
+			String name = "Mohamed";
+			leaveRequest.setEmployeeName(name);
+			String checkName = leaveRequest.getEmployeeName();
+			assertEquals(name, checkName);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -28,7 +33,7 @@ public class TestGetSetString {
 			leaveRequest.setEmployeeName(name);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Employee name cannot be empty or null", e.getMessage());
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -39,17 +44,21 @@ public class TestGetSetString {
 			leaveRequest.setEmployeeName(name);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Employee name cannot be empty or null", e.getMessage());
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
 	// Test cases for GetSetReason
 	@Test
 	public void testGetSetReasonWithValidReason() {
-		String reason = "Mohamed";
-		leaveRequest.setReason(reason);
-		String checkReason = leaveRequest.getReason();
-		assertEquals(reason, checkReason);
+		try {
+			String reason = "Mohamed";
+			leaveRequest.setReason(reason);
+			String checkReason = leaveRequest.getReason();
+			assertEquals(reason, checkReason);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -59,7 +68,7 @@ public class TestGetSetString {
 			leaveRequest.setReason(reason);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Reason should not be null or empty", e.getMessage());
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -70,17 +79,21 @@ public class TestGetSetString {
 			leaveRequest.setReason(reason);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Reason should not be null or empty", e.getMessage());
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
 	// Test cases for GetSetStatus
 	@Test
 	public void testGetSetStatusWithValidStatus() {
-		String status = "Mohamed";
-		leaveRequest.setStatus(status);
-		String checkStatus = leaveRequest.getStatus();
-		assertEquals(status, checkStatus);
+		try {
+			String status = "Mohamed";
+			leaveRequest.setStatus(status);
+			String checkStatus = leaveRequest.getStatus();
+			assertEquals(status, checkStatus);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -90,7 +103,7 @@ public class TestGetSetString {
 			leaveRequest.setStatus(status);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Invalid leave status", e.getMessage());
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -101,17 +114,21 @@ public class TestGetSetString {
 			leaveRequest.setStatus(status);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Invalid leave status", e.getMessage());
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
 	// Test cases for GetSetType
 	@Test
 	public void testGetSetTypeWithValidType() {
-		String type = "Mohamed";
-		leaveRequest.setType(type);
-		String checkType = leaveRequest.getType();
-		assertEquals(type, checkType);
+		try {
+			String type = "Mohamed";
+			leaveRequest.setType(type);
+			String checkType = leaveRequest.getType();
+			assertEquals(type, checkType);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -121,7 +138,7 @@ public class TestGetSetString {
 			leaveRequest.setType(type);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Invalid Leave type", e.getMessage());
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
@@ -132,30 +149,33 @@ public class TestGetSetString {
 			leaveRequest.setType(type);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Invalid Leave type", e.getMessage());
+			assertEquals("String should not be null or empty", e.getMessage());
 		}
 	}
 
 	// Test cases for ToString
 	@Test
 	public void testToString() {
-		leaveRequest.setEmployeeName("Mohamed");
-		leaveRequest.setEmployeeId(2627);
-		LocalDate fromDate = LocalDate.parse("2022-06-01");
-		leaveRequest.setFromDate(fromDate);
-		LocalDate toDate = LocalDate.parse("2022-01-01");
-		leaveRequest.setToDate(toDate);
-		leaveRequest.setType("SickLeave");
-		leaveRequest.setStatus("Approved");
-		leaveRequest.setLeaveId(1);
-		leaveRequest.setReason("Leave");
-		leaveRequest.setAppliedTime(LocalDateTime.now());
-		leaveRequest.setCancelledTime(LocalDateTime.now());
-		LocalDateTime now = leaveRequest.getAppliedTime();
-		now = leaveRequest.getCancelledTime();
-
-		assertEquals("LeaveRequest leaveId 1 employeeName Mohamed employeeId 2627 "
-				+ "fromDate 2022-06-01 toDate 2022-01-01 type SickLeave reason Leave"
-				+ " status Approved cancelledTime " + now + " appliedTime " + now, leaveRequest.toString());
+		try {
+			leaveRequest.setEmployeeName("Mohamed");
+			leaveRequest.setEmployeeId(2627);
+			LocalDate fromDate = LocalDate.parse("2022-06-01");
+			leaveRequest.setFromDate(fromDate);
+			LocalDate toDate = LocalDate.parse("2022-01-01");
+			leaveRequest.setToDate(toDate);
+			leaveRequest.setType("SickLeave");
+			leaveRequest.setStatus("Approved");
+			leaveRequest.setLeaveId(1);
+			leaveRequest.setReason("Leave");
+			leaveRequest.setAppliedTime(LocalDateTime.now());
+			leaveRequest.setCancelledTime(LocalDateTime.now());
+			LocalDateTime now = leaveRequest.getAppliedTime();
+			now = leaveRequest.getCancelledTime();
+			assertEquals("LeaveRequest leaveId 1 employeeName Mohamed employeeId 2627 "
+					+ "fromDate 2022-06-01 toDate 2022-01-01 type SickLeave reason Leave"
+					+ " status Approved cancelledTime " + now + " appliedTime " + now, leaveRequest.toString());
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 }

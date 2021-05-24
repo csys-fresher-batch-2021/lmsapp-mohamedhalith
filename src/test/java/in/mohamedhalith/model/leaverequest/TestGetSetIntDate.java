@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveRequest;
 
 public class TestGetSetIntDate {
@@ -99,11 +100,15 @@ public class TestGetSetIntDate {
 	// Test cases for GetSetFromDate
 	@Test
 	public void testGetSetFromDateWithValidDate() {
-		String fromDate = "2021-06-01";
-		LocalDate date = LocalDate.parse(fromDate);
-		leaveRequest.setFromDate(date);
-		LocalDate testDate = leaveRequest.getFromDate();
-		assertEquals(date, testDate);
+		try {
+			String fromDate = "2021-06-01";
+			LocalDate date = LocalDate.parse(fromDate);
+			leaveRequest.setFromDate(date);
+			LocalDate testDate = leaveRequest.getFromDate();
+			assertEquals(date, testDate);
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -114,17 +119,21 @@ public class TestGetSetIntDate {
 			leaveRequest.setFromDate(date);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Date cannot be a past date", e.getMessage());
+			assertEquals("Date cannot be past date", e.getMessage());
 		}
 	}
 
 	// Test cases for GetSetToDate
 	@Test
 	public void testGetSetToDatewithValidDate() {
-		String date = "2021-06-02";
-		LocalDate testDate = LocalDate.parse(date);
-		leaveRequest.setToDate(testDate);
-		assertEquals(testDate, leaveRequest.getToDate());
+		try {
+			String date = "2021-06-02";
+			LocalDate testDate = LocalDate.parse(date);
+			leaveRequest.setToDate(testDate);
+			assertEquals(testDate, leaveRequest.getToDate());
+		} catch (ValidationException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -135,7 +144,7 @@ public class TestGetSetIntDate {
 			leaveRequest.setToDate(testDate);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Date cannot be a past date", e.getMessage());
+			assertEquals("Date cannot be past date", e.getMessage());
 		}
 	}
 	

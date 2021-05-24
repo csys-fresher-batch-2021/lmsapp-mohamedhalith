@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import in.mohamedhalith.exception.DBException;
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 
 public class TestEmployeeDAO {
@@ -27,7 +28,7 @@ public class TestEmployeeDAO {
 		try {
 			Employee employee = employeeDAO.getEmployee(username);
 			assertTrue(true);
-		} catch (DBException e) {
+		} catch (DBException | ValidationException e) {
 			fail();
 		}
 	}
@@ -38,8 +39,8 @@ public class TestEmployeeDAO {
 		try {
 			Employee employee = employeeDAO.getEmployee(username);
 			fail();
-		} catch (DBException e) {
-			assertEquals("Employee Not found",e.getMessage());
+		} catch (DBException | ValidationException e) {
+			assertEquals("Failed to get employee",e.getMessage());
 		}
 	}
 	
@@ -47,7 +48,11 @@ public class TestEmployeeDAO {
 
 	@Test
 	public void testGetEmployeeList() {
-		List<Employee> employeeList = employeeDAO.getEmployeeList();
-		assertEquals(2,employeeList.size());
+		try {
+			List<Employee> employeeList = employeeDAO.getEmployeeList();
+			assertEquals(2,employeeList.size());
+		} catch (DBException | ValidationException e) {
+			fail();
+		}
 	}
 }

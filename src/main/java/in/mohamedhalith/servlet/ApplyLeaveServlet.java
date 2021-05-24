@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import in.mohamedhalith.exception.ServiceException;
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.LeaveRequestManager;
 
@@ -54,8 +55,9 @@ public class ApplyLeaveServlet extends HttpServlet {
 			// Sending to the backend manager
 			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, username);
 			response.sendRedirect("applyleave.jsp?infoMessage=" + message);
-		} catch (NumberFormatException | ServiceException | IOException e) {
-			response.sendRedirect(errorRedirect+ e.getMessage());
+		} catch (RuntimeException | ServiceException | ValidationException | IOException e) {
+			e.printStackTrace();
+			response.sendRedirect(errorRedirect + e.getMessage());
 		}
 
 	}

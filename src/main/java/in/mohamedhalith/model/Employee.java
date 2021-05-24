@@ -6,6 +6,9 @@ import in.mohamedhalith.util.StringValidator;
 public class Employee {
 	private String name;
 	private int id;
+	private int employeeId;
+	private long mobileNumber;
+	private String email;
 	private String username;
 	private String password;
 	private int sickLeave = 2;
@@ -13,7 +16,7 @@ public class Employee {
 	private int earnedLeave = 1;
 
 	// 2 Argument Constructor
-	public Employee(String name, int id) {
+	public Employee(String name, int id) throws ValidationException {
 		setName(name);
 		setId(id);
 	}
@@ -27,13 +30,9 @@ public class Employee {
 		return name;
 	}
 
-	public void setName(String name) {
-		try {
-			StringValidator.isValidString(name);
-			this.name = name;
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Name cannot be empty or null");
-		}
+	public void setName(String name) throws ValidationException {
+		StringValidator.isValidString(name);
+		this.name = name;
 	}
 
 	public int getId() {
@@ -41,10 +40,44 @@ public class Employee {
 	}
 
 	public void setId(int id) {
-		if (id < 1000 || id > 9999) {
-			throw new IllegalArgumentException("Employee Id must be a 4-digit Positive number");
+		if (id < 0) {
+			throw new IllegalArgumentException("Invalid id");
 		}
 		this.id = id;
+	}
+
+	public int getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(int employeeId) {
+		if (employeeId < 1000 || employeeId > 9999) {
+			throw new IllegalArgumentException("Employee Id must be a 4-digit Positive number");
+		}
+		this.employeeId = employeeId;
+	}
+
+	public long getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setMobileNumber(String mobile) {
+		if (mobile.length() != 10) {
+			throw new IllegalArgumentException("Invalid mobile number");
+		}
+		long mobileNo = Long.parseLong(mobile);
+		this.mobileNumber = mobileNo;
+	}
+
+	public void setEmail(String email) throws ValidationException {
+
+		StringValidator.isValidEmail(email);
+		this.email = email;
+
 	}
 
 	public int getSickLeave() {
@@ -84,26 +117,21 @@ public class Employee {
 		return username;
 	}
 
-	public void setUsername(String username) {
-		try {
-			StringValidator.isValidUsername(username);
-			this.username = username;
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Invalid Username");
-		}
+	public void setUsername(String username) throws ValidationException {
+
+		StringValidator.isValidUsername(username);
+		this.username = username;
+
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		try {
-			StringValidator.isValidPassword(password);
-			this.password = password;
-		} catch (ValidationException e) {
-			throw new IllegalArgumentException("Invalid Password");
-		}
+	public void setPassword(String password) throws ValidationException {
+		StringValidator.isValidPassword(password);
+		this.password = password;
+
 	}
 
 	@Override

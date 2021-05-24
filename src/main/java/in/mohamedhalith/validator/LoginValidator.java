@@ -2,6 +2,7 @@ package in.mohamedhalith.validator;
 
 import java.util.List;
 
+import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.service.EmployeeManager;
@@ -70,7 +71,7 @@ public class LoginValidator {
 					}
 				}
 			}
-		} catch (ValidationException e) {
+		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
 		}
 		return valid;

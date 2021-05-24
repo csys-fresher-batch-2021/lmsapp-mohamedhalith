@@ -28,7 +28,7 @@ Employee employee = EmployeeManager.getEmployee(username);
 			<tbody>
 				<tr>
 					<td><%=employee.getName() %></td>
-					<td><%=employee.getId() %></td>
+					<td><%=employee.getEmployeeId() %></td>
 					<td><%=employee.getSickLeave() %></td>
 					<td><%=employee.getCasualLeave() %></td>
 					<td><%=employee.getEarnedLeave() %></td>

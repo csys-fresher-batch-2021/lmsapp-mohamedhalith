@@ -1,31 +1,23 @@
 package in.mohamedhalith.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import in.mohamedhalith.exception.DBException;
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.util.ConnectionUtil;
 
 public class EmployeeDAO {
-	private static final List<Employee> employeeList = new ArrayList<>();
-
 	private EmployeeDAO() {
 		// Default constructor
 	}
 
 	private static final EmployeeDAO instance = new EmployeeDAO();
-
-	static {
-		Employee employee1 = new Employee("Mohamed", 2627);
-		employee1.setUsername("moha2627");
-		employee1.setPassword("2627moha");
-		employeeList.add(employee1);
-
-		Employee employee2 = new Employee("Halith", 2628);
-		employee2.setUsername("hali2628");
-		employee2.setPassword("2628hali");
-		employeeList.add(employee2);
-	}
 
 	public static EmployeeDAO getInstance() {
 		return instance;
@@ -35,9 +27,51 @@ public class EmployeeDAO {
 	 * This method is used to return the list of employees
 	 * 
 	 * @return List<Employee>
+	 * @throws DBException
+	 * @throws ValidationException
 	 */
-	public List<Employee> getEmployeeList() {
-		return employeeList;
+	public List<Employee> getEmployeeList() throws DBException, ValidationException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		try {
+			// Get Database connection
+			connection = ConnectionUtil.getConnection();
+			// Query to be executed
+			String query = "select * from employees ";
+			// Converting query to statement
+			statement = connection.prepareStatement(query);
+			// Executing query
+			result = statement.executeQuery();
+			List<Employee> employeeList = new ArrayList<>();
+
+			while (result.next()) {
+				Employee employee = returnAsEmployee(result);
+				employeeList.add(employee);
+			}
+			return employeeList;
+
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to get Employee list");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+	}
+
+	private Employee returnAsEmployee(ResultSet result) throws ValidationException, SQLException {
+		Employee employee = new Employee();
+		employee.setName(result.getString("name"));
+		employee.setId(result.getInt("id"));
+		employee.setEmployeeId(result.getInt("employeeid"));
+		employee.setUsername(result.getString("username"));
+		employee.setPassword(result.getString("password"));
+		employee.setEmail(result.getString("email"));
+		String mobile = String.valueOf(result.getLong("mobilenumber"));
+		employee.setMobileNumber(mobile);
+		employee.setSickLeave(result.getInt("sickleave"));
+		employee.setCasualLeave(result.getInt("casualleave"));
+		employee.setEarnedLeave(result.getInt("earnedleave"));
+		return employee;
 	}
 
 	/**
@@ -47,22 +81,59 @@ public class EmployeeDAO {
 	 * @param username
 	 * @return
 	 * @throws DBException
+	 * @throws ValidationException
 	 */
-	public Employee getEmployee(String username) throws DBException {
-		Employee getEmployee = null;
+	public Employee getEmployee(String username) throws DBException, ValidationException {
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+
 		try {
-			for (Employee employee : employeeList) {
-				if (employee.getUsername().equals(username)) {
-					getEmployee = employee;
-					break;
-				}
+			connection = ConnectionUtil.getConnection();
+			String query = "select * from employees where username = ?";
+
+			statement = connection.prepareStatement(query);
+			statement.setString(1, username);
+
+			result = statement.executeQuery();
+			if (result.next()) {
+				return returnAsEmployee(result);
+			} else {
+				throw new SQLException("Employee not found");
 			}
-			if (getEmployee == null) {
-				throw new DBException("Employee Not found");
-			}
-			return getEmployee;
-		} catch (Exception e) {
-			throw new DBException(e, e.getMessage());
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to get employee");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+	}
+
+	/**
+	 * This method is used to update the leave balance of employee after applying
+	 * for a leave request
+	 * 
+	 * @param employee
+	 * @param type
+	 * @param duration
+	 * @throws DBException
+	 */
+	public void updateLeaveBalance(Employee employee, String type, int duration) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		String username = employee.getUsername();
+		type = type.toLowerCase();
+		try {
+			connection = ConnectionUtil.getConnection();
+			String query = "update employees set " + type + " = " + type + "- ? where username = ?";
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, duration);
+			statement.setString(2, username);
+			statement.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Cannot apply the leave request");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement);
 		}
 	}
 }

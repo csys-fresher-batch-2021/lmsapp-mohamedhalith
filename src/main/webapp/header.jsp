@@ -47,7 +47,7 @@
 	%>
 	  <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 	     <li class="nav-item active">
-	       <a class="nav-link" href="login.jsp">Welcome <%=employee.getName() %></a>
+	       <a class="nav-link" href="#">Welcome <%=employee.getName() %></a>
 	     </li>
 	     <li class="nav-item">
 	       <a class="nav-link" href="LogoutServlet">Logout</a>
@@ -57,7 +57,7 @@
       }else if(role != null && role.equalsIgnoreCase("admin")){ %>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 	     <li class="nav-item active">
-	       <a class="nav-link" href="login.jsp">Welcome Admin</a>
+	       <a class="nav-link" href="#">Welcome Admin</a>
 	     </li>
 	     <li class="nav-item">
 	       <a class="nav-link" href="LogoutServlet">Logout</a>

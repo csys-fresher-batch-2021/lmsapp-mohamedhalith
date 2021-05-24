@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Test;
 
 import in.mohamedhalith.exception.ServiceException;
+import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveRequest;
 
 public class TestLeaveRequestManager {
@@ -13,8 +14,12 @@ public class TestLeaveRequestManager {
 
 	@Test
 	public void testGetRequestList() {
-		List<LeaveRequest> requestList = LeaveRequestManager.getRequestList();
-		assertEquals(0, requestList.size());
+		try {
+			List<LeaveRequest> requestList = LeaveRequestManager.getRequestList();
+			assertEquals(0, requestList.size());
+		} catch (ServiceException e) {
+			fail();
+		}
 	}
 
 	// Test cases for getEmployeeRequest
@@ -23,7 +28,7 @@ public class TestLeaveRequestManager {
 		try {
 			List<LeaveRequest> requestList = LeaveRequestManager.getEmployeeRequests("moha2627");
 			assertEquals(0, requestList.size());
-		} catch (ServiceException e) {
+		} catch (ServiceException | ValidationException e) {
 			fail();
 		}
 	}
@@ -32,7 +37,7 @@ public class TestLeaveRequestManager {
 		try {
 			LeaveRequestManager.getEmployeeRequests("mohamed");
 			fail();
-		} catch (ServiceException e) {
+		} catch (ServiceException | ValidationException e) {
 			assertEquals("No employee is found for given details",e.getMessage());
 		}
 	}

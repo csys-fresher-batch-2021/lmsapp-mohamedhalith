@@ -52,6 +52,16 @@ public class StringValidator {
 		if(!valid) {
 			throw new ValidationException("Invalid username");
 		}
-		
+	}
+	
+	public static void isValidEmail(String email) throws ValidationException {
+		String regex = "^([a-z0-9-_\\.]+)@([a-z0-9]+)\\.([a-z\\.]+)$";
+		StringValidator.isValidString(email);
+		Pattern pattern = Pattern.compile(regex);
+		Matcher match = pattern.matcher(email);
+		boolean valid = match.matches();
+		if(!valid) {
+			throw new ValidationException("Invalid email");
+		}
 	}
 }
