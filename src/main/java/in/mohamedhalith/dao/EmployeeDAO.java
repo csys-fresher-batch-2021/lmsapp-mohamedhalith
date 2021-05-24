@@ -78,7 +78,6 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	// TODO Refactor to findByUsername
 	public Employee getEmployee(String username) throws DBException, ValidationException {
 
 		Connection connection = null;

@@ -42,7 +42,6 @@ public class LeaveRequestDAO {
 	 * @throws DBException
 	 */
 	
-	//TODO Refactor it to findAll()
 	public List<LeaveRequest> getRequestList() throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -105,7 +104,6 @@ public class LeaveRequestDAO {
 	 * @return
 	 * @throws DBException
 	 */
-	//TODO Refactor it to findByEmployee
 	public List<LeaveRequest> getEmployeeRequests(Employee employee) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -145,7 +143,6 @@ public class LeaveRequestDAO {
 	 * @return String
 	 * @throws DBException
 	 */
-	//TODO Refactor it to save
 	public String applyLeaveRequest(LeaveRequest leaveRequest) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
