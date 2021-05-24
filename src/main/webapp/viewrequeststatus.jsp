@@ -8,26 +8,28 @@
 <html lang="en">
 <head>
 <meta charset="ISO-8859-1">
-<title>Leave request applied</title>
+<title>Request status</title>
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
 <h3>Request Status</h3>
 <%
+String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
 List<LeaveRequest> employeeRequests = (List<LeaveRequest>) request.getAttribute("employeeRequests");
 %>
 	<main class="container-fluid">
 		<table class="table table-bordered">
+		<caption>Leave Requests</caption>
 			<thead class="table-primary">
 				<tr>
-					<th>S.No</th>
-					<th>Id</th>
-					<th>Name</th>
-					<th>From</th>
-					<th>To</th>
-					<th>Duration</th>
-					<th>Status</th>
-					<th>Applied on</th>
+					<th id="serial">S.No</th>
+					<th id="employeeId">Id</th>
+					<th id="employeeName">Name</th>
+					<th id="fromDate">From</th>
+					<th id="toDate">To</th>
+					<th id="duration">Duration</th>
+					<th id="status">Status</th>
+					<th id="appliedTime">Applied on</th>
 				</tr>
 			</thead>
 			<tbody>

@@ -26,13 +26,12 @@ public class RequestStatusServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
-		System.out.println(username);
 		try {
 			List<LeaveRequest> employeeRequests = LeaveRequestManager.getEmployeeRequests(username);
-			System.out.println(employeeRequests.size());
 			request.setAttribute("employeeRequests", employeeRequests);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("viewrequeststatus.jsp");
 			dispatcher.forward(request, response);
