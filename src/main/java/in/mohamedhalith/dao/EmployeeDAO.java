@@ -38,7 +38,7 @@ public class EmployeeDAO {
 			// Get Database connection
 			connection = ConnectionUtil.getConnection();
 			// Query to be executed
-			String query = "select * from employees";
+			String query = "select * from employees ";
 			// Converting query to statement
 			statement = connection.prepareStatement(query);
 			// Executing query
@@ -78,6 +78,7 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
+	// TODO Refactor to findByUsername
 	public Employee getEmployee(String username) throws DBException, ValidationException {
 
 		Connection connection = null;
@@ -110,47 +111,36 @@ public class EmployeeDAO {
 			}
 			return getEmployee;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException("Failed to get employee");
+			throw new DBException(e, "Failed to get employee");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}
 
+	/**
+	 * This method is used to update the leave balance of employee after applying
+	 * for a leave request
+	 * 
+	 * @param employee
+	 * @param type
+	 * @param duration
+	 * @throws DBException
+	 */
+	// TODO
 	public void updateLeaveBalance(Employee employee, String type, int duration) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		String username = employee.getUsername();
-		String query = null;
-		int leave = -1;
-
+		type = type.toLowerCase();
 		try {
 			connection = ConnectionUtil.getConnection();
-			switch (type) {
-			case "SickLeave":
-				leave = employee.getSickLeave();
-				leave -= duration;
-				query = "update employees set sickleave = ? where username = ?";
-				break;
-			case "CasualLeave":
-				leave = employee.getCasualLeave();
-				leave -= duration;
-				query = "update employees set casualleave = ? where username = ?";
-				break;
-			case "EarnedLeave":
-				leave = employee.getEarnedLeave();
-				leave -= duration;
-				query = "update employees set earnedleave = ? where username = ?";
-				break;
-			default:
-				throw new DBException("Invalid Leave Type");
-			}
-
+			String query = "update employees set " + type + " = " + type + "- ? where username = ?";
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, leave);
+			statement.setInt(1, duration);
 			statement.setString(2, username);
 			statement.executeUpdate();
-		} catch (DBException | ClassNotFoundException | SQLException e) {
-			throw new DBException("Cannot apply the leave request");
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Cannot apply the leave request");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement);
 		}
