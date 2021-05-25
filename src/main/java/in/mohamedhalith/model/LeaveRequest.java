@@ -56,7 +56,7 @@ public class LeaveRequest {
 		return fromDate;
 	}
 
-	public void setFromDate(LocalDate fromDate) throws ValidationException {
+	public void setFromDate(LocalDate fromDate) {
 		this.fromDate = fromDate;
 	}
 
@@ -64,7 +64,7 @@ public class LeaveRequest {
 		return toDate;
 	}
 
-	public void setToDate(LocalDate toDate) throws ValidationException {
+	public void setToDate(LocalDate toDate) {
 		this.toDate = toDate;
 	}
 

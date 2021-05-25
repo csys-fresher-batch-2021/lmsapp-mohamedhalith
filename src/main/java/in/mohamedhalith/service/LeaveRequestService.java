@@ -72,8 +72,7 @@ public class LeaveRequestService {
 			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(username);
 			LeaveRequestValidator.isValidRequest(leaveRequest, employee, employeeRequests);
 			employeeDAO.updateLeaveBalance(employee, leaveRequest.getType(), leaveRequest.getDuration());
-			boolean isApplied = leaveRequestDAO.applyLeaveRequest(leaveRequest);
-			return isApplied;
+			return leaveRequestDAO.applyLeaveRequest(leaveRequest);
 		} catch (DBException e) {
 			throw new ServiceException(e, e.getMessage());
 		}
