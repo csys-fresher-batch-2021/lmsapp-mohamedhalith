@@ -37,7 +37,7 @@ public class RequestStatusServlet2 extends HttpServlet {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
 		try {
-			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests("moha2627");
+			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(username);
 			Gson gson = new GsonBuilder().setPrettyPrinting()
 			        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
 			        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
