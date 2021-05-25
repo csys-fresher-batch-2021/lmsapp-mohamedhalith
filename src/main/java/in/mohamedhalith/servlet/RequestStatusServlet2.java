@@ -2,6 +2,8 @@ package in.mohamedhalith.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,11 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.LeaveRequestService;
+import in.mohamedhalith.util.LocalDateAdapter;
+import in.mohamedhalith.util.LocalDateTimeAdapter;
 
 /**
  * Servlet implementation class RequestStatusServlet2
@@ -32,8 +37,10 @@ public class RequestStatusServlet2 extends HttpServlet {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
 		try {
-			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(username);
-			Gson gson = new Gson();
+			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests("moha2627");
+			Gson gson = new GsonBuilder().setPrettyPrinting()
+			        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+			        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
 			String json = gson.toJson(employeeRequests);
 			PrintWriter out = response.getWriter();
 			out.print(json);
