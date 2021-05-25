@@ -9,35 +9,32 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
-import in.mohamedhalith.model.LeaveRequest;
-import in.mohamedhalith.service.LeaveRequestService;
+import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.service.EmployeeService;
 
 /**
- * Servlet implementation class RequestStatusServlet
+ * Servlet implementation class ListEmployeeServlet
  */
-@WebServlet("/RequestStatusServlet")
-public class RequestStatusServlet extends HttpServlet {
+@WebServlet("/ListEmployeeServlet")
+public class ListEmployeeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
 		try {
-			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(username);
-			request.setAttribute("employeeRequests", employeeRequests);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("viewrequeststatus.jsp");
-			dispatcher.forward(request, response);
-		} catch (ServiceException | ValidationException e) {
+			List<Employee> employeeList = EmployeeService.getEmployeeList();
+			request.setAttribute("employeeList", employeeList);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("listemployees.jsp");
+			requestDispatcher.forward(request, response);
+		} catch (ServiceException | ValidationException | ServletException | IOException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 
 }

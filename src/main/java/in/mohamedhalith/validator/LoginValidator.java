@@ -5,7 +5,7 @@ import java.util.List;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
-import in.mohamedhalith.service.EmployeeManager;
+import in.mohamedhalith.service.EmployeeService;
 import in.mohamedhalith.util.StringValidator;
 
 public class LoginValidator {
@@ -64,7 +64,7 @@ public class LoginValidator {
 			if (role.equalsIgnoreCase("employee")) {
 				// Verifies user name and password with employee list
 				EmployeeValidator.isEmployee(username);
-				List<Employee> employeeList = EmployeeManager.getEmployeeList();
+				List<Employee> employeeList = EmployeeService.getEmployeeList();
 				for (Employee employee : employeeList) {
 					if (username.equals(employee.getUsername()) && password.equals(employee.getPassword())) {
 						valid = true;

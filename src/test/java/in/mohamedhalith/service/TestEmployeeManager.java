@@ -15,7 +15,7 @@ public class TestEmployeeManager {
 	@Test
 	public void testGetEmployeeList() {
 		try {
-			List<Employee> employeeList = EmployeeManager.getEmployeeList();
+			List<Employee> employeeList = EmployeeService.getEmployeeList();
 			assertEquals(2, employeeList.size());
 		} catch (ServiceException | ValidationException e) {
 			fail();
@@ -27,7 +27,7 @@ public class TestEmployeeManager {
 	public void testGetEmployeeWithFirstEmployee() {
 		try {
 			String username = "moha2627";
-			Employee employee = EmployeeManager.getEmployee(username);
+			Employee employee = EmployeeService.getEmployee(username);
 			assertEquals("Mohamed", employee.getName());
 			assertEquals("2627moha", employee.getPassword());
 			assertEquals(2, employee.getSickLeave());
@@ -42,7 +42,7 @@ public class TestEmployeeManager {
 	public void testGetEmployeeWithSecondEmployee() {
 		try {
 			String username = "hali2628";
-			Employee employee = EmployeeManager.getEmployee(username);
+			Employee employee = EmployeeService.getEmployee(username);
 			assertEquals("Halith", employee.getName());
 			assertEquals("2628hali", employee.getPassword());
 			assertEquals(2, employee.getSickLeave());
@@ -57,7 +57,7 @@ public class TestEmployeeManager {
 	public void testGetEmployeeWithInvalidEmployee() {
 		try {
 			String username = "halith";
-			EmployeeManager.getEmployee(username);
+			EmployeeService.getEmployee(username);
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("Invalid username", e.getMessage());

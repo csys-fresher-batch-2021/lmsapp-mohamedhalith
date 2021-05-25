@@ -26,7 +26,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
-			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha2627");
+			String message = LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
 			assertEquals("Successfully Applied!... You have 1 remaining SickLeaves",message);
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
@@ -46,7 +46,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("EarnedLeave");
 			leaveRequest.setReason("Leave");
-			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha2627");
+			String message = LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
 			assertEquals("Successfully Applied!... You have 0 remaining EarnedLeaves",message);
 		} catch (ServiceException | ValidationException e) {
 			fail();
@@ -65,7 +65,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setDuration(1);
 			leaveRequest.setType("CasualLeave");
 			leaveRequest.setReason("Leave");
-			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha2627");
+			String message = LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
 			assertEquals("Successfully Applied!... You have 1 remaining CasualLeaves",message);
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
@@ -84,7 +84,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
-			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha");
+			String message = LeaveRequestService.applyLeaveRequest(leaveRequest, "moha");
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("No employee is found for given details",e.getMessage());
@@ -100,9 +100,9 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
-			LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha2627");
+			LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
 			LeaveRequest leaveRequest1 = new LeaveRequest();
-			LeaveRequestManager.applyLeaveRequest(leaveRequest, "moha2627");
+			LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("Leave request found for mentioned date(s).",e.getMessage());
@@ -119,7 +119,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			LocalDate toDate = LocalDate.parse("2022-01-21");
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setDuration(1);
-			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, "hali2628");
+			String message = LeaveRequestService.applyLeaveRequest(leaveRequest, "hali2628");
 			assertEquals("Successfully Applied!... You have 1 remaining SickLeaves",message);
 			LeaveRequest leaveRequest1 = new LeaveRequest();
 			leaveRequest1.setType("SickLeave");
@@ -128,7 +128,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			toDate = LocalDate.parse("2022-01-12");
 			leaveRequest1.setToDate(toDate);
 			leaveRequest1.setDuration(1);
-			message = LeaveRequestManager.applyLeaveRequest(leaveRequest1, "hali2628");
+			message = LeaveRequestService.applyLeaveRequest(leaveRequest1, "hali2628");
 			assertEquals("Successfully Applied!... You have 0 remaining SickLeaves",message);
 			LeaveRequest leaveRequest2 = new LeaveRequest();
 			leaveRequest2.setType("SickLeave");
@@ -137,7 +137,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			toDate = LocalDate.parse("2022-01-22");
 			leaveRequest2.setToDate(toDate);
 			leaveRequest2.setDuration(1);
-			message = LeaveRequestManager.applyLeaveRequest(leaveRequest2, "hali2628");
+			message = LeaveRequestService.applyLeaveRequest(leaveRequest2, "hali2628");
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("Leave duration exceeds the permitted leave days",e.getMessage());

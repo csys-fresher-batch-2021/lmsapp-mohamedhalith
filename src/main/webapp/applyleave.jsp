@@ -1,5 +1,5 @@
 <%@page import="in.mohamedhalith.model.Employee"%>
-<%@page import="in.mohamedhalith.service.EmployeeManager"%>
+<%@page import="in.mohamedhalith.service.EmployeeService"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -11,7 +11,7 @@
 <body>
 <%
 String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
-Employee employee = EmployeeManager.getEmployee(username);
+Employee employee = EmployeeService.getEmployee(username);
 if(employee!=null){
 %>
 <jsp:include page="header.jsp"></jsp:include>

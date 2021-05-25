@@ -1,5 +1,5 @@
 <%@page import="in.mohamedhalith.model.Employee"%>
-<%@page import="in.mohamedhalith.service.EmployeeManager"%>
+<%@page import="in.mohamedhalith.service.EmployeeService"%>
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/fontawesome.min.css">
 <link rel="stylesheet" href="assets/css/style.css">
@@ -18,13 +18,15 @@
       </li>
       <%
       String loggedInUsername = (String)session.getAttribute("LOGGEDIN_USERNAME");
-      String role = (String)session.getAttribute("ROLE");
-      if(loggedInUsername!=null && role != null && role.equalsIgnoreCase("admin")){
+            String role = (String)session.getAttribute("ROLE");
+            if(loggedInUsername!=null && role != null && role.equalsIgnoreCase("admin")){
       %>
       <li class="nav-item">
         <a class="nav-link" href="listemployees.jsp">Employees</a>
       </li>
-      <%}else if(loggedInUsername != null && role != null && role.equalsIgnoreCase("employee")){%>
+      <%
+      }else if(loggedInUsername != null && role != null && role.equalsIgnoreCase("employee")){
+      %>
       <li class="nav-item">
         <a class="nav-link" href="viewbalance.jsp">Leave Balance</a>
       </li>
@@ -34,7 +36,9 @@
       <li class="nav-item">
         <a class="nav-link" href="RequestStatusServlet">View Status</a>
       </li>
-      <%} %>
+      <%
+      }
+      %>
     </ul>
     <%
     if(loggedInUsername == null){
@@ -44,10 +48,11 @@
         <a class="nav-link" href="login.jsp">Login</a>
       </li>
       </ul>
-   <% }else if(role != null && role.equalsIgnoreCase("employee")){
-	   Employee employee = EmployeeManager.getEmployee(loggedInUsername);
-	   if(employee!=null){
-	%>
+   <%
+   }else if(role != null && role.equalsIgnoreCase("employee")){
+   	   Employee employee = EmployeeService.getEmployee(loggedInUsername);
+   	   if(employee!=null){
+   %>
 	  <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 	     <li class="nav-item active">
 	       <a class="nav-link" href="#">Welcome <%=employee.getName() %></a>

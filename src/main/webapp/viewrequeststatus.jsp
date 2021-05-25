@@ -35,7 +35,6 @@ List<LeaveRequest> employeeRequests = (List<LeaveRequest>) request.getAttribute(
 				<%
 				int serial = 1;
 				for(LeaveRequest leaveRequest : employeeRequests){
-					if(!leaveRequest.getStatus().equals("Cancelled")){
 				%>
 				<tr>
 					<td><%= serial%></td>
@@ -51,7 +50,6 @@ List<LeaveRequest> employeeRequests = (List<LeaveRequest>) request.getAttribute(
 					<td><%= date %></td>
 				</tr>
 				<%
-					}
 					serial+=1;
 				}
 				%>

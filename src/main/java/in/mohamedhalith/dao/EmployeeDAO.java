@@ -116,20 +116,47 @@ public class EmployeeDAO {
 	 * @param employee
 	 * @param type
 	 * @param duration
+	 * @return
 	 * @throws DBException
+	 * @throws ValidationException
 	 */
-	public void updateLeaveBalance(Employee employee, String type, int duration) throws DBException {
+	public boolean updateLeaveBalance(Employee employee, String type, int duration)
+			throws DBException, ValidationException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		String username = employee.getUsername();
-		type = type.toLowerCase();
+		String query = null;
+		int leave = -1;
+		boolean isUpdated = false;
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "update employees set " + type + " = " + type + "- ? where username = ?";
+			switch (type) {
+			case "SickLeave":
+				int sickLeave = employee.getSickLeave();
+				leave = sickLeave - duration;
+				query = "update employees set sickleave = ? where username = ?";
+				break;
+			case "CasualLeave":
+				int casualLeave = employee.getCasualLeave();
+				leave = casualLeave - duration;
+				query = "update employees set casualleave = ? where username = ?";
+				break;
+			case "EarnedLeave":
+				int earnedLeave = employee.getEarnedLeave();
+				leave = earnedLeave - duration;
+				query = "update employees set earnedleave = ? where username = ?";
+				break;
+			default:
+				throw new ValidationException("Invalid Leave type");
+			}
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, duration);
+			statement.setInt(1, leave);
 			statement.setString(2, username);
-			statement.executeUpdate();
+			int row = statement.executeUpdate();
+			if (row == 1) {
+				isUpdated = true;
+			}
+			return isUpdated;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException(e, "Cannot apply the leave request");
 		} finally {

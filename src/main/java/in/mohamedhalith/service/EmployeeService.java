@@ -9,9 +9,9 @@ import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.validator.EmployeeValidator;
 import in.mohamedhalith.model.Employee;
 
-public class EmployeeManager {
+public class EmployeeService {
 
-	private EmployeeManager() {
+	private EmployeeService() {
 		// Default Constructor
 	}
 

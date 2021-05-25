@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import in.mohamedhalith.exception.ValidationException;
-import in.mohamedhalith.util.DateTimeValidator;
 import in.mohamedhalith.util.StringValidator;
 
 public class LeaveRequest {
@@ -58,8 +57,6 @@ public class LeaveRequest {
 	}
 
 	public void setFromDate(LocalDate fromDate) throws ValidationException {
-		DateTimeValidator.isValidDate(fromDate);
-
 		this.fromDate = fromDate;
 	}
 
@@ -68,7 +65,6 @@ public class LeaveRequest {
 	}
 
 	public void setToDate(LocalDate toDate) throws ValidationException {
-		DateTimeValidator.isValidDate(toDate);
 		this.toDate = toDate;
 	}
 
