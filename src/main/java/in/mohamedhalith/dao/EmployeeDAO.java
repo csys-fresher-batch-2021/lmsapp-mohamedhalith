@@ -141,13 +141,10 @@ public class EmployeeDAO {
 				leave = casualLeave - duration;
 				query = "update employees set casualleave = ? where username = ?";
 				break;
-			case "EarnedLeave":
+			default:
 				int earnedLeave = employee.getEarnedLeave();
 				leave = earnedLeave - duration;
 				query = "update employees set earnedleave = ? where username = ?";
-				break;
-			default:
-				throw new ValidationException("Invalid Leave type");
 			}
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, leave);
