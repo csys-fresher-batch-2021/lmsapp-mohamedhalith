@@ -27,6 +27,7 @@ public class RequestStatusServlet2 extends HttpServlet {
     /**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
@@ -34,7 +35,6 @@ public class RequestStatusServlet2 extends HttpServlet {
 			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(username);
 			Gson gson = new Gson();
 			String json = gson.toJson(employeeRequests);
-			System.out.println(json);
 			PrintWriter out = response.getWriter();
 			out.print(json);
 			out.flush();
