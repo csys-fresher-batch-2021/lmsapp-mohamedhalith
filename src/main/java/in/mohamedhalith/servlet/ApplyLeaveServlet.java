@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveRequest;
-import in.mohamedhalith.service.LeaveRequestManager;
+import in.mohamedhalith.service.LeaveRequestService;
 
 /**
  * Servlet implementation class ApplyLeaveServlet
@@ -53,8 +53,12 @@ public class ApplyLeaveServlet extends HttpServlet {
 			leaveRequest.setDuration(duration);
 
 			// Sending to the backend manager
-			String message = LeaveRequestManager.applyLeaveRequest(leaveRequest, username);
-			response.sendRedirect("applyleave.jsp?infoMessage=" + message);
+			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, username);
+			if(isApplied) {
+				String message = "Leave Applied Successfully!";
+				response.sendRedirect("applyleave.jsp?infoMessage=" + message);
+			}
+			
 		} catch (RuntimeException | ServiceException | ValidationException | IOException e) {
 			e.printStackTrace();
 			response.sendRedirect(errorRedirect + e.getMessage());

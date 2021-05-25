@@ -1,4 +1,4 @@
-<%@page import="in.mohamedhalith.service.EmployeeManager"%>
+<%@page import="in.mohamedhalith.service.EmployeeService"%>
 <%@page import="in.mohamedhalith.model.Employee"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -25,8 +25,8 @@
 		<tbody>
 		<%
 		int serial = 1;
-		List<Employee> employeeList = EmployeeManager.getEmployeeList();
-		for(Employee employee : employeeList){
+				List<Employee> employeeList = EmployeeService.getEmployeeList();
+				for(Employee employee : employeeList){
 		%>
 		<tr>
 		<td><%=serial%></td>

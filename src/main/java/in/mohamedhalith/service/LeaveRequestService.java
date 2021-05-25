@@ -11,9 +11,9 @@ import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.validator.LeaveRequestValidator;
 
-public class LeaveRequestManager {
+public class LeaveRequestService {
 
-	private LeaveRequestManager() {
+	private LeaveRequestService() {
 		// Default Constructor
 	}
 
@@ -24,13 +24,13 @@ public class LeaveRequestManager {
 	 * This method is used to get list of leave requests.
 	 * 
 	 * @return
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
 	public static List<LeaveRequest> getRequestList() throws ServiceException {
 		try {
 			return leaveRequestDAO.getRequestList();
 		} catch (DBException e) {
-			throw new ServiceException(e,"Failed to get list of requests");
+			throw new ServiceException(e, "Failed to get list of requests");
 		}
 	}
 
@@ -42,15 +42,15 @@ public class LeaveRequestManager {
 	 * @param username
 	 * @return List<LeaveRequest>
 	 * @throws ServiceException
-	 * @throws ValidationException 
+	 * @throws ValidationException
 	 */
 	public static List<LeaveRequest> getEmployeeRequests(String username) throws ServiceException, ValidationException {
-			try {
-				Employee employee = EmployeeManager.getEmployee(username);
-				return leaveRequestDAO.getEmployeeRequests(employee);
-			} catch (DBException e) {
-				throw new ServiceException(e,"Failed to get employee's requests");
-			}
+		try {
+			Employee employee = EmployeeService.getEmployee(username);
+			return leaveRequestDAO.getEmployeeRequests(employee);
+		} catch (DBException e) {
+			throw new ServiceException(e, "Failed to get employee's requests");
+		}
 	}
 
 	/**
@@ -64,17 +64,15 @@ public class LeaveRequestManager {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static String applyLeaveRequest(LeaveRequest leaveRequest, String username) 
-			throws ServiceException, ValidationException{
+	public static boolean applyLeaveRequest(LeaveRequest leaveRequest, String username)
+			throws ServiceException, ValidationException {
 
 		try {
-			String message;
-			Employee employee = EmployeeManager.getEmployee(username);
-			List<LeaveRequest> employeeRequests = LeaveRequestManager.getEmployeeRequests(username);
+			Employee employee = EmployeeService.getEmployee(username);
+			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(username);
 			LeaveRequestValidator.isValidRequest(leaveRequest, employee, employeeRequests);
 			employeeDAO.updateLeaveBalance(employee, leaveRequest.getType(), leaveRequest.getDuration());
-			message = leaveRequestDAO.applyLeaveRequest(leaveRequest);
-			return message;
+			return leaveRequestDAO.applyLeaveRequest(leaveRequest);
 		} catch (DBException e) {
 			throw new ServiceException(e, e.getMessage());
 		}

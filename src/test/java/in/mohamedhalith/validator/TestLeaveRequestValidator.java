@@ -11,8 +11,8 @@ import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
-import in.mohamedhalith.service.EmployeeManager;
-import in.mohamedhalith.service.LeaveRequestManager;
+import in.mohamedhalith.service.EmployeeService;
+import in.mohamedhalith.service.LeaveRequestService;
 
 public class TestLeaveRequestValidator {
 
@@ -26,7 +26,7 @@ public class TestLeaveRequestValidator {
 			LocalDate toDate = LocalDate.parse("2021-06-03");
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
-			List<LeaveRequest> employeeRequest = LeaveRequestManager.getEmployeeRequests("moha2627");
+			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests("moha2627");
 			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -43,7 +43,7 @@ public class TestLeaveRequestValidator {
 			LocalDate toDate = LocalDate.parse("2021-06-03");
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
-			List<LeaveRequest> employeeRequest = LeaveRequestManager.getEmployeeRequests("moha2627");
+			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests("moha2627");
 			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -59,7 +59,7 @@ public class TestLeaveRequestValidator {
 			LocalDate toDate = LocalDate.parse("2021-06-03");
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
-			List<LeaveRequest> employeeRequest = LeaveRequestManager.getEmployeeRequests("moha2627");
+			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests("moha2627");
 			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
 			employeeRequest.add(leaveRequest);
 			leaveRequest1.setFromDate(fromDate);
@@ -79,7 +79,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(1);
 			leaveRequest.setType("SickLeave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
+			Employee employee = EmployeeService.getEmployee("moha2627");
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -92,7 +92,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(1);
 			leaveRequest.setType("CasualLeave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
+			Employee employee = EmployeeService.getEmployee("moha2627");
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -105,7 +105,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(1);
 			leaveRequest.setType("EarnedLeave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
+			Employee employee = EmployeeService.getEmployee("moha2627");
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -118,7 +118,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(4);
 			leaveRequest.setType("SickLeave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
+			Employee employee = EmployeeService.getEmployee("moha2627");
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			fail();
 		} catch (ServiceException | ValidationException e) {
@@ -132,7 +132,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(4);
 			leaveRequest.setType("CasualLeave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
+			Employee employee = EmployeeService.getEmployee("moha2627");
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			fail();
 		} catch (ServiceException | ValidationException e) {
@@ -146,7 +146,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(4);
 			leaveRequest.setType("EarnedLeave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
+			Employee employee = EmployeeService.getEmployee("moha2627");
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			fail();
 		} catch (ServiceException | ValidationException e) {

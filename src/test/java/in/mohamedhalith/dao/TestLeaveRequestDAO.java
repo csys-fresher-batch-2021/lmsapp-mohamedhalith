@@ -1,6 +1,8 @@
 package in.mohamedhalith.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +14,7 @@ import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
-import in.mohamedhalith.service.EmployeeManager;
+import in.mohamedhalith.service.EmployeeService;
 
 
 public class TestLeaveRequestDAO {
@@ -42,7 +44,7 @@ public class TestLeaveRequestDAO {
 	@Test
 	public void testGetEmployeeRequests() {
 		try {
-			Employee employee = EmployeeManager.getEmployee("moha2627");
+			Employee employee = EmployeeService.getEmployee("moha2627");
 			List<LeaveRequest> requestList = leaveRequestDA.getEmployeeRequests(employee);
 			for (LeaveRequest leaveRequest : requestList) {
 				System.out.println(leaveRequest);
@@ -67,9 +69,9 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
-			String message = leaveRequestDA.applyLeaveRequest(leaveRequest);
-			assertEquals("Successfully Applied!... You have 1 remaining SickLeaves", message);
+			Employee employee = EmployeeService.getEmployee("moha2627");
+			boolean isAdded = leaveRequestDA.applyLeaveRequest(leaveRequest);
+			assertTrue(isAdded);
 		} catch (ServiceException | DBException | ValidationException e) {
 			fail();
 		}
@@ -88,9 +90,9 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("EarnedLeave");
 			leaveRequest.setReason("Leave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
-			String message = leaveRequestDA.applyLeaveRequest(leaveRequest);
-			assertEquals("Successfully Applied!... You have 1 remaining EarnedLeaves", message);
+			Employee employee = EmployeeService.getEmployee("moha2627");
+			boolean isAdded = leaveRequestDA.applyLeaveRequest(leaveRequest);
+			assertTrue(isAdded);
 		} catch (ServiceException | DBException | ValidationException e) {
 			fail();
 		}
@@ -108,9 +110,9 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("CasualLeave");
 			leaveRequest.setReason("Leave");
-			Employee employee = EmployeeManager.getEmployee("moha2627");
-			String message = leaveRequestDA.applyLeaveRequest(leaveRequest);
-			assertEquals("Successfully Applied!... You have 1 remaining CasualLeaves", message);
+			Employee employee = EmployeeService.getEmployee("moha2627");
+			boolean isAdded = leaveRequestDA.applyLeaveRequest(leaveRequest);
+			assertTrue(isAdded);
 		} catch (ServiceException | DBException | ValidationException e) {
 			fail();
 		}

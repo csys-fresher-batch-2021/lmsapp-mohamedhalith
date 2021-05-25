@@ -6,6 +6,7 @@ import java.util.List;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
+import in.mohamedhalith.util.DateTimeValidator;
 
 public class LeaveRequestValidator {
 
@@ -25,8 +26,14 @@ public class LeaveRequestValidator {
 	 */
 	public static void isValidRequest(LeaveRequest leaveRequest, Employee employee, List<LeaveRequest> employeeRequests)
 			throws ValidationException {
+		isValidDates(leaveRequest);
 		findDuplicateRequest(leaveRequest, employeeRequests);
 		isValidDuration(leaveRequest, employee);
+	}
+
+	public static void isValidDates(LeaveRequest leaveRequest) throws ValidationException {
+		DateTimeValidator.isValidDate(leaveRequest.getFromDate());
+		DateTimeValidator.isValidDate(leaveRequest.getToDate());
 	}
 
 	/**
@@ -42,7 +49,8 @@ public class LeaveRequestValidator {
 		LocalDate fromDate = leaveRequest.getFromDate();
 		LocalDate toDate = leaveRequest.getToDate();
 		for (LeaveRequest requestLeave : employeeRequests) {
-			if (fromDate.isEqual(requestLeave.getFromDate()) || toDate.isEqual(requestLeave.getToDate())) {
+			if (fromDate.isEqual(requestLeave.getFromDate()) || toDate.isEqual(requestLeave.getToDate()) 
+					||(fromDate.isAfter(requestLeave.getFromDate()) && toDate.isBefore(requestLeave.getToDate()))) {
 				duplicate = true;
 				break;
 			}

@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveRequest;
 
 public class TestGetSetIntDate {
@@ -100,15 +99,11 @@ public class TestGetSetIntDate {
 	// Test cases for GetSetFromDate
 	@Test
 	public void testGetSetFromDateWithValidDate() {
-		try {
-			String fromDate = "2021-06-01";
-			LocalDate date = LocalDate.parse(fromDate);
-			leaveRequest.setFromDate(date);
-			LocalDate testDate = leaveRequest.getFromDate();
-			assertEquals(date, testDate);
-		} catch (ValidationException e) {
-			fail();
-		}
+		String fromDate = "2021-06-01";
+		LocalDate date = LocalDate.parse(fromDate);
+		leaveRequest.setFromDate(date);
+		LocalDate testDate = leaveRequest.getFromDate();
+		assertEquals(date, testDate);
 	}
 
 	@Test
@@ -126,14 +121,10 @@ public class TestGetSetIntDate {
 	// Test cases for GetSetToDate
 	@Test
 	public void testGetSetToDatewithValidDate() {
-		try {
-			String date = "2021-06-02";
-			LocalDate testDate = LocalDate.parse(date);
-			leaveRequest.setToDate(testDate);
-			assertEquals(testDate, leaveRequest.getToDate());
-		} catch (ValidationException e) {
-			fail();
-		}
+		String date = "2021-06-02";
+		LocalDate testDate = LocalDate.parse(date);
+		leaveRequest.setToDate(testDate);
+		assertEquals(testDate, leaveRequest.getToDate());
 	}
 
 	@Test
