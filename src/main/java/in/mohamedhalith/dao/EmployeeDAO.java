@@ -120,8 +120,7 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public boolean updateLeaveBalance(Employee employee, String type, int duration)
-			throws DBException, ValidationException {
+	public boolean updateLeaveBalance(Employee employee, String type, int duration) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		String username = employee.getUsername();
