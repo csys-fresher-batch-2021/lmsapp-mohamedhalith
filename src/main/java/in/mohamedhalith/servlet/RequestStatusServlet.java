@@ -30,7 +30,6 @@ public class RequestStatusServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		int employeeId = (int) session.getAttribute("employeeId");
-		System.out.println(employeeId);
 		try {
 			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(employeeId);
 			request.setAttribute("employeeRequests", employeeRequests);

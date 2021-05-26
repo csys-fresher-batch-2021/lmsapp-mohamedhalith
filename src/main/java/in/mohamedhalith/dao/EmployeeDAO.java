@@ -128,27 +128,29 @@ public class EmployeeDAO {
 		int duration = leaveRequest.getDuration();
 		String query = null;
 		boolean isUpdated = false;
+		String apply = "apply";
+		String cancel = "cancel";
 		try {
 			connection = ConnectionUtil.getConnection();
 			switch (type) {
 			case "SickLeave":
-				if (keyword.equalsIgnoreCase("apply")) {
+				if (keyword.equalsIgnoreCase(apply)) {
 					query = "update employees set sickleave = sickleave - ? where employeeId = ?";
-				} else if (keyword.equalsIgnoreCase("cancel")) {
+				} else if (keyword.equalsIgnoreCase(cancel)) {
 					query = "update employees set sickleave = sickleave + ? where employeeId = ?";
 				}
 				break;
 			case "CasualLeave":
-				if (keyword.equalsIgnoreCase("apply")) {
+				if (keyword.equalsIgnoreCase(apply)) {
 					query = "update employees set casualleave = casualleave - ? where employeeId = ?";
-				} else if (keyword.equalsIgnoreCase("cancel")) {
+				} else if (keyword.equalsIgnoreCase(cancel)) {
 					query = "update employees set casualleave = casualleave + ? where employeeId = ?";
 				}
 				break;
 			default:
-				if (keyword.equalsIgnoreCase("apply")) {
+				if (keyword.equalsIgnoreCase(apply)) {
 					query = "update employees set earnedleave = earnedleave - ? where employeeId = ?";
-				} else if (keyword.equalsIgnoreCase("cancel")) {
+				} else if (keyword.equalsIgnoreCase(cancel)) {
 					query = "update employees set earnedleave = earnedleave + ? where employeeId = ?";
 				}
 			}

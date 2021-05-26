@@ -118,8 +118,7 @@ public class LeaveRequestService {
 			EmployeeValidator.isEmployee(employeeId);
 			LeaveRequest leaveRequest = leaveRequestDAO.findById(leaveId);
 			employeeDAO.updateLeaveBalance("cancel",employeeId, leaveRequest);
-			boolean isCancelled = leaveRequestDAO.cancelLeaveRequest(leaveId);
-			return isCancelled;
+			return leaveRequestDAO.cancelLeaveRequest(leaveId);
 		} catch (DBException e) {
 			throw new ServiceException(e, "Unable to cancel the selected request");
 		}

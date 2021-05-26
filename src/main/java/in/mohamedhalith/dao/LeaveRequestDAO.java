@@ -279,6 +279,8 @@ public class LeaveRequestDAO {
 			return leaveRequest;
 		} catch (ClassNotFoundException | SQLException | ValidationException e) {
 			throw new DBException("Failed to get leave request");
+		}finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}
 }
