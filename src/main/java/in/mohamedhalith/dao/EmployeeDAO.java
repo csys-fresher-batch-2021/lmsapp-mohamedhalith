@@ -124,7 +124,7 @@ public class EmployeeDAO {
 	public boolean updateLeaveBalance(String keyword, int employeeId, LeaveRequest leaveRequest) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
-		String type = leaveRequest.getType().toLowerCase();
+		String leaveType = leaveRequest.getType().toLowerCase();
 		int duration = leaveRequest.getDuration();
 		String query = null;
 		boolean isUpdated = false;
@@ -132,7 +132,7 @@ public class EmployeeDAO {
 		String cancel = "cancel";
 		try {
 			connection = ConnectionUtil.getConnection();
-			switch (type) {
+			switch (leaveType) {
 			case "sickleave":
 				if (keyword.equalsIgnoreCase(apply)) {
 					query = "update employees set sickleave = sickleave - ? where employeeId = ?";
