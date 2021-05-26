@@ -11,19 +11,15 @@ public class ConnectionUtil {
 	private ConnectionUtil() {
 		//Default constructor
 	}
-	private static final String DRIVER_NAME = "org.postgresql.Driver";
-	private static final String DATABASE_NAME = "lms-app";
-	private static final String HOST = "localhost";
-	private static final int PORT = 5432;
-	private static final String USERNAME = "postgres";
-	private static final String PASSWORD = "postgres";
-	// jdbc:postgresql:5432//localhost/lms-app
-	private static final String URL = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE_NAME;
+	private static String driverClass = System.getenv("spring.datasource.driver-class-name");
+	private static String url = System.getenv("spring.datasource.url");
+	private static String username = System.getenv("spring.datasource.username");
+	private static String password = System.getenv("spring.datasource.password");
 	
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
-		Class.forName(DRIVER_NAME);
+		Class.forName(driverClass);
 		Connection connection = null;
-		connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		connection = DriverManager.getConnection(url, username, password);
 		return connection;
 	}
 

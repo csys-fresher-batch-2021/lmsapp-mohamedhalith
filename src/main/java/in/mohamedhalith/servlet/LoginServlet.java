@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.service.EmployeeService;
 import in.mohamedhalith.validator.LoginValidator;
 
 /**
@@ -39,6 +41,10 @@ public class LoginServlet extends HttpServlet {
 				HttpSession session = request.getSession();
 				session.setAttribute("ROLE", role);
 				session.setAttribute("LOGGEDIN_USERNAME", username);
+				if(role.equalsIgnoreCase("employee")) {
+					Employee employeeObj = EmployeeService.getEmployee(username); 
+					session.setAttribute("employeeId", employeeObj.getEmployeeId());
+				}
 				response.sendRedirect("index.jsp");
 			}
 		} catch (Exception e) {

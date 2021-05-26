@@ -10,8 +10,8 @@
 </head>
 <body>
 <%
-String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
-Employee employee = EmployeeService.getEmployee(username);
+int employeeId = (Integer) session.getAttribute("employeeId");
+Employee employee = EmployeeService.getEmployee(employeeId);
 %>
 	<main class="container-fluid">
 		<table class="table table-bordered">

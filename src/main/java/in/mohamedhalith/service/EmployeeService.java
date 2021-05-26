@@ -54,5 +54,18 @@ public class EmployeeService {
 		}
 
 	}
+	
+	public static Employee getEmployee(int employeeId) throws ServiceException, ValidationException {
+		try {
+			Employee employee = null;
+			EmployeeValidator.isEmployee(employeeId);
+			employee = employeeDAO.findByEmployeeId(employeeId);
+			return employee;
+		} catch (DBException e) {
+			e.printStackTrace();
+			throw new ServiceException(e, "No employee is found for given details");
+		}
+
+	}
 
 }

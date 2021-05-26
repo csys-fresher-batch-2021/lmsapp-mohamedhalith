@@ -22,7 +22,7 @@
             if(loggedInUsername!=null && role != null && role.equalsIgnoreCase("admin")){
       %>
       <li class="nav-item">
-        <a class="nav-link" href="listemployees.jsp">Employees</a>
+        <a class="nav-link" href="ListEmployeeServlet">Employees</a>
       </li>
       <%
       }else if(loggedInUsername != null && role != null && role.equalsIgnoreCase("employee")){
@@ -33,6 +33,10 @@
       <li class="nav-item">
         <a class="nav-link" href="applyleave.jsp">Apply for Leave</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="ListWaitingRequestServlet">Cancel a request</a>
+      </li>
+      
       <li class="nav-item">
         <a class="nav-link" href="RequestStatusServlet">View Status</a>
       </li>

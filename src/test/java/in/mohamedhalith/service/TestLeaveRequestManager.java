@@ -26,7 +26,7 @@ public class TestLeaveRequestManager {
 	@Test
 	public void testGetEmployeeRequestsWithValidEmployee() {
 		try {
-			List<LeaveRequest> requestList = LeaveRequestService.getEmployeeRequests("moha2627");
+			List<LeaveRequest> requestList = LeaveRequestService.getEmployeeRequests(2627);
 			assertEquals(0, requestList.size());
 		} catch (ServiceException | ValidationException e) {
 			fail();
@@ -35,7 +35,7 @@ public class TestLeaveRequestManager {
 	@Test
 	public void testGetEmployeeRequestsWithInvalidEmployee() {
 		try {
-			LeaveRequestService.getEmployeeRequests("mohamed");
+			LeaveRequestService.getEmployeeRequests(2627);
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("No employee is found for given details",e.getMessage());

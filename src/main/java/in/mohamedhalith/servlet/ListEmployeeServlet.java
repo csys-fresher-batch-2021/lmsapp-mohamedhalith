@@ -1,6 +1,7 @@
 package in.mohamedhalith.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -29,6 +30,8 @@ public class ListEmployeeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			List<Employee> employeeList = EmployeeService.getEmployeeList();
+			PrintWriter out = response.getWriter();
+			out.print(employeeList);
 			request.setAttribute("employeeList", employeeList);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("listemployees.jsp");
 			requestDispatcher.forward(request, response);

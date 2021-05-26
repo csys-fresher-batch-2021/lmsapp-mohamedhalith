@@ -9,6 +9,7 @@ import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
+import in.mohamedhalith.validator.EmployeeValidator;
 import in.mohamedhalith.validator.LeaveRequestValidator;
 
 public class LeaveRequestService {
@@ -44,9 +45,9 @@ public class LeaveRequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static List<LeaveRequest> getEmployeeRequests(String username) throws ServiceException, ValidationException {
+	public static List<LeaveRequest> getEmployeeRequests(int employeeId) throws ServiceException, ValidationException {
 		try {
-			Employee employee = EmployeeService.getEmployee(username);
+			Employee employee = EmployeeService.getEmployee(employeeId);
 			return leaveRequestDAO.getEmployeeRequests(employee);
 		} catch (DBException e) {
 			throw new ServiceException(e, "Failed to get employee's requests");
@@ -64,17 +65,63 @@ public class LeaveRequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static boolean applyLeaveRequest(LeaveRequest leaveRequest, String username)
+	public static boolean applyLeaveRequest(LeaveRequest leaveRequest, int employeeId)
 			throws ServiceException, ValidationException {
 
 		try {
-			Employee employee = EmployeeService.getEmployee(username);
-			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(username);
-			LeaveRequestValidator.isValidRequest(leaveRequest, employee, employeeRequests);
-			employeeDAO.updateLeaveBalance(employee, leaveRequest.getType(), leaveRequest.getDuration());
+			EmployeeValidator.isEmployee(employeeId);
+			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(employeeId);
+			LeaveRequestValidator.isValidRequest(leaveRequest, employeeId, employeeRequests);
+			employeeDAO.updateLeaveBalance("apply",employeeId, leaveRequest);
 			return leaveRequestDAO.applyLeaveRequest(leaveRequest);
 		} catch (DBException e) {
 			throw new ServiceException(e, e.getMessage());
+		}
+	}
+
+	/**
+	 * This method is used to get the unapproved (request in waiting for approval)
+	 * of an employee
+	 * 
+	 * Returns a list of LeaveRequests
+	 * 
+	 * @param username
+	 * @return List<LeaveRequest>
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
+	public static List<LeaveRequest> getUnapprovedRequest(String username)
+			throws ServiceException, ValidationException {
+		try {
+			Employee employee = EmployeeService.getEmployee(username);
+			return leaveRequestDAO.getUnApprovedRequests(employee);
+		} catch (ServiceException | DBException e) {
+			throw new ServiceException(e, "Unable to get unapproved requests");
+		}
+	}
+
+	/**
+	 * This method is used to cancel leave request applied by an employee
+	 * 
+	 * Returns a boolean value, true if successfully cancelled.
+	 * 
+	 * @param leaveId
+	 * @param username
+	 * @return
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
+	public static boolean cancelLeaveRequest(int leaveId, int employeeId)
+			throws ServiceException, ValidationException {
+		try {
+			LeaveRequestValidator.isValidId(leaveId);
+			EmployeeValidator.isEmployee(employeeId);
+			LeaveRequest leaveRequest = leaveRequestDAO.findById(leaveId);
+			employeeDAO.updateLeaveBalance("cancel",employeeId, leaveRequest);
+			boolean isCancelled = leaveRequestDAO.cancelLeaveRequest(leaveId);
+			return isCancelled;
+		} catch (DBException e) {
+			throw new ServiceException(e, "Unable to cancel the selected request");
 		}
 	}
 }
