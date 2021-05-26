@@ -10,6 +10,7 @@ import java.util.List;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.util.ConnectionUtil;
 
 public class EmployeeDAO {
@@ -38,7 +39,7 @@ public class EmployeeDAO {
 			// Get Database connection
 			connection = ConnectionUtil.getConnection();
 			// Query to be executed
-			String query = "select * from employees ";
+			String query = "select * from employees where active= true order by name asc";
 			// Converting query to statement
 			statement = connection.prepareStatement(query);
 			// Executing query
@@ -120,34 +121,42 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public boolean updateLeaveBalance(Employee employee, String type, int duration) throws DBException {
+	public boolean updateLeaveBalance(String keyword, int employeeId, LeaveRequest leaveRequest) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
-		String username = employee.getUsername();
+		String leaveType = leaveRequest.getType().toLowerCase();
+		int duration = leaveRequest.getDuration();
 		String query = null;
-		int leave = -1;
 		boolean isUpdated = false;
+		String apply = "apply";
+		String cancel = "cancel";
 		try {
 			connection = ConnectionUtil.getConnection();
-			switch (type) {
-			case "SickLeave":
-				int sickLeave = employee.getSickLeave();
-				leave = sickLeave - duration;
-				query = "update employees set sickleave = ? where username = ?";
+			switch (leaveType) {
+			case "sickleave":
+				if (keyword.equalsIgnoreCase(apply)) {
+					query = "update employees set sickleave = sickleave - ? where employeeId = ?";
+				} else if (keyword.equalsIgnoreCase(cancel)) {
+					query = "update employees set sickleave = sickleave + ? where employeeId = ?";
+				}
 				break;
-			case "CasualLeave":
-				int casualLeave = employee.getCasualLeave();
-				leave = casualLeave - duration;
-				query = "update employees set casualleave = ? where username = ?";
+			case "casualleave":
+				if (keyword.equalsIgnoreCase(apply)) {
+					query = "update employees set casualleave = casualleave - ? where employeeId = ?";
+				} else if (keyword.equalsIgnoreCase(cancel)) {
+					query = "update employees set casualleave = casualleave + ? where employeeId = ?";
+				}
 				break;
 			default:
-				int earnedLeave = employee.getEarnedLeave();
-				leave = earnedLeave - duration;
-				query = "update employees set earnedleave = ? where username = ?";
+				if (keyword.equalsIgnoreCase(apply)) {
+					query = "update employees set earnedleave = earnedleave - ? where employeeId = ?";
+				} else if (keyword.equalsIgnoreCase(cancel)) {
+					query = "update employees set earnedleave = earnedleave + ? where employeeId = ?";
+				}
 			}
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, leave);
-			statement.setString(2, username);
+			statement.setInt(1, duration);
+			statement.setInt(2, employeeId);
 			int row = statement.executeUpdate();
 			if (row == 1) {
 				isUpdated = true;
@@ -157,6 +166,41 @@ public class EmployeeDAO {
 			throw new DBException(e, "Cannot apply the leave request");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement);
+		}
+	}
+
+	/**
+	 * This method is used to return a specific employee. Employee ID is obtained
+	 * and returns employee with that Employee ID.
+	 * 
+	 * @param username
+	 * @return
+	 * @throws DBException
+	 * @throws ValidationException
+	 */
+	public Employee findByEmployeeId(int employeeId) throws DBException, ValidationException {
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+
+		try {
+			connection = ConnectionUtil.getConnection();
+			String query = "select * from employees where employeeId = ?";
+
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, employeeId);
+
+			result = statement.executeQuery();
+			if (result.next()) {
+				return returnAsEmployee(result);
+			} else {
+				throw new SQLException("Employee not found");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to get employee");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}
 }

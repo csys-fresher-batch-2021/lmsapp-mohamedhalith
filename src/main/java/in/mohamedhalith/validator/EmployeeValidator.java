@@ -34,4 +34,19 @@ public class EmployeeValidator {
 			throw new ValidationException("Invalid employee details");
 		}
 	}
+	
+	
+	public static void isEmployee(int employeeId) throws ValidationException, ServiceException {
+		boolean valid = false;
+		List<Employee> employeeList = EmployeeService.getEmployeeList();
+		for (Employee employee : employeeList) {
+			if (employee.getEmployeeId() == employeeId) {
+				valid = true;
+				break;
+			}
+		}
+		if(!valid) {
+			throw new ValidationException("Invalid employee details");
+		}
+	}
 }

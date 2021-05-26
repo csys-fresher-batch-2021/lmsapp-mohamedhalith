@@ -26,7 +26,7 @@ public class TestLeaveRequestValidator {
 			LocalDate toDate = LocalDate.parse("2021-06-03");
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
-			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests("moha2627");
+			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests(2627);
 			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -43,7 +43,7 @@ public class TestLeaveRequestValidator {
 			LocalDate toDate = LocalDate.parse("2021-06-03");
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
-			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests("moha2627");
+			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests(2627);
 			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -59,7 +59,7 @@ public class TestLeaveRequestValidator {
 			LocalDate toDate = LocalDate.parse("2021-06-03");
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
-			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests("moha2627");
+			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests(2627);
 			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
 			employeeRequest.add(leaveRequest);
 			leaveRequest1.setFromDate(fromDate);

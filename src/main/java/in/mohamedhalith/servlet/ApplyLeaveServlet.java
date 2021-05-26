@@ -3,12 +3,12 @@ package in.mohamedhalith.servlet;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
@@ -29,11 +29,9 @@ public class ApplyLeaveServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		final String errorRedirect = "applyleave.jsp?errorMessage=";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("applyleave.jsp");
 		// Obtaining the parameters from the form
 		try {
-			String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
 			String employeeName = request.getParameter("employeeName");
 			int employeeId = Integer.parseInt(request.getParameter("employeeId"));
 			LocalDate fromDate = LocalDate.parse(request.getParameter("fromDate"));
@@ -53,17 +51,18 @@ public class ApplyLeaveServlet extends HttpServlet {
 			leaveRequest.setDuration(duration);
 
 			// Sending to the backend manager
-			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, username);
+			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, employeeId);
 			if(isApplied) {
 				String message = "Leave Applied Successfully!";
-				response.sendRedirect("applyleave.jsp?infoMessage=" + message);
+				request.setAttribute("infoMessage", message);
 			}
 			
-		} catch (RuntimeException | ServiceException | ValidationException | IOException e) {
+		} catch (RuntimeException | ServiceException | ValidationException e) {
 			e.printStackTrace();
-			response.sendRedirect(errorRedirect + e.getMessage());
+			request.setAttribute("errorMessage", e.getMessage());
+		}finally {
+			requestDispatcher.forward(request, response);
 		}
-
 	}
 
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.mohamedhalith.exception.DBException;
+import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
@@ -86,19 +87,25 @@ public class LeaveRequestDAO {
 		leaveRequest.setLeaveId(result.getInt("id"));
 		leaveRequest.setEmployeeName(result.getString("employeename"));
 		leaveRequest.setEmployeeId(result.getInt("employeeid"));
+		// Converting from date to LocalDate
 		LocalDate date = result.getDate("fromdate").toLocalDate();
 		leaveRequest.setFromDate(date);
+		
 		date = result.getDate("todate").toLocalDate();
 		leaveRequest.setToDate(date);
+		
 		leaveRequest.setDuration(result.getInt("duration"));
+		leaveRequest.setReason(result.getString("reason"));
 		leaveRequest.setType(result.getString("type"));
+		leaveRequest.setStatus(result.getString("status"));
+		// Converting from Timestamp to LocalDateTime
 		LocalDateTime timestamp = result.getTimestamp("appliedtime").toLocalDateTime();
 		leaveRequest.setAppliedTime(timestamp);
-		if (result.getTimestamp("cancelledtime") != null) {
+		if (result.getTimestamp("modifiedtime") != null && leaveRequest.getStatus().equalsIgnoreCase("cancelled")) {
 			timestamp = result.getTimestamp("cancelledtime").toLocalDateTime();
 			leaveRequest.setCancelledTime(timestamp);
 		}
-		if (result.getTimestamp("reviewedtime") != null) {
+		if (result.getTimestamp("modifiedtime") != null && leaveRequest.getStatus().equalsIgnoreCase("cancelled")) {
 			timestamp = result.getTimestamp("reviewedtime").toLocalDateTime();
 			leaveRequest.setReviewedTime(timestamp);
 		}
@@ -186,6 +193,94 @@ public class LeaveRequestDAO {
 			throw new DBException(e, "Failed to apply leave");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement);
+		}
+	}
+	
+	/**
+	 * This method is used to get the unapproved (request in waiting for approval)
+	 * of an employee
+	 * 
+	 * Returns a list of LeaveRequests
+	 * 
+	 * @param username
+	 * @return List<LeaveRequest>
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
+	public List<LeaveRequest> getUnApprovedRequests(Employee employee) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+
+		try {
+			connection = ConnectionUtil.getConnection();
+
+			String query = "select * from leaverequests where employeeid = ? and status = \'waiting for approval\'";
+
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, employee.getEmployeeId());
+
+			result = statement.executeQuery();
+			List<LeaveRequest> requestList = new ArrayList<>();
+			while (result.next()) {
+				LeaveRequest leaveRequest = returnAsLeaveRequest(result);
+				requestList.add(leaveRequest);
+			}
+			return requestList;
+		} catch (ValidationException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			throw new DBException(e, "Failed to fetch leave requests of employee");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+	}
+	
+	public boolean cancelLeaveRequest(int leaveId) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		
+		try {
+			connection = ConnectionUtil.getConnection();
+			String query = "update leaverequests set status = \'cancelled\',modifiedtime = now() where id = ?";
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, leaveId);
+			
+			int row = statement.executeUpdate();
+			boolean isCancelled = false;
+			if(row == 1) {
+				isCancelled = true;
+			}
+			return isCancelled;
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e,"Failed to cancel the leave request");
+		}finally {
+			ConnectionUtil.closeConnection(connection, statement);
+		}
+	}
+
+	public LeaveRequest findById(int leaveId) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		
+		try {
+			connection = ConnectionUtil.getConnection();
+			
+			String query = "select * from leaverequests where id = ?";
+			
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, leaveId);
+			
+			result = statement.executeQuery();
+			LeaveRequest leaveRequest = null;
+			if(result.next()) {
+				leaveRequest = returnAsLeaveRequest(result);
+			}
+			return leaveRequest;
+		} catch (ClassNotFoundException | SQLException | ValidationException e) {
+			throw new DBException("Failed to get leave request");
+		}finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}
 }

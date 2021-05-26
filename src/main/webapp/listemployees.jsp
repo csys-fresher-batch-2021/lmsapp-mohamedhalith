@@ -25,7 +25,8 @@
 		<tbody>
 		<%
 		int serial = 1;
-				List<Employee> employeeList = EmployeeService.getEmployeeList();
+				List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeList");
+				if(employeeList != null){
 				for(Employee employee : employeeList){
 		%>
 		<tr>
@@ -33,6 +34,7 @@
 		<td><%=employee.getEmployeeId() %></td>
 		<td><%=employee.getName() %></td>
 		<%
+				}
 		serial++;
 		}
 		%>

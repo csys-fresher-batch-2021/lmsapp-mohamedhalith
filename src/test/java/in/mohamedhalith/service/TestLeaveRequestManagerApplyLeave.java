@@ -28,7 +28,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
-			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
+			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, 2627);
 			assertTrue(isApplied);
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
@@ -48,7 +48,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("EarnedLeave");
 			leaveRequest.setReason("Leave");
-			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
+			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, 2627);
 			assertTrue(isApplied);
 		} catch (ServiceException | ValidationException e) {
 			fail();
@@ -67,7 +67,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setDuration(1);
 			leaveRequest.setType("CasualLeave");
 			leaveRequest.setReason("Leave");
-			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
+			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, 2627);
 			assertTrue(isApplied);
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
@@ -86,7 +86,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
-			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, "moha");
+			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, 2627);
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("No employee is found for given details", e.getMessage());
@@ -102,9 +102,9 @@ public class TestLeaveRequestManagerApplyLeave {
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType("SickLeave");
 			leaveRequest.setReason("Leave");
-			LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
+			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, 2627);
 			LeaveRequest leaveRequest1 = new LeaveRequest();
-			LeaveRequestService.applyLeaveRequest(leaveRequest, "moha2627");
+			isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest1, 2627);
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("Leave request found for mentioned date(s).", e.getMessage());
@@ -121,7 +121,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			LocalDate toDate = LocalDate.parse("2022-01-21");
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setDuration(1);
-			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, "hali2628");
+			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, 2627);
 			assertTrue(isApplied);
 			LeaveRequest leaveRequest1 = new LeaveRequest();
 			leaveRequest1.setType("SickLeave");
@@ -130,7 +130,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			toDate = LocalDate.parse("2022-01-12");
 			leaveRequest1.setToDate(toDate);
 			leaveRequest1.setDuration(1);
-			isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest1, "hali2628");
+			isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest1, 2627);
 			assertTrue(isApplied);
 			LeaveRequest leaveRequest2 = new LeaveRequest();
 			leaveRequest2.setType("SickLeave");
@@ -139,7 +139,7 @@ public class TestLeaveRequestManagerApplyLeave {
 			toDate = LocalDate.parse("2022-01-22");
 			leaveRequest2.setToDate(toDate);
 			leaveRequest2.setDuration(1);
-			isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest2, "hali2628");
+			isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest1, 2627);
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("Leave duration exceeds the permitted leave days", e.getMessage());

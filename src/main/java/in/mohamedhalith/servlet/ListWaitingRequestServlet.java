@@ -1,6 +1,7 @@
 package in.mohamedhalith.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -17,27 +18,38 @@ import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.LeaveRequestService;
 
 /**
- * Servlet implementation class RequestStatusServlet
+ * Servlet implementation class ListWaitingRequestServlet
  */
-@WebServlet("/RequestStatusServlet")
-public class RequestStatusServlet extends HttpServlet {
+@WebServlet("/ListWaitingRequestServlet")
+public class ListWaitingRequestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int employeeId = (Integer) session.getAttribute("employeeId");
+		String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
+		String infoMessage = (String) request.getAttribute("infoMessage");
+		String errorMessage = (String) request.getAttribute("errorMessage");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("cancelrequest.jsp");
+
+		if(infoMessage != null) {
+			request.setAttribute("infoMessage", infoMessage);
+		}
+		if(errorMessage != null) {
+			request.setAttribute("errorMessage", errorMessage);
+		}
 		try {
-			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(employeeId);
-			request.setAttribute("employeeRequests", employeeRequests);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("viewrequeststatus.jsp");
-			dispatcher.forward(request, response);
+			List<LeaveRequest> requestList = LeaveRequestService.getUnapprovedRequest(username);
+			PrintWriter out = response.getWriter();
+			out.print("Servlet Working");
+			request.setAttribute("waitingRequests", requestList);
+			requestDispatcher.forward(request, response);
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 
 }
