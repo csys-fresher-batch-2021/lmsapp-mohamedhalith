@@ -35,9 +35,9 @@ public class RequestStatusServlet2 extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
+		int employeeId = (Integer) session.getAttribute("employeeId");
 		try {
-			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(username);
+			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(employeeId);
 			Gson gson = new GsonBuilder().setPrettyPrinting()
 			        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
 			        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
