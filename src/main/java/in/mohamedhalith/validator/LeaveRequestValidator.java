@@ -72,11 +72,16 @@ public class LeaveRequestValidator {
 	public static void findDuplicateRequest(LeaveRequest leaveRequest, List<LeaveRequest> employeeRequests)
 			throws ValidationException {
 		boolean duplicate = false;
+		String status ="waiting for approval";
 		LocalDate fromDate = leaveRequest.getFromDate();
 		LocalDate toDate = leaveRequest.getToDate();
 		for (LeaveRequest requestLeave : employeeRequests) {
-			if (fromDate.isEqual(requestLeave.getFromDate()) || toDate.isEqual(requestLeave.getToDate())
-					|| (fromDate.isAfter(requestLeave.getFromDate()) && toDate.isBefore(requestLeave.getToDate()))) {
+			LocalDate leaveFromDate = requestLeave.getFromDate();
+			LocalDate leaveToDate = requestLeave.getToDate();
+			if(status.equalsIgnoreCase(requestLeave.getStatus())
+					&& ( fromDate.isEqual(leaveFromDate) 
+					|| toDate.isEqual(leaveToDate)
+					|| (fromDate.isAfter(leaveFromDate) && toDate.isBefore(leaveToDate)))) {
 				duplicate = true;
 				break;
 			}

@@ -29,7 +29,7 @@ public class RequestStatusServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int employeeId = (int) session.getAttribute("employeeId");
+		int employeeId = (Integer) session.getAttribute("employeeId");
 		try {
 			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(employeeId);
 			request.setAttribute("employeeRequests", employeeRequests);

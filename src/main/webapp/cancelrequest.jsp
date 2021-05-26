@@ -23,6 +23,7 @@
 					<th id="fromDate">From Date</th>
 					<th id="toDate">To Date</th>
 					<th id="reason">Reason</th>
+					<th id="type">Type</th>
 					<th id="status">Status</th>
 					<th id="cancel"></th>
 				</tr>
@@ -44,7 +45,8 @@
 				<td><%=leaveRequest.getEmployeeName() %></td>
 				<td><%=leaveRequest.getFromDate() %></td>
 				<td><%=leaveRequest.getToDate() %></td>
-				<td><%=leaveRequest.getReason()%>
+				<td><%=leaveRequest.getReason()%></td>
+				<td><%=leaveRequest.getType()%></td>
 				<td><%=leaveRequest.getStatus() %></td>
 				<td class="btn btn-danger"><a href = "CancelRequestServlet?leaveId=<%=leaveRequest.getLeaveId() %>">Cancel</a></td>
 				</tr>
