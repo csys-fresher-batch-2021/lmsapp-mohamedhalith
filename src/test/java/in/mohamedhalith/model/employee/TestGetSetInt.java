@@ -6,9 +6,11 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.model.LeaveBalance;
 
 public class TestGetSetInt {
 	Employee employee = new Employee();
+	LeaveBalance leavebalance = new LeaveBalance();
 
 	// Test cases for GetSetId
 	@Test
@@ -78,20 +80,20 @@ public class TestGetSetInt {
 	@Test
 	public void testGetSetSickLeaveWithValidNumberOfSickLeave() {
 		int sickLeave = 3;
-		employee.setSickLeave(sickLeave);
-		int checkSickLeave = employee.getSickLeave();
+		leavebalance.setSickLeave(sickLeave);
+		int checkSickLeave = leavebalance.getSickLeave();
 		assertEquals(checkSickLeave, sickLeave);
 		sickLeave = 2;
-		employee.setSickLeave(sickLeave);
-		checkSickLeave = employee.getSickLeave();
+		leavebalance.setSickLeave(sickLeave);
+		checkSickLeave = leavebalance.getSickLeave();
 		assertEquals(checkSickLeave, sickLeave);
 		sickLeave = 1;
-		employee.setSickLeave(sickLeave);
-		checkSickLeave = employee.getSickLeave();
+		leavebalance.setSickLeave(sickLeave);
+		checkSickLeave = leavebalance.getSickLeave();
 		assertEquals(checkSickLeave, sickLeave);
 		sickLeave = 0;
-		employee.setSickLeave(sickLeave);
-		checkSickLeave = employee.getSickLeave();
+		leavebalance.setSickLeave(sickLeave);
+		checkSickLeave = leavebalance.getSickLeave();
 		assertEquals(checkSickLeave, sickLeave);
 	}
 
@@ -99,7 +101,7 @@ public class TestGetSetInt {
 	public void testGetSetSickLeaveWithNegativeNumberOfSickLeaves() {
 		try {
 			int sickLeave = -1;
-			employee.setSickLeave(sickLeave);
+			leavebalance.setSickLeave(sickLeave);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Invalid no. of sick leaves", e.getMessage());
@@ -110,7 +112,7 @@ public class TestGetSetInt {
 	public void testGetSetSickLeaveWithExcessNumberOfSickLeaves() {
 		try {
 			int sickLeave = 4;
-			employee.setSickLeave(sickLeave);
+			leavebalance.setSickLeave(sickLeave);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Invalid no. of sick leaves", e.getMessage());
@@ -121,20 +123,20 @@ public class TestGetSetInt {
 	@Test
 	public void testGetSetCasualLeaveWithValidNumberOfCasualLeave() {
 		int casualLeave = 3;
-		employee.setCasualLeave(casualLeave);
-		int checkCasualLeave = employee.getCasualLeave();
+		leavebalance.setCasualLeave(casualLeave);
+		int checkCasualLeave = leavebalance.getCasualLeave();
 		assertEquals(checkCasualLeave, casualLeave);
 		casualLeave = 2;
-		employee.setCasualLeave(casualLeave);
-		checkCasualLeave = employee.getCasualLeave();
+		leavebalance.setCasualLeave(casualLeave);
+		checkCasualLeave = leavebalance.getCasualLeave();
 		assertEquals(checkCasualLeave, casualLeave);
 		casualLeave = 1;
-		employee.setCasualLeave(casualLeave);
-		checkCasualLeave = employee.getCasualLeave();
+		leavebalance.setCasualLeave(casualLeave);
+		checkCasualLeave = leavebalance.getCasualLeave();
 		assertEquals(checkCasualLeave, casualLeave);
 		casualLeave = 0;
-		employee.setCasualLeave(casualLeave);
-		checkCasualLeave = employee.getCasualLeave();
+		leavebalance.setCasualLeave(casualLeave);
+		checkCasualLeave = leavebalance.getCasualLeave();
 		assertEquals(checkCasualLeave, casualLeave);
 	}
 
@@ -142,7 +144,7 @@ public class TestGetSetInt {
 	public void testGetSetCasualLeaveWithNegativeNumberOfCasualLeaves() {
 		try {
 			int casualLeave = -1;
-			employee.setCasualLeave(casualLeave);
+			leavebalance.setCasualLeave(casualLeave);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Invalid no. of casual leaves", e.getMessage());
@@ -153,7 +155,7 @@ public class TestGetSetInt {
 	public void testGetSetCasualLeaveWithExcessNumberOfCasualLeaves() {
 		try {
 			int casualLeave = 4;
-			employee.setCasualLeave(casualLeave);
+			leavebalance.setCasualLeave(casualLeave);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Invalid no. of casual leaves", e.getMessage());
@@ -164,12 +166,12 @@ public class TestGetSetInt {
 	@Test
 	public void testGetSetEarnedLeaveWithValidNumberOfEarnedLeave() {
 		int earnedLeave = 1;
-		employee.setEarnedLeave(earnedLeave);
-		int checkEarnedLeave = employee.getEarnedLeave();
+		leavebalance.setEarnedLeave(earnedLeave);
+		int checkEarnedLeave = leavebalance.getEarnedLeave();
 		assertEquals(checkEarnedLeave, earnedLeave);
 		earnedLeave = 0;
-		employee.setEarnedLeave(earnedLeave);
-		checkEarnedLeave = employee.getEarnedLeave();
+		leavebalance.setEarnedLeave(earnedLeave);
+		checkEarnedLeave = leavebalance.getEarnedLeave();
 		assertEquals(checkEarnedLeave, earnedLeave);
 	}
 
@@ -177,7 +179,7 @@ public class TestGetSetInt {
 	public void testGetSetEarnedLeaveWithNegativeNumberOfEarnedLeaves() {
 		try {
 			int earnedLeave = -1;
-			employee.setEarnedLeave(earnedLeave);
+			leavebalance.setEarnedLeave(earnedLeave);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Invalid no. of earned leaves", e.getMessage());
@@ -188,7 +190,7 @@ public class TestGetSetInt {
 	public void testGetSetEarnedLeaveWithExcessNumberOfEarnedLeaves() {
 		try {
 			int earnedLeave = 4;
-			employee.setEarnedLeave(earnedLeave);
+			leavebalance.setEarnedLeave(earnedLeave);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Invalid no. of earned leaves", e.getMessage());

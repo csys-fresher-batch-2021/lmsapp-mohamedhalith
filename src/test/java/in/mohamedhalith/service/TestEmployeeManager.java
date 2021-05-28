@@ -31,9 +31,6 @@ public class TestEmployeeManager {
 			Employee employee = EmployeeService.getEmployee(employeeId);
 			assertEquals("Mohamed", employee.getName());
 			assertEquals("2627moha", employee.getPassword());
-			assertEquals(2, employee.getSickLeave());
-			assertEquals(2, employee.getCasualLeave());
-			assertEquals(1, employee.getEarnedLeave());
 		} catch (ServiceException | ValidationException e) {
 			fail();
 		}
@@ -46,9 +43,6 @@ public class TestEmployeeManager {
 			Employee employee = EmployeeService.getEmployee(employeeId);
 			assertEquals("Halith", employee.getName());
 			assertEquals("2628hali", employee.getPassword());
-			assertEquals(2, employee.getSickLeave());
-			assertEquals(2, employee.getCasualLeave());
-			assertEquals(1, employee.getEarnedLeave());
 		} catch (ServiceException | ValidationException e) {
 			fail();
 		}

@@ -1,6 +1,8 @@
 package in.mohamedhalith.validator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,7 +11,7 @@ import org.junit.Test;
 
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
-import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.EmployeeService;
 import in.mohamedhalith.service.LeaveRequestService;
@@ -79,7 +81,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(1);
 			leaveRequest.setType("SickLeave");
-			Employee employee = EmployeeService.getEmployee(2627);
+			LeaveBalance employee = EmployeeService.findLeaveBalance(2627);
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -92,7 +94,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(1);
 			leaveRequest.setType("CasualLeave");
-			Employee employee = EmployeeService.getEmployee(2627);
+			LeaveBalance employee = EmployeeService.findLeaveBalance(2627);
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -105,7 +107,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(1);
 			leaveRequest.setType("EarnedLeave");
-			Employee employee = EmployeeService.getEmployee(2627);
+			LeaveBalance employee = EmployeeService.findLeaveBalance(2627);
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
@@ -118,7 +120,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(4);
 			leaveRequest.setType("SickLeave");
-			Employee employee = EmployeeService.getEmployee(2627);
+			LeaveBalance employee = EmployeeService.findLeaveBalance(2627);
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			fail();
 		} catch (ServiceException | ValidationException e) {
@@ -132,7 +134,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(4);
 			leaveRequest.setType("CasualLeave");
-			Employee employee = EmployeeService.getEmployee(2627);
+			LeaveBalance employee = EmployeeService.findLeaveBalance(2627);
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			fail();
 		} catch (ServiceException | ValidationException e) {
@@ -146,7 +148,7 @@ public class TestLeaveRequestValidator {
 		try {
 			leaveRequest.setDuration(4);
 			leaveRequest.setType("EarnedLeave");
-			Employee employee = EmployeeService.getEmployee(2627);
+			LeaveBalance employee = EmployeeService.findLeaveBalance(2627);
 			LeaveRequestValidator.isValidDuration(leaveRequest, employee);
 			fail();
 		} catch (ServiceException | ValidationException e) {
