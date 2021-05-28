@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
+import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.LeaveRequestService;
 
@@ -42,13 +43,15 @@ public class ApplyLeaveServlet extends HttpServlet {
 
 			// Converting the parameters to Leave Request
 			LeaveRequest leaveRequest = new LeaveRequest();
-			leaveRequest.setEmployeeName(employeeName);
-			leaveRequest.setEmployeeId(employeeId);
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType(type);
 			leaveRequest.setReason(reason);
 			leaveRequest.setDuration(duration);
+			Employee employee = new Employee();
+			employee.setName(employeeName);
+			employee.setEmployeeId(employeeId);
+			leaveRequest.setEmployee(employee);
 
 			// Sending to the backend manager
 			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, employeeId);

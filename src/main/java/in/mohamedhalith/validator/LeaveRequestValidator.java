@@ -26,11 +26,11 @@ public class LeaveRequestValidator {
 	 * @param employee
 	 * @param employeeRequests
 	 * @throws ValidationException
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
 	public static void isValidRequest(LeaveRequest leaveRequest, int employeeId, List<LeaveRequest> employeeRequests)
 			throws ValidationException, ServiceException {
-		Employee employee = EmployeeService.getEmployee(employeeId);
+		Employee employee = EmployeeService.findLeaveBalance(employeeId);
 		isValidDates(leaveRequest);
 		findDuplicateRequest(leaveRequest, employeeRequests);
 		isValidDuration(leaveRequest, employee);
@@ -72,16 +72,15 @@ public class LeaveRequestValidator {
 	public static void findDuplicateRequest(LeaveRequest leaveRequest, List<LeaveRequest> employeeRequests)
 			throws ValidationException {
 		boolean duplicate = false;
-		String status ="waiting for approval";
+		String status = "waiting for approval";
 		LocalDate fromDate = leaveRequest.getFromDate();
 		LocalDate toDate = leaveRequest.getToDate();
 		for (LeaveRequest requestLeave : employeeRequests) {
 			LocalDate leaveFromDate = requestLeave.getFromDate();
 			LocalDate leaveToDate = requestLeave.getToDate();
-			if(status.equalsIgnoreCase(requestLeave.getStatus())
-					&& ( fromDate.isEqual(leaveFromDate) 
-					|| toDate.isEqual(leaveToDate)
-					|| (fromDate.isAfter(leaveFromDate) && toDate.isBefore(leaveToDate)))) {
+			if (status.equalsIgnoreCase(requestLeave.getStatus())
+					&& (fromDate.isEqual(leaveFromDate) || toDate.isEqual(leaveToDate)
+							|| (fromDate.isAfter(leaveFromDate) && toDate.isBefore(leaveToDate)))) {
 				duplicate = true;
 				break;
 			}

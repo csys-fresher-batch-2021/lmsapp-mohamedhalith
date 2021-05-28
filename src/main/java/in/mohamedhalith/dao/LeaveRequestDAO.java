@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,11 @@ public class LeaveRequestDAO {
 	private LeaveRequestDAO() {
 		// Default Constructor
 	}
-
+	
+	private static final String BASE_QUERY = "select lr.id,e.name,e.employee_id,lr.from_date,lr.to_date,lr.leave_type,lr.status,"
+			+ "lr.reason,lr.created_time,lr.duration"
+			+ " from leave_requests lr, employees e where e.employee_id = lr.employee_id";
+	
 	private static LeaveRequestDAO instance = new LeaveRequestDAO();
 
 	/**
@@ -45,7 +48,7 @@ public class LeaveRequestDAO {
 	 * @throws DBException
 	 */
 
-	public List<LeaveRequest> getRequestList() throws DBException {
+	public List<LeaveRequest> findAll() throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
@@ -53,20 +56,21 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = "select * from leaverequests where status != \'cancelled\'";
+			String query =  BASE_QUERY + "and status != \'cancelled\'";
 
 			statement = connection.prepareStatement(query);
 
 			result = statement.executeQuery();
 			List<LeaveRequest> requestList = new ArrayList<>();
 			while (result.next()) {
-				LeaveRequest leaveRequest = returnAsLeaveRequest(result);
+				LeaveRequest leaveRequest = new LeaveRequest();
+				leaveRequest =  returnAsLeaveRequest(result,leaveRequest);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
 		} catch (ValidationException | ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			throw new DBException(e,"Failed to fetch leave requests");
+			throw new DBException(e, "Failed to fetch leave requests");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
@@ -82,33 +86,19 @@ public class LeaveRequestDAO {
 	 * @throws SQLException
 	 * @throws ValidationException
 	 */
-	public LeaveRequest returnAsLeaveRequest(ResultSet result) throws SQLException, ValidationException {
-		LeaveRequest leaveRequest = new LeaveRequest();
+	private LeaveRequest returnAsLeaveRequest(ResultSet result,LeaveRequest leaveRequest) throws SQLException, ValidationException {
 		leaveRequest.setLeaveId(result.getInt("id"));
-		leaveRequest.setEmployeeName(result.getString("employeename"));
-		leaveRequest.setEmployeeId(result.getInt("employeeid"));
-		// Converting from date to LocalDate
-		LocalDate date = result.getDate("fromdate").toLocalDate();
-		leaveRequest.setFromDate(date);
-		
-		date = result.getDate("todate").toLocalDate();
-		leaveRequest.setToDate(date);
-		
-		leaveRequest.setDuration(result.getInt("duration"));
-		leaveRequest.setReason(result.getString("reason"));
-		leaveRequest.setType(result.getString("type"));
+		leaveRequest.setFromDate(result.getDate("from_date").toLocalDate());
+		leaveRequest.setToDate(result.getDate("to_date").toLocalDate());
+		leaveRequest.setType(result.getString("leave_type"));
 		leaveRequest.setStatus(result.getString("status"));
-		// Converting from Timestamp to LocalDateTime
-		LocalDateTime timestamp = result.getTimestamp("appliedtime").toLocalDateTime();
-		leaveRequest.setAppliedTime(timestamp);
-		if (result.getTimestamp("modifiedtime") != null && leaveRequest.getStatus().equalsIgnoreCase("cancelled")) {
-			timestamp = result.getTimestamp("cancelledtime").toLocalDateTime();
-			leaveRequest.setCancelledTime(timestamp);
-		}
-		if (result.getTimestamp("modifiedtime") != null && leaveRequest.getStatus().equalsIgnoreCase("cancelled")) {
-			timestamp = result.getTimestamp("reviewedtime").toLocalDateTime();
-			leaveRequest.setReviewedTime(timestamp);
-		}
+		leaveRequest.setReason(result.getString("reason"));
+		leaveRequest.setDuration(result.getInt("duration"));
+		leaveRequest.setAppliedTime(result.getTimestamp("created_time").toLocalDateTime());
+		Employee employee = new Employee();
+		employee.setName(result.getString("name"));
+		employee.setEmployeeId(result.getInt("employee_id"));
+		leaveRequest.setEmployee(employee);
 		return leaveRequest;
 	}
 
@@ -122,7 +112,7 @@ public class LeaveRequestDAO {
 	 * @return
 	 * @throws DBException
 	 */
-	public List<LeaveRequest> getEmployeeRequests(Employee employee) throws DBException {
+	public List<LeaveRequest> findRequestsByEmployeeId(int employeeId) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
@@ -130,21 +120,23 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = "select * from leaverequests where employeeid = ? and status != \'cancelled\'";
+			String query = BASE_QUERY + " and e.employee_id = ? and status != \'cancelled\'";
 
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, employee.getEmployeeId());
-
+			statement.setInt(1, employeeId);
 			result = statement.executeQuery();
+
 			List<LeaveRequest> requestList = new ArrayList<>();
+
 			while (result.next()) {
-				LeaveRequest leaveRequest = returnAsLeaveRequest(result);
+				LeaveRequest leaveRequest = new LeaveRequest();
+				leaveRequest =  returnAsLeaveRequest(result,leaveRequest);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
 		} catch (ValidationException | ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			throw new DBException(e,"Failed to fetch leave requests of employee");
+			throw new DBException(e, "Failed to fetch leave requests of employee");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
@@ -161,31 +153,26 @@ public class LeaveRequestDAO {
 	 * @return String
 	 * @throws DBException
 	 */
-	public boolean applyLeaveRequest(LeaveRequest leaveRequest) throws DBException {
+	public boolean save(LeaveRequest leaveRequest) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		leaveRequest.setAppliedTime(LocalDateTime.now());
 		boolean isAdded = false;
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "insert into leaverequests (employeename,employeeid,fromdate,todate,duration,type,reason,appliedtime)"
-					+ "values(?,?,?,?,?,?,?,?)";
+			String query = "insert into leave_requests (employee_id,from_date,to_date,leave_type,duration,reason,created_time)"
+					+ "values(?,?,?,?,?,?,?)";
 
 			statement = connection.prepareStatement(query);
-			statement.setString(1, leaveRequest.getEmployeeName());
-			statement.setInt(2, leaveRequest.getEmployeeId());
-			Date date = Date.valueOf(leaveRequest.getFromDate());
-			statement.setDate(3, date);
-			date = Date.valueOf(leaveRequest.getToDate());
-			statement.setDate(4, date);
+			statement.setInt(1, leaveRequest.getEmployee().getEmployeeId());
+			statement.setDate(2, Date.valueOf(leaveRequest.getFromDate()));
+			statement.setDate(3, Date.valueOf(leaveRequest.getToDate()));
+			statement.setString(4, leaveRequest.getType().toLowerCase());
 			statement.setInt(5, leaveRequest.getDuration());
-			String type = leaveRequest.getType().toLowerCase();
-			statement.setString(6, type);
-			statement.setString(7, leaveRequest.getReason());
-			Timestamp timestamp = Timestamp.valueOf(leaveRequest.getAppliedTime());
-			statement.setTimestamp(8, timestamp);
+			statement.setString(6, leaveRequest.getReason());
+			statement.setTimestamp(7, Timestamp.valueOf(leaveRequest.getAppliedTime()));
 			int row = statement.executeUpdate();
-			if(row == 1) {
+			if (row == 1) {
 				isAdded = true;
 			}
 			return isAdded;
@@ -195,7 +182,7 @@ public class LeaveRequestDAO {
 			ConnectionUtil.closeConnection(connection, statement);
 		}
 	}
-	
+
 	/**
 	 * This method is used to get the unapproved (request in waiting for approval)
 	 * of an employee
@@ -207,7 +194,7 @@ public class LeaveRequestDAO {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public List<LeaveRequest> getUnApprovedRequests(Employee employee) throws DBException {
+	public List<LeaveRequest> findPendingRequests(int employeeId) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
@@ -215,15 +202,16 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = "select * from leaverequests where employeeid = ? and status = \'waiting for approval\'";
+			String query = BASE_QUERY + " and e.employee_id = ? and status = \'Waiting for approval\'";
 
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, employee.getEmployeeId());
+			statement.setInt(1, employeeId);
 
 			result = statement.executeQuery();
 			List<LeaveRequest> requestList = new ArrayList<>();
 			while (result.next()) {
-				LeaveRequest leaveRequest = returnAsLeaveRequest(result);
+				LeaveRequest leaveRequest = new LeaveRequest();
+				leaveRequest =  returnAsLeaveRequest(result,leaveRequest);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
@@ -234,52 +222,78 @@ public class LeaveRequestDAO {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}
-	
-	public boolean cancelLeaveRequest(int leaveId) throws DBException {
+
+	/**
+	 * This method is used to set status of the request to cancelled
+	 * 
+	 * @param leaveId
+	 * @return
+	 * @throws DBException
+	 */
+	public boolean remove(int leaveId) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
-		
+
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "update leaverequests set status = \'cancelled\',modifiedtime = now() where id = ?";
+			String query = "update leave_requests set status = \'cancelled\',modified_time = now() where id = ?";
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, leaveId);
-			
+
 			int row = statement.executeUpdate();
 			boolean isCancelled = false;
-			if(row == 1) {
+			if (row == 1) {
 				isCancelled = true;
 			}
 			return isCancelled;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e,"Failed to cancel the leave request");
-		}finally {
+			throw new DBException(e, "Failed to cancel the leave request");
+		} finally {
 			ConnectionUtil.closeConnection(connection, statement);
 		}
 	}
 
+	/**
+	 * This method is used to find a leave request by its id.
+	 * 
+	 * @param leaveId (int)
+	 * @return LeaveRequest(If valid id) Null, incase invalid
+	 * @throws DBException
+	 */
 	public LeaveRequest findById(int leaveId) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
-		
+
 		try {
 			connection = ConnectionUtil.getConnection();
-			
-			String query = "select * from leaverequests where id = ?";
-			
+
+			String query = "select employee_id,from_date,to_date,leave_type,duration,status,created_time,reason "
+					+ "from leave_requests where id = ?";
+
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, leaveId);
-			
+
 			result = statement.executeQuery();
 			LeaveRequest leaveRequest = null;
-			if(result.next()) {
-				leaveRequest = returnAsLeaveRequest(result);
+			if (result.next()) {
+				leaveRequest = new LeaveRequest();
+				leaveRequest.setLeaveId(leaveId);
+				leaveRequest.setFromDate(result.getDate("from_date").toLocalDate());
+				leaveRequest.setToDate(result.getDate("to_date").toLocalDate());
+				leaveRequest.setType(result.getString("leave_type"));
+				leaveRequest.setStatus(result.getString("status"));
+				leaveRequest.setDuration(result.getInt("duration"));
+				leaveRequest.setReason(result.getString("reason"));
+				leaveRequest.setAppliedTime(result.getTimestamp("created_time").toLocalDateTime());
+				Employee employee = new Employee();
+				employee.setEmployeeId(result.getInt("employee_id"));
+				leaveRequest.setEmployee(employee);
 			}
 			return leaveRequest;
 		} catch (ClassNotFoundException | SQLException | ValidationException e) {
 			throw new DBException("Failed to get leave request");
-		}finally {
+		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
 	}

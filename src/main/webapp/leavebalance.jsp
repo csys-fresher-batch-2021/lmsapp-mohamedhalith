@@ -10,8 +10,7 @@
 </head>
 <body>
 <%
-int employeeId = (Integer) session.getAttribute("employeeId");
-Employee employee = EmployeeService.getEmployee(employeeId);
+Employee employee = (Employee) session.getAttribute("leavebalance");
 %>
 	<main class="container-fluid">
 		<table class="table table-bordered">

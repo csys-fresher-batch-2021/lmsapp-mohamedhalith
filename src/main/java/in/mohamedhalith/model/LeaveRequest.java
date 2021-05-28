@@ -9,14 +9,13 @@ import in.mohamedhalith.util.StringValidator;
 public class LeaveRequest {
 
 	private int leaveId;
-	private String employeeName;
-	private int employeeId;
+	private Employee employee;
 	private LocalDate fromDate;
 	private LocalDate toDate;
 	private int duration;
 	private String type;
 	private String reason;
-	private String status = "Waiting for approval";
+	private String status = "Waiting for approval"; 
 	private LocalDateTime cancelledTime;
 	private LocalDateTime reviewedTime;
 	private LocalDateTime appliedTime;
@@ -32,24 +31,13 @@ public class LeaveRequest {
 		this.leaveId = leaveId;
 	}
 
-	public String getEmployeeName() {
-		return employeeName;
+
+	public Employee getEmployee() {
+		return employee;
 	}
 
-	public void setEmployeeName(String employeeName) throws ValidationException {
-		StringValidator.isValidString(employeeName);
-		this.employeeName = employeeName;
-	}
-
-	public int getEmployeeId() {
-		return employeeId;
-	}
-
-	public void setEmployeeId(int employeeId) {
-		if (employeeId < 1000 || employeeId > 9999) {
-			throw new IllegalArgumentException("Employee Id must be a 4-digit Positive number");
-		}
-		this.employeeId = employeeId;
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
 	public LocalDate getFromDate() {
@@ -132,11 +120,13 @@ public class LeaveRequest {
 		}
 		this.duration = duration;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "LeaveRequest leaveId " + leaveId + " employeeName " + employeeName + " employeeId " + employeeId
-				+ " fromDate " + fromDate + " toDate " + toDate + " type " + type + " reason " + reason + " status "
-				+ status + " cancelledTime " + cancelledTime + " appliedTime " + appliedTime;
+		return "LeaveRequest [leaveId=" + leaveId + ", employee=" + employee + ", fromDate=" + fromDate + ", toDate="
+				+ toDate + ", duration=" + duration + ", type=" + type + ", reason=" + reason + ", status=" + status
+				+ ", cancelledTime=" + cancelledTime + ", reviewedTime=" + reviewedTime + ", appliedTime=" + appliedTime
+				+ "]";
 	}
+	
 }

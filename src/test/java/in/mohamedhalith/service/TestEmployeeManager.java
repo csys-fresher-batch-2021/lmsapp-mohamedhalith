@@ -1,6 +1,7 @@
 package in.mohamedhalith.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class TestEmployeeManager {
 	@Test
 	public void testGetEmployeeWithFirstEmployee() {
 		try {
-			String username = "moha2627";
-			Employee employee = EmployeeService.getEmployee(username);
+			int employeeId = 2627;
+			Employee employee = EmployeeService.getEmployee(employeeId);
 			assertEquals("Mohamed", employee.getName());
 			assertEquals("2627moha", employee.getPassword());
 			assertEquals(2, employee.getSickLeave());
@@ -41,8 +42,8 @@ public class TestEmployeeManager {
 	@Test
 	public void testGetEmployeeWithSecondEmployee() {
 		try {
-			String username = "hali2628";
-			Employee employee = EmployeeService.getEmployee(username);
+			int employeeId = 2627;
+			Employee employee = EmployeeService.getEmployee(employeeId);
 			assertEquals("Halith", employee.getName());
 			assertEquals("2628hali", employee.getPassword());
 			assertEquals(2, employee.getSickLeave());
@@ -56,8 +57,8 @@ public class TestEmployeeManager {
 	@Test
 	public void testGetEmployeeWithInvalidEmployee() {
 		try {
-			String username = "halith";
-			EmployeeService.getEmployee(username);
+			int employeeId = 26726;
+			Employee employee = EmployeeService.getEmployee(employeeId);
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("Invalid username", e.getMessage());

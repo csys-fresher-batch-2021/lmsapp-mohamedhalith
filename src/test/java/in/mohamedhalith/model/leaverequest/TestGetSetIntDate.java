@@ -8,16 +8,19 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 
 public class TestGetSetIntDate {
 	LeaveRequest leaveRequest = new LeaveRequest();
+	Employee employee = new Employee();
 
 	@Test
 	public void testGetSetEmployeeIdWithValidId() {
 		int id = 2627;
-		leaveRequest.setEmployeeId(id);
-		int checkId = leaveRequest.getEmployeeId();
+		employee.setEmployeeId(id);
+		leaveRequest.setEmployee(employee);
+		int checkId = leaveRequest.getEmployee().getEmployeeId();
 		assertEquals(2627, checkId);
 	}
 
@@ -25,9 +28,9 @@ public class TestGetSetIntDate {
 	public void testGetSetEmployeeIdWithNegativeId() {
 		try {
 			int id = -22;
-			leaveRequest.setEmployeeId(id);
+			employee.setEmployeeId(id);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (RuntimeException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
 		}
 	}
@@ -36,9 +39,9 @@ public class TestGetSetIntDate {
 	public void testGetSetEmployeeIdWithOneDigitId() {
 		try {
 			int id = 4;
-			leaveRequest.setEmployeeId(id);
+			employee.setEmployeeId(id);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (RuntimeException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
 		}
 	}
@@ -47,9 +50,9 @@ public class TestGetSetIntDate {
 	public void testGetSetEmployeeIdWithTwoDigitId() {
 		try {
 			int id = 22;
-			leaveRequest.setEmployeeId(id);
+			employee.setEmployeeId(id);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (RuntimeException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
 		}
 	}
@@ -58,9 +61,9 @@ public class TestGetSetIntDate {
 	public void testGetSetEmployeeIdWithThreeDigitId() {
 		try {
 			int id = 123;
-			leaveRequest.setEmployeeId(id);
+			employee.setEmployeeId(id);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (RuntimeException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
 		}
 	}
@@ -69,9 +72,10 @@ public class TestGetSetIntDate {
 	public void testGetSetEmployeeIdWithMoreThanFourDigitId() {
 		try {
 			int id = 123456789;
-			leaveRequest.setEmployeeId(id);
+
+			employee.setEmployeeId(id);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (RuntimeException e) {
 			assertEquals("Employee Id must be a 4-digit Positive number", e.getMessage());
 		}
 	}
@@ -138,22 +142,22 @@ public class TestGetSetIntDate {
 			assertEquals("Date cannot be past date", e.getMessage());
 		}
 	}
-	
+
 	// Test cases for GetSetDuration
-	
+
 	@Test
 	public void testGetSetDurationWithValidValue() {
 		try {
 			int duration = 2;
 			leaveRequest.setDuration(duration);
-			duration =0;
+			duration = 0;
 			leaveRequest.setDuration(duration);
 			assertTrue(true);
 		} catch (Exception e) {
 			fail();
 		}
 	}
-	
+
 	@Test
 	public void testGetSetDurationWithNegativeValue() {
 		try {
@@ -161,7 +165,7 @@ public class TestGetSetIntDate {
 			leaveRequest.setDuration(duration);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Leave duration cannot be negative",e.getMessage());
+			assertEquals("Leave duration cannot be negative", e.getMessage());
 		}
 	}
 }

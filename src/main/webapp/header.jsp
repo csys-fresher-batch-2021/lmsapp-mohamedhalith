@@ -28,10 +28,10 @@
       }else if(loggedInUsername != null && role != null && role.equalsIgnoreCase("employee")){
       %>
       <li class="nav-item">
-        <a class="nav-link" href="viewbalance.jsp">Leave Balance</a>
+        <a class="nav-link" href="LeaveBalanceServlet?redirect=<%="view"%>">Leave Balance</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="applyleave.jsp">Apply for Leave</a>
+        <a class="nav-link" href="LeaveBalanceServlet?redirect=<%="apply"%>">Apply for Leave</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="ListWaitingRequestServlet">Cancel a request</a>
@@ -54,7 +54,8 @@
       </ul>
    <%
    }else if(role != null && role.equalsIgnoreCase("employee")){
-   	   Employee employee = EmployeeService.getEmployee(loggedInUsername);
+	   int employeeId = (Integer) session.getAttribute("employeeId");
+   	   Employee employee = EmployeeService.getEmployee(employeeId);
    	   if(employee!=null){
    %>
 	  <ul class="navbar-nav ml-auto mt-2 mt-lg-0">

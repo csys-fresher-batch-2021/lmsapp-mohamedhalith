@@ -49,7 +49,7 @@ public class TestEmployeeDAO {
 	@Test
 	public void testGetEmployeeList() {
 		try {
-			List<Employee> employeeList = employeeDAO.getEmployeeList();
+			List<Employee> employeeList = employeeDAO.findAll();
 			assertEquals(2,employeeList.size());
 		} catch (DBException | ValidationException e) {
 			fail();
