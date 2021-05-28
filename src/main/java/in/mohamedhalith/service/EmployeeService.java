@@ -8,6 +8,7 @@ import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.validator.EmployeeValidator;
 import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.model.LeaveBalance;
 
 public class EmployeeService {
 
@@ -91,15 +92,15 @@ public class EmployeeService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static Employee findLeaveBalance(int employeeId) throws ServiceException, ValidationException {
+	public static LeaveBalance findLeaveBalance(int employeeId) throws ServiceException, ValidationException {
 		try {
-			Employee employee = null;
+			LeaveBalance employeeLeaveBalance = null;
 			EmployeeValidator.isEmployee(employeeId);
-			employee = employeeDAO.findLeaveBalance(employeeId);
-			if (employee == null) {
+			employeeLeaveBalance = employeeDAO.findLeaveBalance(employeeId);
+			if (employeeLeaveBalance == null) {
 				throw new ServiceException("Invalid employee id");
 			}
-			return employee;
+			return employeeLeaveBalance;
 		} catch (DBException e) {
 			throw new ServiceException(e, "Unable to get employee leave balance");
 		}

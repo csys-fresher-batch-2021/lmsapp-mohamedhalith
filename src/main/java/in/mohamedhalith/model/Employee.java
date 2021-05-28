@@ -1,12 +1,15 @@
 package in.mohamedhalith.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.util.StringValidator;
 
-public class Employee {
+public class Employee implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private int id;
 	private int employeeId;
@@ -14,9 +17,6 @@ public class Employee {
 	private String email;
 	private String username;
 	private String password;
-	private int sickLeave;
-	private int casualLeave;
-	private int earnedLeave;
 	private boolean status;
 	private LocalDate joinedDate;
 	private LocalDateTime modifiedTime;
@@ -75,29 +75,7 @@ public class Employee {
 
 	}
 
-	public int getSickLeave() {
-		return sickLeave;
-	}
-
-	public void setSickLeave(int sickLeave) {
-		this.sickLeave = sickLeave;
-	}
-
-	public int getCasualLeave() {
-		return casualLeave;
-	}
-
-	public void setCasualLeave(int casualLeave) {
-		this.casualLeave = casualLeave;
-	}
-
-	public int getEarnedLeave() {
-		return earnedLeave;
-	}
-
-	public void setEarnedLeave(int earnedLeave) {
-		this.earnedLeave = earnedLeave;
-	}
+	
 
 	public String getUsername() {
 		return username;
@@ -147,8 +125,9 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [name=" + name + ", id=" + id + ", employeeId=" + employeeId + ", mobileNumber=" + mobileNumber
-				+ ", email=" + email + ", username=" + username + ", password=" + password + ", sickLeave=" + sickLeave
-				+ ", casualLeave=" + casualLeave + ", earnedLeave=" + earnedLeave + ", status=" + status
-				+ ", joined_date=" + joinedDate + ", modified_time=" + modifiedTime + "]";
+				+ ", email=" + email + ", username=" + username + ", password=" + password + ", status=" + status
+				+ ", joinedDate=" + joinedDate + ", modifiedTime=" + modifiedTime + "]";
 	}
+
+	
 }

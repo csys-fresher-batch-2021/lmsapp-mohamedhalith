@@ -25,7 +25,7 @@ public class LeaveRequestDAO {
 	
 	private static final String BASE_QUERY = "select lr.id,e.name,e.employee_id,lr.from_date,lr.to_date,lr.leave_type,lr.status,"
 			+ "lr.reason,lr.created_time,lr.duration"
-			+ " from leave_requests lr, employees e where e.employee_id = lr.employee_id";
+			+ " from leave_requests lr, employees e where e.employee_id = lr.employee_id ";
 	
 	private static LeaveRequestDAO instance = new LeaveRequestDAO();
 
@@ -56,7 +56,7 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query =  BASE_QUERY + "and status != \'cancelled\'";
+			String query =  BASE_QUERY + " and status != \'cancelled\'";
 
 			statement = connection.prepareStatement(query);
 

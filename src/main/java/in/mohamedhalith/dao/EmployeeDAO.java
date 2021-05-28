@@ -10,6 +10,7 @@ import java.util.List;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.util.ConnectionUtil;
 
@@ -249,7 +250,7 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public Employee findLeaveBalance(int employeeId) throws DBException, ValidationException {
+	public LeaveBalance findLeaveBalance(int employeeId) throws DBException, ValidationException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
@@ -265,22 +266,24 @@ public class EmployeeDAO {
 			statement.setInt(1, employeeId);
 
 			result = statement.executeQuery();
-			Employee employee = new Employee();
+			LeaveBalance employeeLeaveBalance = new LeaveBalance();
 			while (result.next()) {
+				Employee employee = new Employee();
 				employee.setId(result.getInt("id"));
 				employee.setName(result.getString("name"));
 				employee.setEmployeeId(employeeId);
+				employeeLeaveBalance.setEmployee(employee);
 				String leaveType = result.getString("type_of_leave");
 				if (leaveType.equalsIgnoreCase("sickleave")) {
-					employee.setSickLeave(result.getInt(leaveBalance));
+					employeeLeaveBalance.setSickLeave(result.getInt(leaveBalance));
 				} else if (leaveType.equalsIgnoreCase("casualleave")) {
-					employee.setCasualLeave(result.getInt(leaveBalance));
+					employeeLeaveBalance.setCasualLeave(result.getInt(leaveBalance));
 				}
 				if (leaveType.equalsIgnoreCase("earnedleave")) {
-					employee.setEarnedLeave(result.getInt(leaveBalance));
+					employeeLeaveBalance.setEarnedLeave(result.getInt(leaveBalance));
 				}
 			}
-			return employee;
+			return employeeLeaveBalance;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException(e, "Failed to get employee leave balance");
 		} finally {
