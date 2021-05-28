@@ -158,7 +158,7 @@ public class TestGetSetString {
 			employee.setName("Mohamed");
 			employee.setId(2627);
 			String result = employee.toString();
-			assertEquals(result, "Employee [Name Mohamed Id 2627 Username mohamed Password password");
+			assertEquals("Employee [Name Mohamed Id 2627 Username mohamed Password password]",result);
 		} catch (ValidationException e) {
 			fail();
 		}

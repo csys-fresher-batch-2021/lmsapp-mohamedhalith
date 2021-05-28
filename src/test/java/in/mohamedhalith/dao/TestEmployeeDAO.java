@@ -1,6 +1,8 @@
 package in.mohamedhalith.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -24,9 +26,9 @@ public class TestEmployeeDAO {
 	
 	@Test 
 	public void testGetEmployeeWithValidEmployee() {
-		String username = "moha2627";
+		int employeeId = 2627 ;
 		try {
-			Employee employee = employeeDAO.getEmployee(username);
+			Employee employee = employeeDAO.findByEmployeeId(employeeId);
 			assertTrue(true);
 		} catch (DBException | ValidationException e) {
 			fail();
@@ -35,9 +37,9 @@ public class TestEmployeeDAO {
 	
 	@Test 
 	public void testGetEmployeeWithInvalidEmployee() {
-		String username = "mohamed";
+		int employeeId = 262722;
 		try {
-			Employee employee = employeeDAO.getEmployee(username);
+			Employee employee = employeeDAO.findByEmployeeId(employeeId);
 			fail();
 		} catch (DBException | ValidationException e) {
 			assertEquals("Failed to get employee",e.getMessage());

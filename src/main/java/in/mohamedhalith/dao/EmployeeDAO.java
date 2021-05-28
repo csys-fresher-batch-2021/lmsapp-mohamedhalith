@@ -22,7 +22,7 @@ public class EmployeeDAO {
 	private static final EmployeeDAO instance = new EmployeeDAO();
 
 	private static final String EMPLOYEE_ID = "employee_id";
-	
+
 	public static EmployeeDAO getInstance() {
 		return instance;
 	}
@@ -62,49 +62,21 @@ public class EmployeeDAO {
 		}
 	}
 
+	/**
+	 * This is a method used to convert result set into an employee object(instance)
+	 * 
+	 * @param result
+	 * @param employee
+	 * @return
+	 * @throws SQLException
+	 * @throws ValidationException
+	 */
 	private Employee returnAsEmployee(ResultSet result, Employee employee) throws SQLException, ValidationException {
 		employee.setId(result.getInt("id"));
 		employee.setName(result.getString("name"));
 		employee.setEmployeeId(result.getInt(EMPLOYEE_ID));
 		employee.setUsername(result.getString("username"));
 		return employee;
-	}
-
-	/**
-	 * This method is used to return a specific employee. Employee username is
-	 * obtained and returns employee with that username.
-	 * 
-	 * @param username
-	 * @return Employee
-	 * @throws DBException
-	 * @throws ValidationException
-	 */
-	public Employee getEmployee(String username) throws DBException, ValidationException {
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
-		try {
-			connection = ConnectionUtil.getConnection();
-			String query = "select id,name,employee_id,username from employees where status active = true "
-					+ "and username = ?";
-
-			statement = connection.prepareStatement(query);
-			statement.setString(1, username);
-
-			result = statement.executeQuery();
-			Employee employee = null;
-			if (result.next()) {
-				employee = new Employee();
-				employee = returnAsEmployee(result, employee);
-			}
-			return employee;
-		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, "Failed to get employee");
-		} finally {
-			ConnectionUtil.closeConnection(connection, statement, result);
-		}
 	}
 
 	/**
