@@ -56,7 +56,7 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query =  BASE_QUERY + " and status != \'cancelled\'";
+			String query =  BASE_QUERY ;
 
 			statement = connection.prepareStatement(query);
 
@@ -202,7 +202,7 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = BASE_QUERY + " and e.employee_id = ? and status = \'Waiting for approval\'";
+			String query = BASE_QUERY + " and e.employee_id = ? and status = \'waiting for approval\'";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
