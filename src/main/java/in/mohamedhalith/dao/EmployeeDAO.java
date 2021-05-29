@@ -250,8 +250,7 @@ public class EmployeeDAO {
 					employeeLeaveBalance.setSickLeave(result.getInt(leaveBalance));
 				} else if (leaveType.equalsIgnoreCase("casualleave")) {
 					employeeLeaveBalance.setCasualLeave(result.getInt(leaveBalance));
-				}
-				if (leaveType.equalsIgnoreCase("earnedleave")) {
+				}else if (leaveType.equalsIgnoreCase("earnedleave")) {
 					employeeLeaveBalance.setEarnedLeave(result.getInt(leaveBalance));
 				}
 			}
