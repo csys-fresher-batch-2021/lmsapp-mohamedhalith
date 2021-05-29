@@ -5,7 +5,7 @@ import java.util.List;
 
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
-import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.EmployeeService;
 import in.mohamedhalith.service.LeaveRequestService;
@@ -26,14 +26,14 @@ public class LeaveRequestValidator {
 	 * @param employee
 	 * @param employeeRequests
 	 * @throws ValidationException
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
 	public static void isValidRequest(LeaveRequest leaveRequest, int employeeId, List<LeaveRequest> employeeRequests)
 			throws ValidationException, ServiceException {
-		Employee employee = EmployeeService.getEmployee(employeeId);
+		LeaveBalance leaveBalance = EmployeeService.findLeaveBalance(employeeId);
 		isValidDates(leaveRequest);
 		findDuplicateRequest(leaveRequest, employeeRequests);
-		isValidDuration(leaveRequest, employee);
+		isValidDuration(leaveRequest, leaveBalance);
 	}
 
 	/**
@@ -72,16 +72,15 @@ public class LeaveRequestValidator {
 	public static void findDuplicateRequest(LeaveRequest leaveRequest, List<LeaveRequest> employeeRequests)
 			throws ValidationException {
 		boolean duplicate = false;
-		String status ="waiting for approval";
+		String status = "waiting for approval";
 		LocalDate fromDate = leaveRequest.getFromDate();
 		LocalDate toDate = leaveRequest.getToDate();
 		for (LeaveRequest requestLeave : employeeRequests) {
 			LocalDate leaveFromDate = requestLeave.getFromDate();
 			LocalDate leaveToDate = requestLeave.getToDate();
-			if(status.equalsIgnoreCase(requestLeave.getStatus())
-					&& ( fromDate.isEqual(leaveFromDate) 
-					|| toDate.isEqual(leaveToDate)
-					|| (fromDate.isAfter(leaveFromDate) && toDate.isBefore(leaveToDate)))) {
+			if (status.equalsIgnoreCase(requestLeave.getStatus())
+					&& (fromDate.isEqual(leaveFromDate) || toDate.isEqual(leaveToDate)
+							|| (fromDate.isAfter(leaveFromDate) && toDate.isBefore(leaveToDate)))) {
 				duplicate = true;
 				break;
 			}
@@ -96,25 +95,25 @@ public class LeaveRequestValidator {
 	 * the permitted leave days.
 	 * 
 	 * @param leaveRequest
-	 * @param employee
+	 * @param leaveBalance
 	 * @throws ValidationException
 	 */
-	public static void isValidDuration(LeaveRequest leaveRequest, Employee employee) throws ValidationException {
+	public static void isValidDuration(LeaveRequest leaveRequest, LeaveBalance leaveBalance) throws ValidationException {
 		boolean invalid = false;
 		int duration = leaveRequest.getDuration();
 		switch (leaveRequest.getType()) {
 		case "SickLeave":
-			if (duration > employee.getSickLeave()) {
+			if (duration > leaveBalance.getSickLeave()) {
 				invalid = true;
 			}
 			break;
 		case "CasualLeave":
-			if (duration > employee.getCasualLeave()) {
+			if (duration > leaveBalance.getCasualLeave()) {
 				invalid = true;
 			}
 			break;
 		case "EarnedLeave":
-			if (duration > employee.getEarnedLeave()) {
+			if (duration > leaveBalance.getEarnedLeave()) {
 				invalid = true;
 			}
 			break;

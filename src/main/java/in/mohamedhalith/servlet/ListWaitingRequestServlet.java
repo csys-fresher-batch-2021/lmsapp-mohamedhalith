@@ -1,7 +1,6 @@
 package in.mohamedhalith.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -30,7 +29,7 @@ public class ListWaitingRequestServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("LOGGEDIN_USERNAME");
+		int employeeId = (Integer) session.getAttribute("employeeId");
 		String infoMessage = (String) request.getAttribute("infoMessage");
 		String errorMessage = (String) request.getAttribute("errorMessage");
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("cancelrequest.jsp");
@@ -42,9 +41,7 @@ public class ListWaitingRequestServlet extends HttpServlet {
 			request.setAttribute("errorMessage", errorMessage);
 		}
 		try {
-			List<LeaveRequest> requestList = LeaveRequestService.getUnapprovedRequest(username);
-			PrintWriter out = response.getWriter();
-			out.print("Servlet Working");
+			List<LeaveRequest> requestList = LeaveRequestService.getUnapprovedRequest(employeeId);
 			request.setAttribute("waitingRequests", requestList);
 			requestDispatcher.forward(request, response);
 		} catch (ServiceException | ValidationException e) {

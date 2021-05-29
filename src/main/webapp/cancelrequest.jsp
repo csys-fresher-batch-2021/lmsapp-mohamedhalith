@@ -34,15 +34,15 @@
 				List<LeaveRequest> requestList = (List<LeaveRequest>) request.getAttribute("waitingRequests");
 				if(requestList == null){
 				%>
-				<tr><td style="text-align:center" colspan="7"> No waiting requests to cancel </td></tr>
+				<tr><td style="text-align:center" colspan="9"> No waiting requests to cancel </td></tr>
 				<%
 				}else{
 				for(LeaveRequest leaveRequest : requestList){
 				%>
 				<tr>
 				<td><%= serial %>
-				<td><%=leaveRequest.getEmployeeId() %></td>
-				<td><%=leaveRequest.getEmployeeName() %></td>
+				<td><%=leaveRequest.getEmployee().getEmployeeId() %></td>
+				<td><%=leaveRequest.getEmployee().getName() %></td>
 				<td><%=leaveRequest.getFromDate() %></td>
 				<td><%=leaveRequest.getToDate() %></td>
 				<td><%=leaveRequest.getReason()%></td>

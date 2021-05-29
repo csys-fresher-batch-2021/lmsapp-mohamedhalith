@@ -34,12 +34,17 @@ List<LeaveRequest> employeeRequests = (List<LeaveRequest>) request.getAttribute(
 			<tbody>
 				<%
 				int serial = 1;
+				if(employeeRequests == null){
+				%>
+				<tr><td colspan="8" style="text-align:center">No leave request applied</td></tr>
+				<%	
+				}else{
 				for(LeaveRequest leaveRequest : employeeRequests){
 				%>
 				<tr>
 					<td><%= serial%></td>
-					<td><%=leaveRequest.getEmployeeId() %></td>
-					<td><%= leaveRequest.getEmployeeName() %></td>
+					<td><%=leaveRequest.getEmployee().getEmployeeId() %></td>
+					<td><%= leaveRequest.getEmployee().getName() %></td>
 					<td><%= leaveRequest.getFromDate() %></td>
 					<td><%= leaveRequest.getToDate() %></td>
 					<td><%= leaveRequest.getDuration() %></td>
@@ -50,6 +55,7 @@ List<LeaveRequest> employeeRequests = (List<LeaveRequest>) request.getAttribute(
 					<td><%= date %></td>
 				</tr>
 				<%
+					}
 					serial+=1;
 				}
 				%>

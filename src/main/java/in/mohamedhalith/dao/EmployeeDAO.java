@@ -10,6 +10,7 @@ import java.util.List;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.util.ConnectionUtil;
 
@@ -19,6 +20,8 @@ public class EmployeeDAO {
 	}
 
 	private static final EmployeeDAO instance = new EmployeeDAO();
+
+	private static final String EMPLOYEE_ID = "employee_id";
 
 	public static EmployeeDAO getInstance() {
 		return instance;
@@ -31,7 +34,7 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public List<Employee> getEmployeeList() throws DBException, ValidationException {
+	public List<Employee> findAll() throws DBException, ValidationException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
@@ -39,75 +42,41 @@ public class EmployeeDAO {
 			// Get Database connection
 			connection = ConnectionUtil.getConnection();
 			// Query to be executed
-			String query = "select * from employees where active= true order by name asc";
+			String query = "select id,name,employee_id,username from employees where active = true order by name asc";
 			// Converting query to statement
 			statement = connection.prepareStatement(query);
 			// Executing query
 			result = statement.executeQuery();
 			List<Employee> employeeList = new ArrayList<>();
-
+			Employee employee = null;
 			while (result.next()) {
-				Employee employee = returnAsEmployee(result);
+				employee = new Employee();
+				returnAsEmployee(result, employee);
 				employeeList.add(employee);
 			}
 			return employeeList;
-
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, "Failed to get Employee list");
+			throw new DBException(e, "Failed to get employees");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
-	}
-
-	private Employee returnAsEmployee(ResultSet result) throws ValidationException, SQLException {
-		Employee employee = new Employee();
-		employee.setName(result.getString("name"));
-		employee.setId(result.getInt("id"));
-		employee.setEmployeeId(result.getInt("employeeid"));
-		employee.setUsername(result.getString("username"));
-		employee.setPassword(result.getString("password"));
-		employee.setEmail(result.getString("email"));
-		String mobile = String.valueOf(result.getLong("mobilenumber"));
-		employee.setMobileNumber(mobile);
-		employee.setSickLeave(result.getInt("sickleave"));
-		employee.setCasualLeave(result.getInt("casualleave"));
-		employee.setEarnedLeave(result.getInt("earnedleave"));
-		return employee;
 	}
 
 	/**
-	 * This method is used to return a specific employee. Employee username is
-	 * obtained and returns employee with that username.
+	 * This is a method used to convert result set into an employee object(instance)
 	 * 
-	 * @param username
+	 * @param result
+	 * @param employee
 	 * @return
-	 * @throws DBException
+	 * @throws SQLException
 	 * @throws ValidationException
 	 */
-	public Employee getEmployee(String username) throws DBException, ValidationException {
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
-		try {
-			connection = ConnectionUtil.getConnection();
-			String query = "select * from employees where username = ?";
-
-			statement = connection.prepareStatement(query);
-			statement.setString(1, username);
-
-			result = statement.executeQuery();
-			if (result.next()) {
-				return returnAsEmployee(result);
-			} else {
-				throw new SQLException("Employee not found");
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, "Failed to get employee");
-		} finally {
-			ConnectionUtil.closeConnection(connection, statement, result);
-		}
+	private Employee returnAsEmployee(ResultSet result, Employee employee) throws SQLException, ValidationException {
+		employee.setId(result.getInt("id"));
+		employee.setName(result.getString("name"));
+		employee.setEmployeeId(result.getInt(EMPLOYEE_ID));
+		employee.setUsername(result.getString("username"));
+		return employee;
 	}
 
 	/**
@@ -117,7 +86,7 @@ public class EmployeeDAO {
 	 * @param employee
 	 * @param type
 	 * @param duration
-	 * @return
+	 * @return boolean
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
@@ -125,9 +94,7 @@ public class EmployeeDAO {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		String leaveType = leaveRequest.getType().toLowerCase();
-		int duration = leaveRequest.getDuration();
 		String query = null;
-		boolean isUpdated = false;
 		String apply = "apply";
 		String cancel = "cancel";
 		try {
@@ -135,29 +102,30 @@ public class EmployeeDAO {
 			switch (leaveType) {
 			case "sickleave":
 				if (keyword.equalsIgnoreCase(apply)) {
-					query = "update employees set sickleave = sickleave - ? where employeeId = ?";
+					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'sickleave\'";
 				} else if (keyword.equalsIgnoreCase(cancel)) {
-					query = "update employees set sickleave = sickleave + ? where employeeId = ?";
+					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'sickleave\'";
 				}
 				break;
 			case "casualleave":
 				if (keyword.equalsIgnoreCase(apply)) {
-					query = "update employees set casualleave = casualleave - ? where employeeId = ?";
+					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'casualleave\'";
 				} else if (keyword.equalsIgnoreCase(cancel)) {
-					query = "update employees set casualleave = casualleave + ? where employeeId = ?";
+					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'casualleave\'";
 				}
 				break;
 			default:
 				if (keyword.equalsIgnoreCase(apply)) {
-					query = "update employees set earnedleave = earnedleave - ? where employeeId = ?";
+					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'earnedleave\'";
 				} else if (keyword.equalsIgnoreCase(cancel)) {
-					query = "update employees set earnedleave = earnedleave + ? where employeeId = ?";
+					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'earnedleave\'";
 				}
 			}
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, duration);
+			statement.setInt(1, leaveRequest.getDuration());
 			statement.setInt(2, employeeId);
 			int row = statement.executeUpdate();
+			boolean isUpdated = false;
 			if (row == 1) {
 				isUpdated = true;
 			}
@@ -174,7 +142,7 @@ public class EmployeeDAO {
 	 * and returns employee with that Employee ID.
 	 * 
 	 * @param username
-	 * @return
+	 * @return Employee
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
@@ -186,19 +154,142 @@ public class EmployeeDAO {
 
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "select * from employees where employeeId = ?";
+			String query = "select id,name,username,employee_id from employees where employee_id = ? and active = true";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
 
 			result = statement.executeQuery();
+			Employee employee = null;
 			if (result.next()) {
-				return returnAsEmployee(result);
-			} else {
-				throw new SQLException("Employee not found");
+				employee = new Employee();
+				employee = returnAsEmployee(result, employee);
 			}
+			return employee;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException(e, "Failed to get employee");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+	}
+
+	/**
+	 * This method is used to find employee by username and password.
+	 * 
+	 * @param username
+	 * @param password
+	 * @return Employee
+	 * @throws DBException
+	 * @throws ValidationException
+	 */
+	public Employee findByUsernameAndPassword(String username, String password)
+			throws DBException, ValidationException {
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		try {
+			connection = ConnectionUtil.getConnection();
+
+			String query = "select id,name,employee_id from employees where username = ? and password = ?";
+
+			statement = connection.prepareStatement(query);
+
+			statement.setString(1, username);
+			statement.setString(2, password);
+
+			result = statement.executeQuery();
+			Employee employee = null;
+			if (result.next()) {
+				employee = new Employee();
+				employee.setId(result.getInt("id"));
+				employee.setName(result.getString("name"));
+				employee.setEmployeeId(result.getInt(EMPLOYEE_ID));
+			}
+			return employee;
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to get user details");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+	}
+
+	/**
+	 * This method is used to find leavebalance of an employee
+	 * 
+	 * @param employeeId
+	 * @return Employee
+	 * @throws DBException
+	 * @throws ValidationException
+	 */
+	public LeaveBalance findLeaveBalance(int employeeId) throws DBException, ValidationException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		String leaveBalance = "leave_balance";
+		try {
+			connection = ConnectionUtil.getConnection();
+
+			String query = "select e.id,e.name,e.employee_id,lb.type_of_leave,lb.leave_balance from employees as e, employee_leavebalance as lb"
+					+ " where e.employee_id = lb.employee_id and e.employee_id = ?";
+
+			statement = connection.prepareStatement(query);
+
+			statement.setInt(1, employeeId);
+
+			result = statement.executeQuery();
+			LeaveBalance employeeLeaveBalance = new LeaveBalance();
+			while (result.next()) {
+				Employee employee = new Employee();
+				employee.setId(result.getInt("id"));
+				employee.setName(result.getString("name"));
+				employee.setEmployeeId(employeeId);
+				employeeLeaveBalance.setEmployee(employee);
+				String leaveType = result.getString("type_of_leave");
+				if (leaveType.equalsIgnoreCase("sickleave")) {
+					employeeLeaveBalance.setSickLeave(result.getInt(leaveBalance));
+				} else if (leaveType.equalsIgnoreCase("casualleave")) {
+					employeeLeaveBalance.setCasualLeave(result.getInt(leaveBalance));
+				}else if (leaveType.equalsIgnoreCase("earnedleave")) {
+					employeeLeaveBalance.setEarnedLeave(result.getInt(leaveBalance));
+				}
+			}
+			return employeeLeaveBalance;
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to get employee leave balance");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+	}
+
+	/**
+	 * This method is used to find id of an employee by using username as reference.
+	 * 
+	 * @param username
+	 * @return Integer
+	 * @throws DBException
+	 */
+	public Integer findEmployeeId(String username) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+
+		try {
+			connection = ConnectionUtil.getConnection();
+
+			String query = "select employee_id from employees where username = ?";
+
+			statement = connection.prepareStatement(query);
+
+			statement.setString(1, username);
+			result = statement.executeQuery();
+			Integer employeeId = null;
+			if (result.next()) {
+				employeeId = result.getInt(EMPLOYEE_ID);
+			}
+			return employeeId;
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to get employee id");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}

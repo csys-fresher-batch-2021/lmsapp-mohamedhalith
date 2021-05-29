@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import org.junit.Test;
 
 import in.mohamedhalith.exception.ValidationException;
+import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 
 public class TestGetSetString {
@@ -18,8 +19,10 @@ public class TestGetSetString {
 	public void testGetSetNameWithValidName() {
 		try {
 			String name = "Mohamed";
-			leaveRequest.setEmployeeName(name);
-			String checkName = leaveRequest.getEmployeeName();
+			Employee employee = new Employee();
+			employee.setName(name);
+			leaveRequest.setEmployee(employee);
+			String checkName = leaveRequest.getEmployee().getName();
 			assertEquals(name, checkName);
 		} catch (ValidationException e) {
 			fail();
@@ -30,7 +33,8 @@ public class TestGetSetString {
 	public void testGetSetNameWithEmptyName() {
 		try {
 			String name = "";
-			leaveRequest.setEmployeeName(name);
+			Employee employee = new Employee();
+			employee.setName(name);
 			fail();
 		} catch (Exception e) {
 			assertEquals("String should not be null or empty", e.getMessage());
@@ -41,7 +45,8 @@ public class TestGetSetString {
 	public void testGetSetNameWithWhiteSpaces() {
 		try {
 			String name = "     ";
-			leaveRequest.setEmployeeName(name);
+			Employee employee = new Employee();
+			employee.setName(name);
 			fail();
 		} catch (Exception e) {
 			assertEquals("String should not be null or empty", e.getMessage());
@@ -157,8 +162,10 @@ public class TestGetSetString {
 	@Test
 	public void testToString() {
 		try {
-			leaveRequest.setEmployeeName("Mohamed");
-			leaveRequest.setEmployeeId(2627);
+			Employee employee = new Employee();
+			employee.setName("Mohamed");
+			employee.setEmployeeId(2627);
+			leaveRequest.setEmployee(employee);
 			LocalDate fromDate = LocalDate.parse("2022-06-01");
 			leaveRequest.setFromDate(fromDate);
 			LocalDate toDate = LocalDate.parse("2022-01-01");

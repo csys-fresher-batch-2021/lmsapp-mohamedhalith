@@ -9,10 +9,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
+import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
+import in.mohamedhalith.service.EmployeeService;
 import in.mohamedhalith.service.LeaveRequestService;
 
 /**
@@ -29,11 +33,13 @@ public class ApplyLeaveServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		int employeeId = (Integer) session.getAttribute("employeeId");
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("applyleave.jsp");
 		// Obtaining the parameters from the form
 		try {
 			String employeeName = request.getParameter("employeeName");
-			int employeeId = Integer.parseInt(request.getParameter("employeeId"));
+			request.getParameter("employeeId");
 			LocalDate fromDate = LocalDate.parse(request.getParameter("fromDate"));
 			LocalDate toDate = LocalDate.parse(request.getParameter("toDate"));
 			int duration = Integer.parseInt(request.getParameter("duration"));
@@ -42,13 +48,15 @@ public class ApplyLeaveServlet extends HttpServlet {
 
 			// Converting the parameters to Leave Request
 			LeaveRequest leaveRequest = new LeaveRequest();
-			leaveRequest.setEmployeeName(employeeName);
-			leaveRequest.setEmployeeId(employeeId);
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
 			leaveRequest.setType(type);
 			leaveRequest.setReason(reason);
 			leaveRequest.setDuration(duration);
+			Employee employee = new Employee();
+			employee.setName(employeeName);
+			employee.setEmployeeId(employeeId);
+			leaveRequest.setEmployee(employee);
 
 			// Sending to the backend manager
 			boolean isApplied = LeaveRequestService.applyLeaveRequest(leaveRequest, employeeId);
@@ -56,7 +64,8 @@ public class ApplyLeaveServlet extends HttpServlet {
 				String message = "Leave Applied Successfully!";
 				request.setAttribute("infoMessage", message);
 			}
-			
+			LeaveBalance employeeLeaveBalance = EmployeeService.findLeaveBalance(employeeId);
+			session.setAttribute("leavebalance", employeeLeaveBalance);
 		} catch (RuntimeException | ServiceException | ValidationException e) {
 			e.printStackTrace();
 			request.setAttribute("errorMessage", e.getMessage());

@@ -1,9 +1,15 @@
 package in.mohamedhalith.model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.util.StringValidator;
 
-public class Employee {
+public class Employee implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private int id;
 	private int employeeId;
@@ -11,20 +17,9 @@ public class Employee {
 	private String email;
 	private String username;
 	private String password;
-	private int sickLeave = 2;
-	private int casualLeave = 2;
-	private int earnedLeave = 1;
-
-	// 2 Argument Constructor
-	public Employee(String name, int id) throws ValidationException {
-		setName(name);
-		setId(id);
-	}
-
-	// Default Constructor
-	public Employee() {
-
-	}
+	private boolean status;
+	private LocalDate joinedDate;
+	private LocalDateTime modifiedTime;
 
 	public String getName() {
 		return name;
@@ -80,38 +75,7 @@ public class Employee {
 
 	}
 
-	public int getSickLeave() {
-		return sickLeave;
-	}
-
-	public void setSickLeave(int sickLeave) {
-		if (sickLeave < 0 || sickLeave > 3) {
-			throw new IllegalArgumentException("Invalid no. of sick leaves");
-		}
-		this.sickLeave = sickLeave;
-	}
-
-	public int getCasualLeave() {
-		return casualLeave;
-	}
-
-	public void setCasualLeave(int casualLeave) {
-		if (casualLeave < 0 || casualLeave > 3) {
-			throw new IllegalArgumentException("Invalid no. of casual leaves");
-		}
-		this.casualLeave = casualLeave;
-	}
-
-	public int getEarnedLeave() {
-		return earnedLeave;
-	}
-
-	public void setEarnedLeave(int earnedLeave) {
-		if (earnedLeave < 0 || earnedLeave > 1) {
-			throw new IllegalArgumentException("Invalid no. of earned leaves");
-		}
-		this.earnedLeave = earnedLeave;
-	}
+	
 
 	public String getUsername() {
 		return username;
@@ -134,9 +98,36 @@ public class Employee {
 
 	}
 
+	public boolean getStatus() {
+		return status;
+	}
+
+	public LocalDate getJoinedDate() {
+		return joinedDate;
+	}
+
+	public LocalDateTime getModifiedTime() {
+		return modifiedTime;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public void setJoinedDate(LocalDate joinedDate) {
+		this.joinedDate = joinedDate;
+	}
+
+	public void setModifiedTime(LocalDateTime modifiedTime) {
+		this.modifiedTime = modifiedTime;
+	}
+
 	@Override
 	public String toString() {
-		return "Employee [Name " + name + " Id " + id + " Username " + username + " Password " + password
-				+ " Sick Leave " + sickLeave + " Casual Leave " + casualLeave + " Earned Leave " + earnedLeave + "]";
+		return "Employee [name=" + name + ", id=" + id + ", employeeId=" + employeeId + ", mobileNumber=" + mobileNumber
+				+ ", email=" + email + ", username=" + username + ", password=" + password + ", status=" + status
+				+ ", joinedDate=" + joinedDate + ", modifiedTime=" + modifiedTime + "]";
 	}
+
+	
 }

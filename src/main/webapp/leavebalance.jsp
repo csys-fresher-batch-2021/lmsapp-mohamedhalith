@@ -1,3 +1,4 @@
+<%@page import="in.mohamedhalith.model.LeaveBalance"%>
 <%@page import="in.mohamedhalith.model.Employee"%>
 <%@page import="in.mohamedhalith.service.EmployeeService"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -10,8 +11,7 @@
 </head>
 <body>
 <%
-int employeeId = (Integer) session.getAttribute("employeeId");
-Employee employee = EmployeeService.getEmployee(employeeId);
+LeaveBalance employeeLeaveBalance = (LeaveBalance) session.getAttribute("leavebalance");
 %>
 	<main class="container-fluid">
 		<table class="table table-bordered">
@@ -27,11 +27,11 @@ Employee employee = EmployeeService.getEmployee(employeeId);
 			</thead>
 			<tbody>
 				<tr>
-					<td><%=employee.getName() %></td>
-					<td><%=employee.getEmployeeId() %></td>
-					<td><%=employee.getSickLeave() %></td>
-					<td><%=employee.getCasualLeave() %></td>
-					<td><%=employee.getEarnedLeave() %></td>
+					<td><%=employeeLeaveBalance.getEmployee().getName() %></td>
+					<td><%=employeeLeaveBalance.getEmployee().getEmployeeId() %></td>
+					<td><%=employeeLeaveBalance.getSickLeave() %></td>
+					<td><%=employeeLeaveBalance.getCasualLeave() %></td>
+					<td><%=employeeLeaveBalance.getEarnedLeave() %></td>
 				</tr>
 			</tbody>
 		</table>

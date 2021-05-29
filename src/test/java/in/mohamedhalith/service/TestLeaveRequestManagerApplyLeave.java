@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
+import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 
 public class TestLeaveRequestManagerApplyLeave {
@@ -19,8 +20,9 @@ public class TestLeaveRequestManagerApplyLeave {
 	@Test
 	public void testApplyRequestWithValidDetailsForSickLeave() {
 		try {
-			leaveRequest.setEmployeeName("Mohamed");
-			leaveRequest.setEmployeeId(2627);
+			Employee employee = new Employee();
+			employee.setName("Mohamed");
+			employee.setEmployeeId(2627);
 			LocalDate fromDate = LocalDate.parse("2021-05-21");
 			leaveRequest.setFromDate(fromDate);
 			LocalDate toDate = LocalDate.parse("2021-06-02");
@@ -39,8 +41,9 @@ public class TestLeaveRequestManagerApplyLeave {
 	@Test
 	public void testApplyRequestWithValidDetailsForEarnedLeave() {
 		try {
-			leaveRequest.setEmployeeName("Mohamed");
-			leaveRequest.setEmployeeId(2627);
+			Employee employee = new Employee();
+			employee.setName("Mohamed");
+			employee.setEmployeeId(2627);
 			LocalDate fromDate = LocalDate.parse("2022-07-01");
 			leaveRequest.setFromDate(fromDate);
 			LocalDate toDate = LocalDate.parse("2022-07-02");
@@ -58,8 +61,9 @@ public class TestLeaveRequestManagerApplyLeave {
 	@Test
 	public void testApplyRequestWithValidDetailsForCasualLeave() {
 		try {
-			leaveRequest.setEmployeeName("Mohamed");
-			leaveRequest.setEmployeeId(2627);
+			Employee employee = new Employee();
+			employee.setName("Mohamed");
+			employee.setEmployeeId(2627);
 			LocalDate fromDate = LocalDate.parse("2022-09-01");
 			leaveRequest.setFromDate(fromDate);
 			LocalDate toDate = LocalDate.parse("2022-12-01");
@@ -78,8 +82,9 @@ public class TestLeaveRequestManagerApplyLeave {
 	@Test
 	public void testApplyRequestWithInvalidEmployee() {
 		try {
-			leaveRequest.setEmployeeName("Mohamed");
-			leaveRequest.setEmployeeId(2627);
+			Employee employee = new Employee();
+			employee.setName("Mohamed");
+			employee.setEmployeeId(2627);
 			LocalDate fromDate = LocalDate.parse("2022-06-01");
 			leaveRequest.setFromDate(fromDate);
 			LocalDate toDate = LocalDate.parse("2022-01-01");

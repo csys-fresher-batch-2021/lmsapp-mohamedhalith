@@ -157,12 +157,8 @@ public class TestGetSetString {
 			employee.setPassword("password");
 			employee.setName("Mohamed");
 			employee.setId(2627);
-			employee.setSickLeave(3);
-			employee.setCasualLeave(3);
-			employee.setEarnedLeave(1);
 			String result = employee.toString();
-			assertEquals(result, "Employee [Name Mohamed Id 2627 Username mohamed Password password"
-					+ " Sick Leave 3 Casual Leave 3 Earned Leave 1]");
+			assertEquals("Employee [Name Mohamed Id 2627 Username mohamed Password password]",result);
 		} catch (ValidationException e) {
 			fail();
 		}
