@@ -16,7 +16,7 @@ import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
-import in.mohamedhalith.service.EmployeeService;
+import in.mohamedhalith.service.LeaveBalanceService;
 import in.mohamedhalith.service.LeaveRequestService;
 
 /**
@@ -64,7 +64,7 @@ public class ApplyLeaveServlet extends HttpServlet {
 				String message = "Leave Applied Successfully!";
 				request.setAttribute("infoMessage", message);
 			}
-			LeaveBalance employeeLeaveBalance = EmployeeService.findLeaveBalance(employeeId);
+			LeaveBalance employeeLeaveBalance = LeaveBalanceService.findLeaveBalance(employeeId);
 			session.setAttribute("leavebalance", employeeLeaveBalance);
 		} catch (RuntimeException | ServiceException | ValidationException e) {
 			e.printStackTrace();

@@ -2,7 +2,7 @@ package in.mohamedhalith.service;
 
 import java.util.List;
 
-import in.mohamedhalith.dao.EmployeeDAO;
+import in.mohamedhalith.dao.LeaveBalanceDAO;
 import in.mohamedhalith.dao.LeaveRequestDAO;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
@@ -18,7 +18,7 @@ public class LeaveRequestService {
 	}
 
 	private static LeaveRequestDAO leaveRequestDAO = LeaveRequestDAO.getInstance();
-	private static EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
+	private static LeaveBalanceDAO leaveBalanceDAO = LeaveBalanceDAO.getInstance();
 
 	/**
 	 * This method is used to get list of leave requests.
@@ -71,7 +71,7 @@ public class LeaveRequestService {
 			EmployeeValidator.isEmployee(employeeId);
 			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(employeeId);
 			LeaveRequestValidator.isValidRequest(leaveRequest, employeeId, employeeRequests);
-			employeeDAO.updateLeaveBalance("apply",employeeId, leaveRequest);
+			leaveBalanceDAO.updateLeaveBalance("apply",employeeId, leaveRequest);
 			return leaveRequestDAO.save(leaveRequest);
 		} catch (DBException e) {
 			throw new ServiceException(e,"Unable to apply for leave");
@@ -116,7 +116,7 @@ public class LeaveRequestService {
 			LeaveRequestValidator.isValidId(leaveId);
 			EmployeeValidator.isEmployee(employeeId);
 			LeaveRequest leaveRequest = leaveRequestDAO.findById(leaveId);
-			employeeDAO.updateLeaveBalance("cancel",employeeId, leaveRequest);
+			leaveBalanceDAO.updateLeaveBalance("cancel",employeeId, leaveRequest);
 			return leaveRequestDAO.update("cancel",leaveId);
 		} catch (DBException e) {
 			throw new ServiceException(e, "Unable to cancel the selected request");
@@ -129,7 +129,7 @@ public class LeaveRequestService {
 			EmployeeValidator.isEmployee(employeeId);
 			LeaveRequest leaveRequest = leaveRequestDAO.findById(leaveId);
 			if(action.equalsIgnoreCase("reject")) {
-				employeeDAO.updateLeaveBalance(action,employeeId, leaveRequest);
+				leaveBalanceDAO.updateLeaveBalance(action,employeeId, leaveRequest);
 			}
 			return leaveRequestDAO.update(action,leaveId);
 		} catch (DBException e) {

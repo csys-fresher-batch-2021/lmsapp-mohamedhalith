@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveBalance;
-import in.mohamedhalith.service.EmployeeService;
+import in.mohamedhalith.service.LeaveBalanceService;
 
 /**
  * Servlet implementation class LeaveBalanceServlet
@@ -32,7 +32,7 @@ public class LeaveBalanceServlet extends HttpServlet {
 		RequestDispatcher dispatcher = null;
 		String key = request.getParameter("redirect");
 		try {
-			LeaveBalance employeeLeaveBalance = EmployeeService.findLeaveBalance(employeeId);
+			LeaveBalance employeeLeaveBalance = LeaveBalanceService.findLeaveBalance(employeeId);
 			session.setAttribute("leavebalance", employeeLeaveBalance);
 			if(key.equalsIgnoreCase("view")) {
 				dispatcher = request.getRequestDispatcher("viewbalance.jsp");
