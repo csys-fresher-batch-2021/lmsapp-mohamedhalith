@@ -10,7 +10,6 @@ import java.util.List;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
-import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.util.ConnectionUtil;
 
 public class EmployeeDAO {
@@ -152,54 +151,6 @@ public class EmployeeDAO {
 			return employee;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException(e, "Failed to get user details");
-		} finally {
-			ConnectionUtil.closeConnection(connection, statement, result);
-		}
-	}
-
-	/**
-	 * This method is used to find leavebalance of an employee
-	 * 
-	 * @param employeeId
-	 * @return Employee
-	 * @throws DBException
-	 * @throws ValidationException
-	 */
-	public LeaveBalance findLeaveBalance(int employeeId) throws DBException, ValidationException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-		String leaveBalance = "leave_balance";
-		try {
-			connection = ConnectionUtil.getConnection();
-
-			String query = "select e.id,e.name,e.employee_id,lb.type_of_leave,lb.leave_balance from employees as e, employee_leavebalance as lb"
-					+ " where e.employee_id = lb.employee_id and e.employee_id = ?";
-
-			statement = connection.prepareStatement(query);
-
-			statement.setInt(1, employeeId);
-
-			result = statement.executeQuery();
-			LeaveBalance employeeLeaveBalance = new LeaveBalance();
-			while (result.next()) {
-				Employee employee = new Employee();
-				employee.setId(result.getInt("id"));
-				employee.setName(result.getString("name"));
-				employee.setEmployeeId(employeeId);
-				employeeLeaveBalance.setEmployee(employee);
-				String leaveType = result.getString("type_of_leave");
-				if (leaveType.equalsIgnoreCase("sickleave")) {
-					employeeLeaveBalance.setSickLeave(result.getInt(leaveBalance));
-				} else if (leaveType.equalsIgnoreCase("casualleave")) {
-					employeeLeaveBalance.setCasualLeave(result.getInt(leaveBalance));
-				}else if (leaveType.equalsIgnoreCase("earnedleave")) {
-					employeeLeaveBalance.setEarnedLeave(result.getInt(leaveBalance));
-				}
-			}
-			return employeeLeaveBalance;
-		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, "Failed to get employee leave balance");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
