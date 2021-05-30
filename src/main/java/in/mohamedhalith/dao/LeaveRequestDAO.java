@@ -230,15 +230,23 @@ public class LeaveRequestDAO {
 	 * @return
 	 * @throws DBException
 	 */
-	public boolean remove(int leaveId) throws DBException {
+	public boolean update(String action,int leaveId) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
-
+		String status = null;
+		if(action.equalsIgnoreCase("cancel")) {
+			status = "cancelled";
+		}else if(action.equalsIgnoreCase("approve")) {
+			status = "approved";
+		}else if(action.equalsIgnoreCase("reject")) {
+			status = "rejected";
+		}
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "update leave_requests set status = \'cancelled\',modified_time = now() where id = ?";
+			String query = "update leave_requests set status = ?,modified_time = now() where id = ?";
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, leaveId);
+			statement.setString(1, status);
+			statement.setInt(2, leaveId);
 
 			int row = statement.executeUpdate();
 			boolean isCancelled = false;

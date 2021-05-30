@@ -97,27 +97,28 @@ public class EmployeeDAO {
 		String query = null;
 		String apply = "apply";
 		String cancel = "cancel";
+		String reject = "reject";
 		try {
 			connection = ConnectionUtil.getConnection();
 			switch (leaveType) {
 			case "sickleave":
 				if (keyword.equalsIgnoreCase(apply)) {
 					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'sickleave\'";
-				} else if (keyword.equalsIgnoreCase(cancel)) {
+				} else if (keyword.equalsIgnoreCase(cancel) || keyword.equalsIgnoreCase(reject)) {
 					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'sickleave\'";
 				}
 				break;
 			case "casualleave":
 				if (keyword.equalsIgnoreCase(apply)) {
 					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'casualleave\'";
-				} else if (keyword.equalsIgnoreCase(cancel)) {
+				} else if (keyword.equalsIgnoreCase(cancel) || keyword.equalsIgnoreCase(reject)) {
 					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'casualleave\'";
 				}
 				break;
 			default:
 				if (keyword.equalsIgnoreCase(apply)) {
 					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'earnedleave\'";
-				} else if (keyword.equalsIgnoreCase(cancel)) {
+				} else if (keyword.equalsIgnoreCase(cancel) || keyword.equalsIgnoreCase(reject)) {
 					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'earnedleave\'";
 				}
 			}
