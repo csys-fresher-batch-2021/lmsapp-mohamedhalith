@@ -14,6 +14,10 @@ import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.util.ConnectionUtil;
 
 public class LeaveBalanceDAO {
+	
+	private LeaveBalanceDAO() {
+		//Default Constructor
+	}
 
 	private static final LeaveBalanceDAO instance = new LeaveBalanceDAO();
 
