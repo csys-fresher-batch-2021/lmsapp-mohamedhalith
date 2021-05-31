@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.mohamedhalith.constant.RequestStatus;
+import in.mohamedhalith.constant.UpdateAction;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
@@ -56,7 +58,7 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query =  BASE_QUERY ;
+			String query =  BASE_QUERY + " order by from_date asc" ;
 
 			statement = connection.prepareStatement(query);
 
@@ -120,7 +122,7 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = BASE_QUERY + " and e.employee_id = ? and status != \'cancelled\'";
+			String query = BASE_QUERY + " and e.employee_id = ? and status != \'cancelled\'  order by from_date asc";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
@@ -202,7 +204,7 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = BASE_QUERY + " and e.employee_id = ? and status = \'waiting for approval\'";
+			String query = BASE_QUERY + " and e.employee_id = ? and status = \'waiting for approval\'  order by from_date asc";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
@@ -234,16 +236,16 @@ public class LeaveRequestDAO {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		String status = null;
-		if(action.equalsIgnoreCase("cancel")) {
-			status = "cancelled";
-		}else if(action.equalsIgnoreCase("approve")) {
-			status = "approved";
-		}else if(action.equalsIgnoreCase("reject")) {
-			status = "rejected";
+		if(action.equalsIgnoreCase(UpdateAction.CANCEL.toString())) {
+			status = RequestStatus.CANCELLED.toString();
+		}else if(action.equalsIgnoreCase(UpdateAction.APPROVE.toString())) {
+			status = RequestStatus.APPROVED.toString();
+		}else if(action.equalsIgnoreCase(UpdateAction.REJECT.toString())) {
+			status = RequestStatus.REJECTED.toString();
 		}
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "update leave_requests set status = ?,modified_time = now() where id = ?";
+			String query = "update leave_requests set status = LOWER(?),modified_time = now() where id = ?";
 			statement = connection.prepareStatement(query);
 			statement.setString(1, status);
 			statement.setInt(2, leaveId);

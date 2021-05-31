@@ -3,6 +3,7 @@ package in.mohamedhalith.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import in.mohamedhalith.constant.UpdateAction;
 import in.mohamedhalith.exception.ValidationException;
 
 public class StringValidator {
@@ -62,6 +63,19 @@ public class StringValidator {
 		boolean valid = match.matches();
 		if(!valid) {
 			throw new ValidationException("Invalid email");
+		}
+	}
+
+	public static void isValidAction(String action) throws ValidationException {
+		boolean isValid = false;
+		if(action.equalsIgnoreCase(UpdateAction.APPLY.toString()) ||
+				action.equalsIgnoreCase(UpdateAction.CANCEL.toString()) ||
+				action.equalsIgnoreCase(UpdateAction.REJECT.toString())) {
+			isValid = true;
+		}
+		
+		if(!isValid) {
+			throw new ValidationException("Invalid Action");
 		}
 	}
 }

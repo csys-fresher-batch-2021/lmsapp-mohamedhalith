@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import in.mohamedhalith.constant.UpdateAction;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
@@ -13,9 +14,9 @@ import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.util.ConnectionUtil;
 
 public class LeaveBalanceDAO {
-	
+
 	private static final LeaveBalanceDAO instance = new LeaveBalanceDAO();
-	
+
 	public static LeaveBalanceDAO getInstance() {
 		return instance;
 	}
@@ -31,41 +32,27 @@ public class LeaveBalanceDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public boolean updateLeaveBalance(String keyword, int employeeId, LeaveRequest leaveRequest) throws DBException {
+	public boolean updateLeaveBalance(UpdateAction action, int employeeId, LeaveRequest leaveRequest) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		String leaveType = leaveRequest.getType().toLowerCase();
 		String query = null;
-		String apply = "apply";
-		String cancel = "cancel";
-		String reject = "reject";
+		String keyword = action.toString();
+//		String apply = "apply";
+//		String cancel = "cancel";
+//		String reject = "reject";
+		
 		try {
 			connection = ConnectionUtil.getConnection();
-			switch (leaveType) {
-			case "sickleave":
-				if (keyword.equalsIgnoreCase(apply)) {
-					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'sickleave\'";
-				} else if (keyword.equalsIgnoreCase(cancel) || keyword.equalsIgnoreCase(reject)) {
-					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'sickleave\'";
-				}
-				break;
-			case "casualleave":
-				if (keyword.equalsIgnoreCase(apply)) {
-					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'casualleave\'";
-				} else if (keyword.equalsIgnoreCase(cancel) || keyword.equalsIgnoreCase(reject)) {
-					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'casualleave\'";
-				}
-				break;
-			default:
-				if (keyword.equalsIgnoreCase(apply)) {
-					query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = \'earnedleave\'";
-				} else if (keyword.equalsIgnoreCase(cancel) || keyword.equalsIgnoreCase(reject)) {
-					query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = \'earnedleave\'";
-				}
+			if (keyword.equalsIgnoreCase("apply")) {
+				query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = ?";
+			} else if (keyword.equalsIgnoreCase("cancel") || keyword.equalsIgnoreCase("reject")) {
+				query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = ?";
 			}
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, leaveRequest.getDuration());
 			statement.setInt(2, employeeId);
+			statement.setString(3, leaveType);
 			int row = statement.executeUpdate();
 			boolean isUpdated = false;
 			if (row == 1) {
@@ -78,7 +65,7 @@ public class LeaveBalanceDAO {
 			ConnectionUtil.closeConnection(connection, statement);
 		}
 	}
-	
+
 	/**
 	 * This method is used to find leavebalance of an employee
 	 * 
@@ -115,7 +102,7 @@ public class LeaveBalanceDAO {
 					employeeLeaveBalance.setSickLeave(result.getInt(leaveBalance));
 				} else if (leaveType.equalsIgnoreCase("casualleave")) {
 					employeeLeaveBalance.setCasualLeave(result.getInt(leaveBalance));
-				}else if (leaveType.equalsIgnoreCase("earnedleave")) {
+				} else if (leaveType.equalsIgnoreCase("earnedleave")) {
 					employeeLeaveBalance.setEarnedLeave(result.getInt(leaveBalance));
 				}
 			}
