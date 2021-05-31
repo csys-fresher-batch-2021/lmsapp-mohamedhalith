@@ -11,14 +11,15 @@
 	<main class="container-fluid">
 		<h3>Leave Requests</h3>
 		<input type="radio" name="filter" id="all" onclick="getRequests(null)" />
-		<label>All</label> <input type="radio" name="filter" id="pending"
-			onclick="getRequests('waiting for approval')" /> <label>Pending</label>
-		<input type="radio" name="filter" id="cancelled"
-			onclick="getRequests('cancelled')" /> <label>Cancelled</label> <input
-			type="radio" name="filter" id="approved"
-			onclick="getRequests('approved')" /> <label>Approved</label> <input
-			type="radio" name="filter" id="rejected"
-			onclick="getRequests('rejected')" /> <label>Rejected</label> <br />
+		<label for="all">All</label>
+		 <input type="radio" name="filter" id="pending"	onclick="getRequests('waiting for approval')" /> 
+		<label for="pending">Pending</label>
+		<input type="radio" name="filter" id="cancelled" onclick="getRequests('cancelled')" />
+		<label for=cancelled>Cancelled</label>
+		<input type="radio" name="filter" id="approved" onclick="getRequests('approved')" />
+		<label for="approved">Approved</label> 
+		<input type="radio" name="filter" id="rejected" onclick="getRequests('rejected')" /> 
+		<label for="rejected">Rejected</label> <br />
 		<span style="color: green" id="message"></span>
 		<table id="requestTable" class="table table-bordered">
 			<caption>All leave requests</caption>
