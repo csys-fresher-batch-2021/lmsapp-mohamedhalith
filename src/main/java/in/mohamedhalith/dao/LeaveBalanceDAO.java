@@ -37,16 +37,12 @@ public class LeaveBalanceDAO {
 		PreparedStatement statement = null;
 		String leaveType = leaveRequest.getType().toLowerCase();
 		String query = null;
-		String keyword = action.toString();
-//		String apply = "apply";
-//		String cancel = "cancel";
-//		String reject = "reject";
-		
+	
 		try {
 			connection = ConnectionUtil.getConnection();
-			if (keyword.equalsIgnoreCase("apply")) {
+			if (action==(UpdateAction.APPLY)) {
 				query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = ?";
-			} else if (keyword.equalsIgnoreCase("cancel") || keyword.equalsIgnoreCase("reject")) {
+			} else if (action.equals(UpdateAction.CANCEL) || action.equals(UpdateAction.REJECT)) {
 				query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = ?";
 			}
 			statement = connection.prepareStatement(query);
