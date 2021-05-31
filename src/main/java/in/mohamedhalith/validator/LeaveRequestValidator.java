@@ -7,7 +7,7 @@ import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
-import in.mohamedhalith.service.EmployeeService;
+import in.mohamedhalith.service.LeaveBalanceService;
 import in.mohamedhalith.service.LeaveRequestService;
 import in.mohamedhalith.util.DateTimeValidator;
 
@@ -30,7 +30,7 @@ public class LeaveRequestValidator {
 	 */
 	public static void isValidRequest(LeaveRequest leaveRequest, int employeeId, List<LeaveRequest> employeeRequests)
 			throws ValidationException, ServiceException {
-		LeaveBalance leaveBalance = EmployeeService.findLeaveBalance(employeeId);
+		LeaveBalance leaveBalance = LeaveBalanceService.findLeaveBalance(employeeId);
 		isValidDates(leaveRequest);
 		findDuplicateRequest(leaveRequest, employeeRequests);
 		isValidDuration(leaveRequest, leaveBalance);

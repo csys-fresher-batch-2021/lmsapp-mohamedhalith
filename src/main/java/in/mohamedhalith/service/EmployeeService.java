@@ -6,9 +6,8 @@ import in.mohamedhalith.dao.EmployeeDAO;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
-import in.mohamedhalith.validator.EmployeeValidator;
 import in.mohamedhalith.model.Employee;
-import in.mohamedhalith.model.LeaveBalance;
+import in.mohamedhalith.validator.EmployeeValidator;
 
 public class EmployeeService {
 
@@ -82,31 +81,6 @@ public class EmployeeService {
 	}
 
 	/**
-	 * This method is used to find the leave balance of an employee. Employee id is
-	 * given as input.
-	 * 
-	 * Returns Employee for a valid employee id
-	 * 
-	 * @param employeeId
-	 * @return
-	 * @throws ServiceException
-	 * @throws ValidationException
-	 */
-	public static LeaveBalance findLeaveBalance(int employeeId) throws ServiceException, ValidationException {
-		try {
-			LeaveBalance employeeLeaveBalance = null;
-			EmployeeValidator.isEmployee(employeeId);
-			employeeLeaveBalance = employeeDAO.findLeaveBalance(employeeId);
-			if (employeeLeaveBalance == null) {
-				throw new ServiceException("Invalid employee id");
-			}
-			return employeeLeaveBalance;
-		} catch (DBException e) {
-			throw new ServiceException(e, "Unable to get employee leave balance");
-		}
-	}
-
-	/**
 	 * This method is used to verify an employee by username and password
 	 * 
 	 * Return boolean true for valid username and password and false for invalid
@@ -131,5 +105,5 @@ public class EmployeeService {
 			throw new ServiceException(e, "Unable to verify user");
 		}
 	}
-
+	
 }

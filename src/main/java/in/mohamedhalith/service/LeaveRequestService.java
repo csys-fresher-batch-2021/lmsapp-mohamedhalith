@@ -2,12 +2,14 @@ package in.mohamedhalith.service;
 
 import java.util.List;
 
-import in.mohamedhalith.dao.EmployeeDAO;
+import in.mohamedhalith.constant.UpdateAction;
+import in.mohamedhalith.dao.LeaveBalanceDAO;
 import in.mohamedhalith.dao.LeaveRequestDAO;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveRequest;
+import in.mohamedhalith.util.StringValidator;
 import in.mohamedhalith.validator.EmployeeValidator;
 import in.mohamedhalith.validator.LeaveRequestValidator;
 
@@ -18,7 +20,7 @@ public class LeaveRequestService {
 	}
 
 	private static LeaveRequestDAO leaveRequestDAO = LeaveRequestDAO.getInstance();
-	private static EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
+	private static LeaveBalanceDAO leaveBalanceDAO = LeaveBalanceDAO.getInstance();
 
 	/**
 	 * This method is used to get list of leave requests.
@@ -71,7 +73,7 @@ public class LeaveRequestService {
 			EmployeeValidator.isEmployee(employeeId);
 			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(employeeId);
 			LeaveRequestValidator.isValidRequest(leaveRequest, employeeId, employeeRequests);
-			employeeDAO.updateLeaveBalance("apply",employeeId, leaveRequest);
+			leaveBalanceDAO.updateLeaveBalance(UpdateAction.APPLY,employeeId, leaveRequest);
 			return leaveRequestDAO.save(leaveRequest);
 		} catch (DBException e) {
 			throw new ServiceException(e,"Unable to apply for leave");
@@ -116,8 +118,23 @@ public class LeaveRequestService {
 			LeaveRequestValidator.isValidId(leaveId);
 			EmployeeValidator.isEmployee(employeeId);
 			LeaveRequest leaveRequest = leaveRequestDAO.findById(leaveId);
-			employeeDAO.updateLeaveBalance("cancel",employeeId, leaveRequest);
-			return leaveRequestDAO.remove(leaveId);
+			leaveBalanceDAO.updateLeaveBalance(UpdateAction.CANCEL,employeeId, leaveRequest);
+			return leaveRequestDAO.update("cancel",leaveId);
+		} catch (DBException e) {
+			throw new ServiceException(e, "Unable to cancel the selected request");
+		}
+	}
+
+	public static boolean updateLeaveRequest(String action, int leaveId, int employeeId) throws ValidationException, ServiceException {
+		try {
+			LeaveRequestValidator.isValidId(leaveId);
+			StringValidator.isValidAction(action);
+			EmployeeValidator.isEmployee(employeeId);
+			LeaveRequest leaveRequest = leaveRequestDAO.findById(leaveId);
+			if(action.equalsIgnoreCase("reject")) {
+				leaveBalanceDAO.updateLeaveBalance(UpdateAction.REJECT,employeeId, leaveRequest);
+			}
+			return leaveRequestDAO.update(action,leaveId);
 		} catch (DBException e) {
 			throw new ServiceException(e, "Unable to cancel the selected request");
 		}
