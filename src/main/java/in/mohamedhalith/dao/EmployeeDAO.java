@@ -21,7 +21,8 @@ public class EmployeeDAO {
 	private static final EmployeeDAO instance = new EmployeeDAO();
 
 	private static final String EMPLOYEE_ID = "employee_id";
-
+	private static final String employeeErrorMessage ="Failed to get employee";
+	
 	public static EmployeeDAO getInstance() {
 		return instance;
 	}
@@ -33,7 +34,7 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public List<Employee> findAll() throws DBException, ValidationException {
+	public List<Employee> findAll() throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
@@ -87,7 +88,7 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public Employee findByEmployeeId(int employeeId) throws DBException, ValidationException {
+	public Employee findByEmployeeId(int employeeId) throws DBException {
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -108,7 +109,7 @@ public class EmployeeDAO {
 			}
 			return employee;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, "Failed to get employee");
+			throw new DBException(e, employeeErrorMessage);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
@@ -246,7 +247,7 @@ public class EmployeeDAO {
 			}
 			return isExist;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, "Failed to get employee");
+			throw new DBException(e, employeeErrorMessage);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
@@ -279,7 +280,7 @@ public class EmployeeDAO {
 			}
 			return isExist;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, "Failed to get employee");
+			throw new DBException(e, employeeErrorMessage);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
@@ -313,7 +314,7 @@ public class EmployeeDAO {
 			}
 			return isExist;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, "Failed to get employee");
+			throw new DBException(e, employeeErrorMessage);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}

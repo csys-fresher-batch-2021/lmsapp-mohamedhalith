@@ -71,8 +71,7 @@ public class LeaveRequestService {
 
 		try {
 			EmployeeValidator.isEmployee(employeeId);
-			List<LeaveRequest> employeeRequests = LeaveRequestService.getEmployeeRequests(employeeId);
-			LeaveRequestValidator.isValidRequest(leaveRequest, employeeId, employeeRequests);
+			LeaveRequestValidator.isValidRequest(leaveRequest, employeeId);
 			leaveBalanceDAO.updateLeaveBalance(UpdateAction.APPLY,employeeId, leaveRequest);
 			return leaveRequestDAO.save(leaveRequest);
 		} catch (DBException e) {
@@ -127,7 +126,6 @@ public class LeaveRequestService {
 
 	public static boolean updateLeaveRequest(String action, int leaveId, int employeeId) throws ValidationException, ServiceException {
 		try {
-			System.out.println(action);
 			LeaveRequestValidator.isValidId(leaveId);
 			StringValidator.isValidAction(action);
 			EmployeeValidator.isEmployee(employeeId);

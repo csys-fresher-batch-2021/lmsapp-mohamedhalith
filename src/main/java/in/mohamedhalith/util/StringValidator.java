@@ -97,7 +97,7 @@ public class StringValidator {
 	}
 
 	public static void isValidName(String name) throws ValidationException {
-		String regex = "[A-Za-z\s]+";
+		String regex = "[A-Za-z\\s]+";
 		try {
 			StringValidator.isValidString(name);
 			Pattern pattern = Pattern.compile(regex);

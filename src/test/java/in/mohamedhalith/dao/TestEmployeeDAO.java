@@ -30,7 +30,7 @@ public class TestEmployeeDAO {
 		try {
 			Employee employee = employeeDAO.findByEmployeeId(employeeId);
 			assertTrue(true);
-		} catch (DBException | ValidationException e) {
+		} catch (DBException e) {
 			fail();
 		}
 	}
@@ -41,7 +41,7 @@ public class TestEmployeeDAO {
 		try {
 			Employee employee = employeeDAO.findByEmployeeId(employeeId);
 			fail();
-		} catch (DBException | ValidationException e) {
+		} catch (DBException e) {
 			assertEquals("Failed to get employee",e.getMessage());
 		}
 	}
@@ -53,7 +53,7 @@ public class TestEmployeeDAO {
 		try {
 			List<Employee> employeeList = employeeDAO.findAll();
 			assertEquals(2,employeeList.size());
-		} catch (DBException | ValidationException e) {
+		} catch (DBException e) {
 			fail();
 		}
 	}

@@ -97,7 +97,7 @@ public class EmployeeService {
 	 * @throws ValidationException
 	 */
 	public static boolean findByUsernameAndPassword(String username, String password)
-			throws ServiceException, ValidationException {
+			throws ServiceException {
 		try {
 			boolean isValid = false;
 			Employee employee = employeeDAO.findByUsernameAndPassword(username, password);

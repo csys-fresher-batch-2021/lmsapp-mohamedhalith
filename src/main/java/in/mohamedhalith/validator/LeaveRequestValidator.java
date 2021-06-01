@@ -1,7 +1,5 @@
 package in.mohamedhalith.validator;
 
-import java.util.List;
-
 import in.mohamedhalith.dao.LeaveRequestDAO;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
@@ -29,11 +27,11 @@ public class LeaveRequestValidator {
 	 * @throws ValidationException
 	 * @throws ServiceException
 	 */
-	public static void isValidRequest(LeaveRequest leaveRequest, int employeeId, List<LeaveRequest> employeeRequests)
+	public static void isValidRequest(LeaveRequest leaveRequest, int employeeId)
 			throws ValidationException, ServiceException {
 		LeaveBalance leaveBalance = LeaveBalanceService.findLeaveBalance(employeeId);
 		isValidDates(leaveRequest);
-		findDuplicateRequest(leaveRequest, employeeRequests);
+		findDuplicateRequest(leaveRequest);
 		isValidDuration(leaveRequest, leaveBalance);
 	}
 
@@ -67,7 +65,7 @@ public class LeaveRequestValidator {
 	 * @param leaveRequest
 	 * @throws ValidationException
 	 */
-	public static void findDuplicateRequest(LeaveRequest leaveRequest, List<LeaveRequest> employeeRequests)
+	public static void findDuplicateRequest(LeaveRequest leaveRequest)
 			throws ValidationException {
 		boolean duplicate = false;
 		try {
