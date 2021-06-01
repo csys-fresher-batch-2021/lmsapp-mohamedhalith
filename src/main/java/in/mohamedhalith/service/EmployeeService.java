@@ -28,7 +28,7 @@ public class EmployeeService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static List<Employee> getEmployeeList() throws ServiceException, ValidationException {
+	public static List<Employee> getEmployeeList() throws ServiceException {
 		try {
 			return employeeDAO.findAll();
 		} catch (DBException e) {
@@ -111,17 +111,16 @@ public class EmployeeService {
 	}
 	
 	
-	public static boolean addEmployee(Employee employee) throws ValidationException, ServiceException {
+	public static boolean addEmployee(Employee employee) throws ServiceException, ValidationException {
 		EmployeeValidator.isValidEmployee(employee);
 		try {
 			boolean isAdded = employeeDAO.save(employee);
 			if(!isAdded) {
-				throw new ServiceException("Failed at employeeDAO");
+				throw new ServiceException("Unable to add employee");
 			}
-			isAdded = false;
 			isAdded = leaveBalanceDAO.save(employee.getEmployeeId());
 			if(!isAdded) {
-				throw new ServiceException("Failed at leavebalandao");
+				throw new ServiceException("Unable to add employee");
 			}
 			return isAdded;
 		} catch (DBException e) {

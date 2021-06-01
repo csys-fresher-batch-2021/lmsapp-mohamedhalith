@@ -21,7 +21,7 @@ public class EmployeeDAO {
 	private static final EmployeeDAO instance = new EmployeeDAO();
 
 	private static final String EMPLOYEE_ID = "employee_id";
-	private static final String employeeErrorMessage ="Failed to get employee";
+	private static final String EMPLOYEE_ERROR_MESSAGE ="Failed to get employee";
 	
 	public static EmployeeDAO getInstance() {
 		return instance;
@@ -109,7 +109,7 @@ public class EmployeeDAO {
 			}
 			return employee;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, employeeErrorMessage);
+			throw new DBException(e, EMPLOYEE_ERROR_MESSAGE);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
@@ -247,7 +247,7 @@ public class EmployeeDAO {
 			}
 			return isExist;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, employeeErrorMessage);
+			throw new DBException(e, EMPLOYEE_ERROR_MESSAGE);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
@@ -280,7 +280,7 @@ public class EmployeeDAO {
 			}
 			return isExist;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, employeeErrorMessage);
+			throw new DBException(e, EMPLOYEE_ERROR_MESSAGE);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
@@ -314,7 +314,7 @@ public class EmployeeDAO {
 			}
 			return isExist;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e, employeeErrorMessage);
+			throw new DBException(e, EMPLOYEE_ERROR_MESSAGE);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
