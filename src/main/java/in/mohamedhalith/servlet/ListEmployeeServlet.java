@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.mohamedhalith.exception.ServiceException;
-import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.service.EmployeeService;
 
@@ -35,7 +34,7 @@ public class ListEmployeeServlet extends HttpServlet {
 			request.setAttribute("employeeList", employeeList);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("listemployees.jsp");
 			requestDispatcher.forward(request, response);
-		} catch (ServiceException | ValidationException | ServletException | IOException e) {
+		} catch (ServiceException | ServletException | IOException e) {
 			e.printStackTrace();
 		}
 	}

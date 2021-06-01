@@ -18,7 +18,7 @@ public class TestEmployeeManager {
 		try {
 			List<Employee> employeeList = EmployeeService.getEmployeeList();
 			assertEquals(2, employeeList.size());
-		} catch (ServiceException | ValidationException e) {
+		} catch (ServiceException e) {
 			fail();
 		}
 	}
