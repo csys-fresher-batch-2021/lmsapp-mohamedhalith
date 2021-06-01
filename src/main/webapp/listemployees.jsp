@@ -27,16 +27,16 @@
 		int serial = 1;
 				List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeList");
 				if(employeeList != null){
-				for(Employee employee : employeeList){
+					for(Employee employee : employeeList){
 		%>
 		<tr>
 		<td><%=serial%></td>
 		<td><%=employee.getEmployeeId() %></td>
 		<td><%=employee.getName() %></td>
 		<%
+					serial++;
+					}
 				}
-		serial++;
-		}
 		%>
 		</tbody>
 		</table>

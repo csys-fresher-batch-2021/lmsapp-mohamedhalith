@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.Test;
 
 import in.mohamedhalith.exception.DBException;
-import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.model.LeaveRequest;
 
@@ -70,7 +69,7 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setReason("Leave");
 			boolean isAdded = leaveRequestDA.save(leaveRequest);
 			assertTrue(isAdded);
-		} catch (DBException | ValidationException e) {
+		} catch (DBException e) {
 			fail();
 		}
 
@@ -92,7 +91,7 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setReason("Leave");
 			boolean isAdded = leaveRequestDA.save(leaveRequest);
 			assertTrue(isAdded);
-		} catch (DBException | ValidationException e) {
+		} catch (DBException e) {
 			fail();
 		}
 	}
@@ -113,7 +112,7 @@ public class TestLeaveRequestDAO {
 			leaveRequest.setReason("Leave");
 			boolean isAdded = leaveRequestDA.save(leaveRequest);
 			assertTrue(isAdded);
-		} catch (DBException | ValidationException e) {
+		} catch (DBException e) {
 			fail();
 		}
 	}

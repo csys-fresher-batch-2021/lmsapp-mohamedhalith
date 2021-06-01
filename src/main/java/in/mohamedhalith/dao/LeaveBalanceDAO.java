@@ -14,9 +14,9 @@ import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.util.ConnectionUtil;
 
 public class LeaveBalanceDAO {
-	
+
 	private LeaveBalanceDAO() {
-		//Default Constructor
+		// Default Constructor
 	}
 
 	private static final LeaveBalanceDAO instance = new LeaveBalanceDAO();
@@ -36,15 +36,16 @@ public class LeaveBalanceDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public boolean updateLeaveBalance(UpdateAction action, int employeeId, LeaveRequest leaveRequest) throws DBException {
+	public boolean updateLeaveBalance(UpdateAction action, int employeeId, LeaveRequest leaveRequest)
+			throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		String leaveType = leaveRequest.getType().toLowerCase();
 		String query = null;
-	
+
 		try {
 			connection = ConnectionUtil.getConnection();
-			if (action==(UpdateAction.APPLY)) {
+			if (action == (UpdateAction.APPLY)) {
 				query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = ?";
 			} else if (action.equals(UpdateAction.CANCEL) || action.equals(UpdateAction.REJECT)) {
 				query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = ?";
@@ -74,7 +75,7 @@ public class LeaveBalanceDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public LeaveBalance findLeaveBalance(int employeeId) throws DBException, ValidationException {
+	public LeaveBalance findLeaveBalance(int employeeId) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
@@ -114,4 +115,41 @@ public class LeaveBalanceDAO {
 		}
 	}
 
+	/**
+	 * This method is used to insert the leave types allowed and leave balance for a
+	 * new employee
+	 * 
+	 * Returns true if successfully added,false otherwise
+	 * 
+	 * @param employeeId
+	 * @return boolean
+	 * @throws DBException
+	 */
+	public boolean save(int employeeId) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+
+		try {
+			connection = ConnectionUtil.getConnection();
+
+			String query = "INSERT INTO employee_leavebalance(employee_id,type_of_leave,leave_balance,modified_time)"
+					+ "values(?,\'sickleave\',0,now())," + "(?,\'casualleave\',0,now()),"
+					+ "(?,\'earnedleave\',0,now())";
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, employeeId);
+			statement.setInt(2, employeeId);
+			statement.setInt(3, employeeId);
+
+			int row = statement.executeUpdate();
+			boolean isAdded = false;
+			if (row == 3) {
+				isAdded = true;
+			}
+			return isAdded;
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to add employee's leavebalance");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement);
+		}
+	}
 }

@@ -24,11 +24,11 @@ public class LeaveRequestDAO {
 	private LeaveRequestDAO() {
 		// Default Constructor
 	}
-	
+
 	private static final String BASE_QUERY = "select lr.id,e.name,e.employee_id,lr.from_date,lr.to_date,lr.leave_type,lr.status,"
 			+ "lr.reason,lr.created_time,lr.duration"
 			+ " from leave_requests lr, employees e where e.employee_id = lr.employee_id ";
-	
+
 	private static LeaveRequestDAO instance = new LeaveRequestDAO();
 
 	/**
@@ -58,7 +58,7 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query =  BASE_QUERY + " order by from_date asc" ;
+			String query = BASE_QUERY + " order by from_date asc";
 
 			statement = connection.prepareStatement(query);
 
@@ -66,11 +66,11 @@ public class LeaveRequestDAO {
 			List<LeaveRequest> requestList = new ArrayList<>();
 			while (result.next()) {
 				LeaveRequest leaveRequest = new LeaveRequest();
-				leaveRequest =  returnAsLeaveRequest(result,leaveRequest);
+				leaveRequest = returnAsLeaveRequest(result, leaveRequest);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
-		} catch (ValidationException | ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			throw new DBException(e, "Failed to fetch leave requests");
 		} finally {
@@ -88,7 +88,7 @@ public class LeaveRequestDAO {
 	 * @throws SQLException
 	 * @throws ValidationException
 	 */
-	private LeaveRequest returnAsLeaveRequest(ResultSet result,LeaveRequest leaveRequest) throws SQLException, ValidationException {
+	private LeaveRequest returnAsLeaveRequest(ResultSet result, LeaveRequest leaveRequest) throws SQLException {
 		leaveRequest.setLeaveId(result.getInt("id"));
 		leaveRequest.setFromDate(result.getDate("from_date").toLocalDate());
 		leaveRequest.setToDate(result.getDate("to_date").toLocalDate());
@@ -132,11 +132,11 @@ public class LeaveRequestDAO {
 
 			while (result.next()) {
 				LeaveRequest leaveRequest = new LeaveRequest();
-				leaveRequest =  returnAsLeaveRequest(result,leaveRequest);
+				leaveRequest = returnAsLeaveRequest(result, leaveRequest);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
-		} catch (ValidationException | ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			throw new DBException(e, "Failed to fetch leave requests of employee");
 		} finally {
@@ -204,7 +204,8 @@ public class LeaveRequestDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = BASE_QUERY + " and e.employee_id = ? and status = \'waiting for approval\'  order by from_date asc";
+			String query = BASE_QUERY
+					+ " and e.employee_id = ? and status = \'waiting for approval\'  order by from_date asc";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
@@ -213,11 +214,11 @@ public class LeaveRequestDAO {
 			List<LeaveRequest> requestList = new ArrayList<>();
 			while (result.next()) {
 				LeaveRequest leaveRequest = new LeaveRequest();
-				leaveRequest =  returnAsLeaveRequest(result,leaveRequest);
+				leaveRequest = returnAsLeaveRequest(result, leaveRequest);
 				requestList.add(leaveRequest);
 			}
 			return requestList;
-		} catch (ValidationException | ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			throw new DBException(e, "Failed to fetch leave requests of employee");
 		} finally {
@@ -232,15 +233,15 @@ public class LeaveRequestDAO {
 	 * @return
 	 * @throws DBException
 	 */
-	public boolean update(String action,int leaveId) throws DBException {
+	public boolean update(String action, int leaveId) throws DBException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		String status = null;
-		if(action.equalsIgnoreCase(UpdateAction.CANCEL.toString())) {
+		if (action.equalsIgnoreCase(UpdateAction.CANCEL.toString())) {
 			status = RequestStatus.CANCELLED.toString();
-		}else if(action.equalsIgnoreCase(UpdateAction.APPROVE.toString())) {
+		} else if (action.equalsIgnoreCase(UpdateAction.APPROVE.toString())) {
 			status = RequestStatus.APPROVED.toString();
-		}else if(action.equalsIgnoreCase(UpdateAction.REJECT.toString())) {
+		} else if (action.equalsIgnoreCase(UpdateAction.REJECT.toString())) {
 			status = RequestStatus.REJECTED.toString();
 		}
 		try {
@@ -301,10 +302,48 @@ public class LeaveRequestDAO {
 				leaveRequest.setEmployee(employee);
 			}
 			return leaveRequest;
-		} catch (ClassNotFoundException | SQLException | ValidationException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException("Failed to get leave request");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
 		}
+	}
+
+	/**
+	 * This method is used to get leave requests with leave dates matching the leave
+	 * request's date
+	 * 
+	 * Returns true if leave request is found else otherwise
+	 * 
+	 * @param leaveRequest
+	 * @return boolean
+	 * @throws DBException
+	 */
+	public boolean isExistingDate(LeaveRequest leaveRequest) throws DBException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+
+		try {
+			connection = ConnectionUtil.getConnection();
+			String query = "select id from leave_requests where (? between from_date and to_date) OR  (? between from_date and to_date)"
+					+ "AND (status = 'waiting for approval' OR status = 'approved') AND employee_id = ?";
+			statement = connection.prepareStatement(query);
+			statement.setDate(1, Date.valueOf(leaveRequest.getFromDate()));
+			statement.setDate(2, Date.valueOf(leaveRequest.getToDate()));
+			statement.setInt(3, leaveRequest.getEmployee().getEmployeeId());
+
+			result = statement.executeQuery();
+			boolean isExist = false;
+			if (result.next()) {
+				isExist = true;
+			}
+			return isExist;
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to get requests");
+		} finally {
+			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+
 	}
 }

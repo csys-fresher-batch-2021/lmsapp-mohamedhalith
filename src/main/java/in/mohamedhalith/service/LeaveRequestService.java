@@ -96,7 +96,7 @@ public class LeaveRequestService {
 		try {
 			EmployeeValidator.isEmployee(employeeId);
 			return leaveRequestDAO.findPendingRequests(employeeId);
-		} catch (ServiceException | DBException e) {
+		} catch (DBException e) {
 			throw new ServiceException(e, "Unable to get unapproved requests");
 		}
 	}
@@ -127,6 +127,7 @@ public class LeaveRequestService {
 
 	public static boolean updateLeaveRequest(String action, int leaveId, int employeeId) throws ValidationException, ServiceException {
 		try {
+			System.out.println(action);
 			LeaveRequestValidator.isValidId(leaveId);
 			StringValidator.isValidAction(action);
 			EmployeeValidator.isEmployee(employeeId);
@@ -137,6 +138,19 @@ public class LeaveRequestService {
 			return leaveRequestDAO.update(action,leaveId);
 		} catch (DBException e) {
 			throw new ServiceException(e, "Unable to cancel the selected request");
+		}
+	}
+	
+	public static LeaveRequest getLeaveRequest(int leaveId) throws ServiceException {
+		LeaveRequest leaveRequest = null;
+		try {
+			leaveRequest = leaveRequestDAO.findById(leaveId);
+			if(leaveRequest == null) {
+				throw new ServiceException("Invalid Leave request Id");
+			}
+			return leaveRequest;
+		} catch (DBException e) {
+			throw new ServiceException("Failed to get leave requests");
 		}
 	}
 }
