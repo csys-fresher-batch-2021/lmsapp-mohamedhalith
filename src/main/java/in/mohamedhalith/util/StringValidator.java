@@ -11,6 +11,11 @@ public class StringValidator {
 	private StringValidator() {
 		// Default Constructor
 	}
+	
+	private static final String INVALIDUSERNAME = "Invalid username";
+	private static final String INVALIDEMAIL = "Invalid email";
+	private static final String INVALIDPASSWORD = "Invalid password";
+	private static final String INVALIDNAME = "Invalid employee name";
 
 	public static void isValidString(String string) throws ValidationException {
 		if (string == null || string.trim().isEmpty()) {
@@ -27,12 +32,16 @@ public class StringValidator {
 	 */
 	public static void isValidPassword(String password) throws ValidationException {
 		String regex = "[A-Za-z0-9]{8,}";
-		StringValidator.isValidString(password);
-		Pattern pattern = Pattern.compile(regex);
-		Matcher match = pattern.matcher(password);
-		boolean valid = match.matches();
-		if(!valid) {
-			throw new ValidationException("Given password is invalid");
+		try {
+			StringValidator.isValidString(password);
+			Pattern pattern = Pattern.compile(regex);
+			Matcher match = pattern.matcher(password);
+			boolean valid = match.matches();
+			if(!valid) {
+				throw new ValidationException(INVALIDPASSWORD);
+			}
+		} catch (ValidationException e) {
+			throw new ValidationException(e,INVALIDPASSWORD);
 		}
 		
 	}
@@ -46,29 +55,37 @@ public class StringValidator {
 	 */
 	public static void isValidUsername(String username) throws ValidationException {
 		String regex = "[A-Za-z0-9]{7,}";
-		StringValidator.isValidString(username);
-		Pattern pattern = Pattern.compile(regex);
-		Matcher match = pattern.matcher(username);
-		boolean valid = match.matches();
-		if(!valid) {
-			throw new ValidationException("Invalid username");
+		try {
+			StringValidator.isValidString(username);
+			Pattern pattern = Pattern.compile(regex);
+			Matcher match = pattern.matcher(username);
+			boolean valid = match.matches();
+			if(!valid) {
+				throw new ValidationException(INVALIDUSERNAME);
+			}
+		} catch (ValidationException e) {
+			throw new ValidationException(e,INVALIDUSERNAME);
 		}
 	}
 	
 	public static void isValidEmail(String email) throws ValidationException {
 		String regex = "^([a-z0-9-_\\.]+)@([a-z0-9]+)\\.([a-z\\.]+)$";
-		StringValidator.isValidString(email);
-		Pattern pattern = Pattern.compile(regex);
-		Matcher match = pattern.matcher(email);
-		boolean valid = match.matches();
-		if(!valid) {
-			throw new ValidationException("Invalid email");
+		try {
+			StringValidator.isValidString(email);
+			Pattern pattern = Pattern.compile(regex);
+			Matcher match = pattern.matcher(email);
+			boolean valid = match.matches();
+			if(!valid) {
+				throw new ValidationException(INVALIDEMAIL);
+			}
+		} catch (ValidationException e) {
+			throw new ValidationException(e,INVALIDEMAIL);
 		}
 	}
 
 	public static void isValidAction(String action) throws ValidationException {
 		boolean isValid = false;
-		if(action.equalsIgnoreCase(UpdateAction.APPLY.toString()) ||
+		if(action.equalsIgnoreCase(UpdateAction.APPROVE.toString()) ||
 				action.equalsIgnoreCase(UpdateAction.CANCEL.toString()) ||
 				action.equalsIgnoreCase(UpdateAction.REJECT.toString())) {
 			isValid = true;
@@ -77,5 +94,22 @@ public class StringValidator {
 		if(!isValid) {
 			throw new ValidationException("Invalid Action");
 		}
+	}
+
+	public static void isValidName(String name) throws ValidationException {
+		String regex = "[A-Za-z\\s]+";
+		try {
+			StringValidator.isValidString(name);
+			Pattern pattern = Pattern.compile(regex);
+			Matcher match = pattern.matcher(name);
+			boolean valid = match.matches();
+			if(!valid) {
+				throw new ValidationException(INVALIDNAME);
+			}
+		}catch(ValidationException e) {
+			throw new ValidationException(e,INVALIDNAME);
+		}
+		
+		
 	}
 }

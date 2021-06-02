@@ -27,6 +27,9 @@
       <li class="nav-item">
         <a class="nav-link" href="viewrequests.jsp">View Requests</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="addemployee.jsp">Add Employee</a>
+      </li>
       <%
       }else if(loggedInUsername != null && role != null && role.equalsIgnoreCase("employee")){
       %>

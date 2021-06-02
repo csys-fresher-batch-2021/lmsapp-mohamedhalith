@@ -1,7 +1,6 @@
 package in.mohamedhalith.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.mohamedhalith.exception.ServiceException;
-import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.service.EmployeeService;
 
@@ -30,12 +28,10 @@ public class ListEmployeeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			List<Employee> employeeList = EmployeeService.getEmployeeList();
-			PrintWriter out = response.getWriter();
-			out.print(employeeList);
 			request.setAttribute("employeeList", employeeList);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("listemployees.jsp");
 			requestDispatcher.forward(request, response);
-		} catch (ServiceException | ValidationException | ServletException | IOException e) {
+		} catch (ServiceException | ServletException | IOException e) {
 			e.printStackTrace();
 		}
 	}

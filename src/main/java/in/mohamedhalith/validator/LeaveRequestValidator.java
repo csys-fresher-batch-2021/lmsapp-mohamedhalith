@@ -1,22 +1,21 @@
 package in.mohamedhalith.validator;
 
-import java.time.LocalDate;
-import java.util.List;
-
+import in.mohamedhalith.dao.LeaveRequestDAO;
+import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.LeaveBalanceService;
 import in.mohamedhalith.service.LeaveRequestService;
-import in.mohamedhalith.util.DateTimeValidator;
+import in.mohamedhalith.util.DateValidator;
 
 public class LeaveRequestValidator {
 
 	private LeaveRequestValidator() {
 		// Default constructor
 	}
-
+	private static final LeaveRequestDAO leaveRequestDAO = LeaveRequestDAO.getInstance();
 	/**
 	 * This method checks given request is valid or not. Valid in the sense that
 	 * there is no similar or duplicate requests present and the leave request is
@@ -28,11 +27,11 @@ public class LeaveRequestValidator {
 	 * @throws ValidationException
 	 * @throws ServiceException
 	 */
-	public static void isValidRequest(LeaveRequest leaveRequest, int employeeId, List<LeaveRequest> employeeRequests)
+	public static void isValidRequest(LeaveRequest leaveRequest, int employeeId)
 			throws ValidationException, ServiceException {
 		LeaveBalance leaveBalance = LeaveBalanceService.findLeaveBalance(employeeId);
 		isValidDates(leaveRequest);
-		findDuplicateRequest(leaveRequest, employeeRequests);
+		findDuplicateRequest(leaveRequest);
 		isValidDuration(leaveRequest, leaveBalance);
 	}
 
@@ -43,18 +42,15 @@ public class LeaveRequestValidator {
 	 * @throws ValidationException
 	 */
 	public static void isValidDates(LeaveRequest leaveRequest) throws ValidationException {
-		DateTimeValidator.isValidDate(leaveRequest.getFromDate());
-		DateTimeValidator.isValidDate(leaveRequest.getToDate());
+		DateValidator.isValidDate(leaveRequest.getFromDate());
+		DateValidator.isValidDate(leaveRequest.getToDate());
 	}
 
 	public static void isValidId(int leaveId) throws ValidationException, ServiceException {
 		boolean valid = false;
-		List<LeaveRequest> requestList = LeaveRequestService.getRequestList();
-		for (LeaveRequest leaveRequest : requestList) {
-			if (leaveRequest.getLeaveId() == leaveId) {
-				valid = true;
-				break;
-			}
+		LeaveRequest leaveRequest = LeaveRequestService.getLeaveRequest(leaveId);
+		if(leaveRequest != null) {
+			valid = true;
 		}
 		if (!valid) {
 			throw new ValidationException("Cannot find leave request for given id");
@@ -69,24 +65,16 @@ public class LeaveRequestValidator {
 	 * @param leaveRequest
 	 * @throws ValidationException
 	 */
-	public static void findDuplicateRequest(LeaveRequest leaveRequest, List<LeaveRequest> employeeRequests)
+	public static void findDuplicateRequest(LeaveRequest leaveRequest)
 			throws ValidationException {
 		boolean duplicate = false;
-		String status = "waiting for approval";
-		LocalDate fromDate = leaveRequest.getFromDate();
-		LocalDate toDate = leaveRequest.getToDate();
-		for (LeaveRequest requestLeave : employeeRequests) {
-			LocalDate leaveFromDate = requestLeave.getFromDate();
-			LocalDate leaveToDate = requestLeave.getToDate();
-			if (status.equalsIgnoreCase(requestLeave.getStatus())
-					&& (fromDate.isEqual(leaveFromDate) || toDate.isEqual(leaveToDate)
-							|| (fromDate.isAfter(leaveFromDate) && toDate.isBefore(leaveToDate)))) {
-				duplicate = true;
-				break;
+		try {
+			duplicate = leaveRequestDAO.isExistingDate(leaveRequest);
+			if (duplicate) {
+				throw new ValidationException("Leave request found for mentioned date(s).");
 			}
-		}
-		if (duplicate) {
-			throw new ValidationException("Leave request found for mentioned date(s).");
+		} catch (DBException e) {
+			throw new ValidationException(e,"Failed to validate requests");
 		}
 	}
 

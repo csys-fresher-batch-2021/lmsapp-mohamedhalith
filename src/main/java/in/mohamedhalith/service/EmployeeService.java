@@ -3,10 +3,13 @@ package in.mohamedhalith.service;
 import java.util.List;
 
 import in.mohamedhalith.dao.EmployeeDAO;
+import in.mohamedhalith.dao.LeaveBalanceDAO;
 import in.mohamedhalith.exception.DBException;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
+import in.mohamedhalith.util.NumberValidator;
+import in.mohamedhalith.util.StringValidator;
 import in.mohamedhalith.validator.EmployeeValidator;
 
 public class EmployeeService {
@@ -16,6 +19,7 @@ public class EmployeeService {
 	}
 
 	private static EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
+	private static LeaveBalanceDAO leaveBalanceDAO = LeaveBalanceDAO.getInstance();
 
 	/**
 	 * This method is used to return the list of employees
@@ -24,7 +28,7 @@ public class EmployeeService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static List<Employee> getEmployeeList() throws ServiceException, ValidationException {
+	public static List<Employee> getEmployeeList() throws ServiceException {
 		try {
 			return employeeDAO.findAll();
 		} catch (DBException e) {
@@ -46,14 +50,13 @@ public class EmployeeService {
 	public static Employee getEmployee(int employeeId) throws ServiceException, ValidationException {
 		try {
 			Employee employee = null;
-			EmployeeValidator.isEmployee(employeeId);
+			NumberValidator.isValidEmployeeId(employeeId);
 			employee = employeeDAO.findByEmployeeId(employeeId);
 			if (employee == null) {
 				throw new ServiceException("Invalid Employee Id");
 			}
 			return employee;
 		} catch (DBException e) {
-			e.printStackTrace();
 			throw new ServiceException(e, "No employee is found for given details");
 		}
 	}
@@ -68,8 +71,9 @@ public class EmployeeService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static Integer getEmployeeId(String username) throws ServiceException {
+	public static Integer getEmployeeId(String username) throws ServiceException, ValidationException {
 		try {
+			StringValidator.isValidUsername(username);
 			Integer employeeId = employeeDAO.findEmployeeId(username);
 			if (employeeId == null) {
 				throw new ServiceException("Invalid Employee username");
@@ -93,7 +97,7 @@ public class EmployeeService {
 	 * @throws ValidationException
 	 */
 	public static boolean findByUsernameAndPassword(String username, String password)
-			throws ServiceException, ValidationException {
+			throws ServiceException {
 		try {
 			boolean isValid = false;
 			Employee employee = employeeDAO.findByUsernameAndPassword(username, password);
@@ -106,4 +110,22 @@ public class EmployeeService {
 		}
 	}
 	
+	
+	public static boolean addEmployee(Employee employee) throws ServiceException, ValidationException {
+		EmployeeValidator.isValidEmployee(employee);
+		String errorMessage = "Unable to add employee";
+		try {
+			boolean isAdded = employeeDAO.save(employee);
+			if(!isAdded) {
+				throw new ServiceException(errorMessage);
+			}
+			isAdded = leaveBalanceDAO.save(employee.getEmployeeId());
+			if(!isAdded) {
+				throw new ServiceException(errorMessage);
+			}
+			return isAdded;
+		} catch (DBException e) {
+			throw new ServiceException(e,errorMessage);
+		}
+	}
 }

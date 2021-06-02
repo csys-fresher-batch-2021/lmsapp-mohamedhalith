@@ -29,7 +29,7 @@ public class TestLeaveRequestValidator {
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
 			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests(2627);
-			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
+			LeaveRequestValidator.findDuplicateRequest(leaveRequest);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
 			System.out.println(e.getMessage());
@@ -46,7 +46,7 @@ public class TestLeaveRequestValidator {
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
 			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests(2627);
-			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
+			LeaveRequestValidator.findDuplicateRequest(leaveRequest);
 			assertTrue(true);
 		} catch (ServiceException | ValidationException e) {
 			System.out.println(e.getMessage());
@@ -62,11 +62,11 @@ public class TestLeaveRequestValidator {
 			leaveRequest.setFromDate(fromDate);
 			leaveRequest.setToDate(toDate);
 			List<LeaveRequest> employeeRequest = LeaveRequestService.getEmployeeRequests(2627);
-			LeaveRequestValidator.findDuplicateRequest(leaveRequest, employeeRequest);
+			LeaveRequestValidator.findDuplicateRequest(leaveRequest);
 			employeeRequest.add(leaveRequest);
 			leaveRequest1.setFromDate(fromDate);
 			leaveRequest1.setToDate(toDate);
-			LeaveRequestValidator.findDuplicateRequest(leaveRequest1, employeeRequest);
+			LeaveRequestValidator.findDuplicateRequest(leaveRequest1);
 			fail();
 		} catch (ServiceException | ValidationException e) {
 			assertEquals("Leave request found for mentioned date(s).", e.getMessage());
