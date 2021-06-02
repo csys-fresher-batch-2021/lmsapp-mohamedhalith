@@ -17,13 +17,13 @@ public class EmployeeValidator {
 
 	private static final String INVALIDEMPLOYEE = "Invalid Employee details";
 	private static final EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
-	
+
 	/**
 	 * This method is used to verify whether the user is an employee or not
 	 * 
 	 * @param username
 	 * @throws ValidationException
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
 	public static void isEmployee(String username) throws ValidationException, ServiceException {
 		try {
@@ -32,14 +32,13 @@ public class EmployeeValidator {
 			throw new ValidationException(INVALIDEMPLOYEE);
 		}
 	}
-	
-	
+
 	public static boolean isEmployee(int employeeId) throws ValidationException {
 		Employee employee = null;
 		try {
 			employee = EmployeeService.getEmployee(employeeId);
 			boolean isValid = false;
-			if(employee!= null) {
+			if (employee != null) {
 				isValid = true;
 			}
 			return isValid;
@@ -47,7 +46,7 @@ public class EmployeeValidator {
 			throw new ValidationException(INVALIDEMPLOYEE);
 		}
 	}
-	
+
 	public static void isValidEmployee(Employee employee) throws ValidationException {
 		StringValidator.isValidName(employee.getName());
 		StringValidator.isValidEmail(employee.getEmail());
@@ -56,18 +55,18 @@ public class EmployeeValidator {
 		NumberValidator.isValidMobileNumber(employee.getMobileNumber());
 		try {
 			boolean isValid = employeeDAO.exists(employee.getEmployeeId());
-			if(isValid) {
+			if (isValid) {
 				throw new ValidationException("Employee Id already exists");
 			}
 			isValid = employeeDAO.exists(employee.getMobileNumber());
-			if(isValid) {
+			if (isValid) {
 				throw new ValidationException("Mobile Number already exists");
 			}
 			isValid = employeeDAO.exists(employee.getEmail());
-			if(isValid) {
+			if (isValid) {
 				throw new ValidationException("Email Id already exists");
 			}
-					} catch (DBException e) {
+		} catch (DBException e) {
 			e.printStackTrace();
 		}
 		DateValidator.isValidJoinedDate(employee.getJoinedDate());

@@ -70,7 +70,6 @@ public class LeaveRequestDAO {
 			}
 			return requestList;
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
 			throw new DBException(e, "Failed to fetch leave requests");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
@@ -132,7 +131,6 @@ public class LeaveRequestDAO {
 			}
 			return requestList;
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
 			throw new DBException(e, "Failed to fetch leave requests of employee");
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
@@ -316,7 +314,6 @@ public class LeaveRequestDAO {
 			boolean isExist = false;
 			if (result.next()) {
 				isExist = true;
-				System.out.println(result.getInt("id"));
 			}
 			return isExist;
 		} catch (ClassNotFoundException | SQLException e) {

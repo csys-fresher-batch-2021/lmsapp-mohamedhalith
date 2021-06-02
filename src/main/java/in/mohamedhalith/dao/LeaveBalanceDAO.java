@@ -23,6 +23,7 @@ public class LeaveBalanceDAO {
 	private Connection connection = null;
 	private PreparedStatement statement = null;
 	private ResultSet result = null;
+
 	public static LeaveBalanceDAO getInstance() {
 		return instance;
 	}
@@ -47,7 +48,7 @@ public class LeaveBalanceDAO {
 			connection = ConnectionUtil.getConnection();
 			if (action == (UpdateAction.APPLY)) {
 				query = "update employee_leavebalance set leave_balance = leave_balance - ? where employee_id = ? and type_of_leave = ?";
-			} else if (action.equals(UpdateAction.CANCEL) || action.equals(UpdateAction.REJECT)) {
+			} else if (action == UpdateAction.CANCEL || action == UpdateAction.REJECT) {
 				query = "update employee_leavebalance set leave_balance = leave_balance + ? where employee_id = ? and type_of_leave = ?";
 			}
 			statement = connection.prepareStatement(query);
