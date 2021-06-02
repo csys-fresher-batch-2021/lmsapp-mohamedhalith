@@ -38,8 +38,13 @@
 	<script type="text/javascript">
 	function setDate(){
 		let joinedDate = document.getElementById("joinedDate");
-		let date = new Date().toJSON().substr(0,10);
-		joinedDate.setAttribute("value",date);
+		let today = new Date();
+		let date = today.toJSON().substr(0,10);
+		joinedDate.value = date;
+		joinedDate.max = date;
+		let pastDate = new Date();
+		pastDate.setDate(pastDate.getDate() - 30);
+		joinedDate.min = pastDate.toJSON().substr(0,10);
 	}
 	setDate();
 	function setUsername(){

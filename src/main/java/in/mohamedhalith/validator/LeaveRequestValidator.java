@@ -8,7 +8,7 @@ import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.model.LeaveRequest;
 import in.mohamedhalith.service.LeaveBalanceService;
 import in.mohamedhalith.service.LeaveRequestService;
-import in.mohamedhalith.util.DateTimeValidator;
+import in.mohamedhalith.util.DateValidator;
 
 public class LeaveRequestValidator {
 
@@ -42,8 +42,8 @@ public class LeaveRequestValidator {
 	 * @throws ValidationException
 	 */
 	public static void isValidDates(LeaveRequest leaveRequest) throws ValidationException {
-		DateTimeValidator.isValidDate(leaveRequest.getFromDate());
-		DateTimeValidator.isValidDate(leaveRequest.getToDate());
+		DateValidator.isValidDate(leaveRequest.getFromDate());
+		DateValidator.isValidDate(leaveRequest.getToDate());
 	}
 
 	public static void isValidId(int leaveId) throws ValidationException, ServiceException {

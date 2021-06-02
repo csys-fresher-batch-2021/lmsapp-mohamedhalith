@@ -6,6 +6,7 @@ import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.model.Employee;
 import in.mohamedhalith.service.EmployeeService;
+import in.mohamedhalith.util.DateValidator;
 import in.mohamedhalith.util.NumberValidator;
 import in.mohamedhalith.util.StringValidator;
 
@@ -69,5 +70,6 @@ public class EmployeeValidator {
 					} catch (DBException e) {
 			e.printStackTrace();
 		}
+		DateValidator.isValidJoinedDate(employee.getJoinedDate());
 	}
 }

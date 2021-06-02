@@ -14,7 +14,7 @@ public class TestDateTimeValidator {
 	public void testIsValidWithValidDate() {
 		LocalDate date = LocalDate.parse("2022-06-01");
 		try {
-			DateTimeValidator.isValidDate(date);
+			DateValidator.isValidDate(date);
 			assertTrue(true);
 		} catch (ValidationException e) {
 			fail();
@@ -25,7 +25,7 @@ public class TestDateTimeValidator {
 	public void testIsValidWithInvalidDate() {
 		LocalDate date = LocalDate.parse("2000-06-01");
 		try {
-			DateTimeValidator.isValidDate(date);
+			DateValidator.isValidDate(date);
 			fail();
 		} catch (ValidationException e) {
 			assertEquals("Date cannot be past",e.getMessage());
