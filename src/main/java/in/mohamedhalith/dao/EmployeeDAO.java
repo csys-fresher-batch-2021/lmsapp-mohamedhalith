@@ -19,10 +19,13 @@ public class EmployeeDAO {
 	}
 
 	private static final EmployeeDAO instance = new EmployeeDAO();
-
 	private static final String EMPLOYEE_ID = "employee_id";
-	private static final String EMPLOYEE_ERROR_MESSAGE ="Failed to get employee";
-	
+	private static final String EMPLOYEE_ERROR_MESSAGE = "Failed to get employee";
+
+	private Connection connection = null;
+	private PreparedStatement statement = null;
+	private ResultSet result = null;
+
 	public static EmployeeDAO getInstance() {
 		return instance;
 	}
@@ -35,9 +38,6 @@ public class EmployeeDAO {
 	 * @throws ValidationException
 	 */
 	public List<Employee> findAll() throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
 		try {
 			// Get Database connection
 			connection = ConnectionUtil.getConnection();
@@ -89,11 +89,6 @@ public class EmployeeDAO {
 	 * @throws ValidationException
 	 */
 	public Employee findByEmployeeId(int employeeId) throws DBException {
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 			String query = "select id,name,username,employee_id from employees where employee_id = ? and active = true";
@@ -125,10 +120,6 @@ public class EmployeeDAO {
 	 * @throws ValidationException
 	 */
 	public Employee findByUsernameAndPassword(String username, String password) throws DBException {
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
 		try {
 			connection = ConnectionUtil.getConnection();
 
@@ -163,10 +154,6 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 */
 	public Integer findEmployeeId(String username) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 
@@ -189,9 +176,6 @@ public class EmployeeDAO {
 	}
 
 	public boolean save(Employee employee) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 
@@ -228,11 +212,6 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 */
 	public boolean exists(int employeeId) throws DBException {
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 			String query = "select id from employees where employee_id = ? and active = true";
@@ -261,11 +240,6 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 */
 	public boolean exists(String email) throws DBException {
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 			String query = "select id from employees where email = ? and active = true";
@@ -295,10 +269,6 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 */
 	public boolean exists(long mobileNumber) throws DBException {
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
 
 		try {
 			connection = ConnectionUtil.getConnection();

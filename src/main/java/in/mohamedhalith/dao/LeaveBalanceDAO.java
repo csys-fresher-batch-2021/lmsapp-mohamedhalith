@@ -20,7 +20,9 @@ public class LeaveBalanceDAO {
 	}
 
 	private static final LeaveBalanceDAO instance = new LeaveBalanceDAO();
-
+	private Connection connection = null;
+	private PreparedStatement statement = null;
+	private ResultSet result = null;
 	public static LeaveBalanceDAO getInstance() {
 		return instance;
 	}
@@ -38,8 +40,6 @@ public class LeaveBalanceDAO {
 	 */
 	public boolean updateLeaveBalance(UpdateAction action, int employeeId, LeaveRequest leaveRequest)
 			throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
 		String leaveType = leaveRequest.getType().toLowerCase();
 		String query = null;
 
@@ -76,9 +76,6 @@ public class LeaveBalanceDAO {
 	 * @throws ValidationException
 	 */
 	public LeaveBalance findLeaveBalance(int employeeId) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
 		String leaveBalance = "leave_balance";
 		try {
 			connection = ConnectionUtil.getConnection();
@@ -126,9 +123,6 @@ public class LeaveBalanceDAO {
 	 * @throws DBException
 	 */
 	public boolean save(int employeeId) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 

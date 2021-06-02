@@ -13,7 +13,7 @@
 		<h3>Add Employee</h3>
 		<form action="AddEmployeeServlet" method="POST">
 		<label for="name">Employee Name</label>
-		<input type="text" name = "name" id="name" placeholder="Employee name" pattern="[A-Za-z]+[A-Za-z ]{2,100}" 
+		<input type="text" name = "name" id="name" placeholder="Employee name" pattern="[A-Za-z][A-Za-z ]{2,100}" 
 			onkeyup="setUsername()" autofocus required/><br/>
 		<label for="employeeId">Employee Id</label>
 		<input type="text" name="employeeId" id="employeeId" placeholder="Employee ID" pattern="[0-9]{4}"

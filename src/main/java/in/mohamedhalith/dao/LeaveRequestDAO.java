@@ -30,6 +30,9 @@ public class LeaveRequestDAO {
 			+ " from leave_requests lr, employees e where e.employee_id = lr.employee_id ";
 
 	private static LeaveRequestDAO instance = new LeaveRequestDAO();
+	private Connection connection = null;
+	private PreparedStatement statement = null;
+	private ResultSet result = null;
 
 	/**
 	 * This method is used to obtain the instance of the class LeaveDAO.
@@ -51,10 +54,6 @@ public class LeaveRequestDAO {
 	 */
 
 	public List<LeaveRequest> findAll() throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 
@@ -115,10 +114,6 @@ public class LeaveRequestDAO {
 	 * @throws DBException
 	 */
 	public List<LeaveRequest> findRequestsByEmployeeId(int employeeId) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 
@@ -156,8 +151,6 @@ public class LeaveRequestDAO {
 	 * @throws DBException
 	 */
 	public boolean save(LeaveRequest leaveRequest) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
 		leaveRequest.setAppliedTime(LocalDateTime.now());
 		boolean isAdded = false;
 		try {
@@ -197,10 +190,6 @@ public class LeaveRequestDAO {
 	 * @throws ValidationException
 	 */
 	public List<LeaveRequest> findPendingRequests(int employeeId) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 
@@ -234,8 +223,6 @@ public class LeaveRequestDAO {
 	 * @throws DBException
 	 */
 	public boolean update(String action, int leaveId) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
 		String status = null;
 		if (action.equalsIgnoreCase(UpdateAction.CANCEL.toString())) {
 			status = RequestStatus.CANCELLED.toString();
@@ -272,10 +259,6 @@ public class LeaveRequestDAO {
 	 * @throws DBException
 	 */
 	public LeaveRequest findById(int leaveId) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
 
@@ -320,13 +303,9 @@ public class LeaveRequestDAO {
 	 * @throws DBException
 	 */
 	public boolean isExistingDate(LeaveRequest leaveRequest) throws DBException {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet result = null;
-
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "select id from leave_requests where (? between from_date and to_date) OR  (? between from_date and to_date)"
+			String query = "select id from leave_requests where ((? between from_date and to_date) OR  (? between from_date and to_date))"
 					+ "AND (status = 'waiting for approval' OR status = 'approved') AND employee_id = ?";
 			statement = connection.prepareStatement(query);
 			statement.setDate(1, Date.valueOf(leaveRequest.getFromDate()));
@@ -337,6 +316,7 @@ public class LeaveRequestDAO {
 			boolean isExist = false;
 			if (result.next()) {
 				isExist = true;
+				System.out.println(result.getInt("id"));
 			}
 			return isExist;
 		} catch (ClassNotFoundException | SQLException e) {

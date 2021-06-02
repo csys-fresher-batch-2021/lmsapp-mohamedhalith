@@ -113,18 +113,19 @@ public class EmployeeService {
 	
 	public static boolean addEmployee(Employee employee) throws ServiceException, ValidationException {
 		EmployeeValidator.isValidEmployee(employee);
+		String errorMessage = "Unable to add employee";
 		try {
 			boolean isAdded = employeeDAO.save(employee);
 			if(!isAdded) {
-				throw new ServiceException("Unable to add employee");
+				throw new ServiceException(errorMessage);
 			}
 			isAdded = leaveBalanceDAO.save(employee.getEmployeeId());
 			if(!isAdded) {
-				throw new ServiceException("Unable to add employee");
+				throw new ServiceException(errorMessage);
 			}
 			return isAdded;
 		} catch (DBException e) {
-			throw new ServiceException(e,"Failed at service");
+			throw new ServiceException(e,errorMessage);
 		}
 	}
 }
