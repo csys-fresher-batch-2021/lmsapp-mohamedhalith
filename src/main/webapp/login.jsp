@@ -36,6 +36,9 @@ margin-left : -30px;
 	<script type="text/javascript">
 	let eyefull = document.getElementById('eyefull');
 	let password = document.getElementById("password");
+	/**
+	* Function to show password (toggle between the type of password)
+	*/
 	eyefull.addEventListener('click',function(){
 		let type = password.getAttribute('type') === 'password' ?'text' : 'password';
 		password.setAttribute('type',type);

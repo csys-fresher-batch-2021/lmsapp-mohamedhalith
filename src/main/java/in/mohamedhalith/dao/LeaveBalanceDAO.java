@@ -151,19 +151,19 @@ public class LeaveBalanceDAO {
 	public boolean remove(int employeeId) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
-			
-			String query ="UPDATE employee_leavebalance set active = false where employee_id = ? ";
-			
+
+			String query = "UPDATE employee_leavebalance set active = false where employee_id = ? ";
+
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
 			int row = statement.executeUpdate();
 			boolean isRemoved = false;
-			if(row == 3) {
+			if (row == 3) {
 				isRemoved = true;
 			}
 			return isRemoved;
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new DBException(e,"Failed to remove employee leave balance");
+			throw new DBException(e, "Failed to remove employee leave balance");
 		}
 	}
 }
