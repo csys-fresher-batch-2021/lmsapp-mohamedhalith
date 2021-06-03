@@ -19,6 +19,7 @@ id SERIAL PRIMARY KEY,
 employee_id int NOT NULL,
 type_of_leave varchar(50) NOT NULL,
 leave_balance int NOT NULL,
+active boolean NOT NULL DEFAULT TRUE,
 modified_time timestamp without time zone NOT NULL,
 FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
 UNIQUE(employee_id,type_of_leave)
