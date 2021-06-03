@@ -8,12 +8,13 @@ import in.mohamedhalith.model.LeaveBalance;
 import in.mohamedhalith.validator.EmployeeValidator;
 
 public class LeaveBalanceService {
-	
-	private LeaveBalanceService(){
+
+	private LeaveBalanceService() {
 		// Default Constructor
 	}
-	
+
 	private static LeaveBalanceDAO leaveBalanceDAO = LeaveBalanceDAO.getInstance();
+
 	/**
 	 * This method is used to find the leave balance of an employee. Employee id is
 	 * given as input.
@@ -38,5 +39,17 @@ public class LeaveBalanceService {
 			throw new ServiceException(e, "Unable to get employee leave balance");
 		}
 	}
-	
+
+	public static void remove(int employeeId) throws ServiceException, ValidationException {
+		try {
+			EmployeeValidator.isEmployee(employeeId);
+			boolean isRemoved = leaveBalanceDAO.remove(employeeId);
+			if (!isRemoved) {
+				throw new ServiceException("Unable to remove employee leave balance");
+			}
+		} catch (DBException e) {
+			throw new ServiceException(e,"Unable to remove employee leave balance");
+		}
+
+	}
 }

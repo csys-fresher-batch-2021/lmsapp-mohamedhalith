@@ -91,7 +91,8 @@ public class EmployeeDAO {
 	public Employee findByEmployeeId(int employeeId) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "select id,name,username,employee_id from employees where employee_id = ? and active = true";
+			String query = "select id,name,username,employee_id,mobile_number,email from employees where employee_id = ? "
+					+ "and active = true";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
@@ -101,6 +102,8 @@ public class EmployeeDAO {
 			if (result.next()) {
 				employee = new Employee();
 				employee = returnAsEmployee(result, employee);
+				employee.setEmail(result.getString("email"));
+				employee.setMobileNumber(result.getLong("mobile_number"));
 			}
 			return employee;
 		} catch (ClassNotFoundException | SQLException e) {
@@ -214,7 +217,7 @@ public class EmployeeDAO {
 	public boolean exists(int employeeId) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "select id from employees where employee_id = ? and active = true";
+			String query = "select id from employees where employee_id = ?";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
@@ -242,7 +245,7 @@ public class EmployeeDAO {
 	public boolean exists(String email) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "select id from employees where email = ? and active = true";
+			String query = "select id from employees where email = ?";
 
 			statement = connection.prepareStatement(query);
 			statement.setString(1, email);
@@ -272,7 +275,7 @@ public class EmployeeDAO {
 
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = "select id from employees where mobile_number = ? and active = true";
+			String query = "select id from employees where mobile_number = ?";
 
 			statement = connection.prepareStatement(query);
 			statement.setLong(1, mobileNumber);
@@ -287,6 +290,26 @@ public class EmployeeDAO {
 			throw new DBException(e, EMPLOYEE_ERROR_MESSAGE);
 		} finally {
 			ConnectionUtil.closeConnection(connection, statement, result);
+		}
+	}
+
+	public boolean remove(int employeeId) throws DBException {
+		try {
+			connection = ConnectionUtil.getConnection();
+			String query = "update employees set active = false where employee_id = ? ";
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, employeeId);
+
+			int row = statement.executeUpdate();
+			boolean isRemoved = false;
+			if (row == 1) {
+				isRemoved = true;
+			}
+			return isRemoved;
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new DBException(e, "Failed to update employee");
+		}finally {
+			ConnectionUtil.closeConnection(connection, statement);
 		}
 	}
 }
