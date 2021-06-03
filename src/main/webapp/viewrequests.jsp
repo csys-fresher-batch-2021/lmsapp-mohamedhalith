@@ -46,6 +46,9 @@
 
 function getRequests(arg){
 let url="ListAllRequestsServlet";
+/**
+ * This function fetches data from the servlet and displays the response from the servlet
+ */
 fetch(url).then(res=> res.json()).then(res=>{
 	let requests = res;
 	let serial = 1;
@@ -76,7 +79,9 @@ fetch(url).then(res=> res.json()).then(res=>{
 });
 }
 getRequests(null);
-
+/**
+ * This function is used to perform the action indicated by the user
+ */
 function update(key,leaveId,employeeId){
 	const params = "?action="+key+"&leaveId="+leaveId+"&employeeId="+employeeId;
 	let url = "ApproveRejectServlet" + params;

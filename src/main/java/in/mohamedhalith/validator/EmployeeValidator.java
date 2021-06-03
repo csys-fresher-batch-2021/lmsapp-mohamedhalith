@@ -33,6 +33,13 @@ public class EmployeeValidator {
 		}
 	}
 
+	/**
+	 * This method is used to validate or verify given employee id
+	 * 
+	 * @param employeeId
+	 * @return boolean
+	 * @throws ValidationException
+	 */
 	public static boolean isEmployee(int employeeId) throws ValidationException {
 		Employee employee = null;
 		try {
@@ -47,6 +54,13 @@ public class EmployeeValidator {
 		}
 	}
 
+	/**
+	 * This method is used to validates the fields of the employee and verifies
+	 * whether each of them is valid
+	 * 
+	 * @param employeeId
+	 * @throws ValidationException
+	 */
 	public static void isValidEmployee(Employee employee) throws ValidationException {
 		StringValidator.isValidName(employee.getName());
 		StringValidator.isValidEmail(employee.getEmail());

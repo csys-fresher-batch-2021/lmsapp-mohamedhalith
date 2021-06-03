@@ -22,7 +22,7 @@ public class EmployeeDAO {
 	private static final String EMPLOYEE_ID = "employee_id";
 	private static final String EMPLOYEE_ERROR_MESSAGE = "Failed to get employee";
 	private static final String EXISTING_QUERY = "select id from employees";
-
+	// Declaring connection,statement and resultSet object
 	private Connection connection = null;
 	private PreparedStatement statement = null;
 	private ResultSet result = null;
@@ -309,7 +309,7 @@ public class EmployeeDAO {
 			return isRemoved;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new DBException(e, "Failed to update employee");
-		}finally {
+		} finally {
 			ConnectionUtil.closeConnection(connection, statement);
 		}
 	}
