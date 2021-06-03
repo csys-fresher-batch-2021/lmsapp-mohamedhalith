@@ -46,7 +46,7 @@ public class EmployeeService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	
+
 	public static Employee getEmployee(int employeeId) throws ServiceException, ValidationException {
 		try {
 			Employee employee = null;
@@ -96,8 +96,7 @@ public class EmployeeService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static boolean findByUsernameAndPassword(String username, String password)
-			throws ServiceException {
+	public static boolean findByUsernameAndPassword(String username, String password) throws ServiceException {
 		try {
 			boolean isValid = false;
 			Employee employee = employeeDAO.findByUsernameAndPassword(username, password);
@@ -109,23 +108,52 @@ public class EmployeeService {
 			throw new ServiceException(e, "Unable to verify user");
 		}
 	}
-	
-	
+
+	/**
+	 * This method is used to add any new recruit or employee to the organisation
+	 * 
+	 * @param employee
+	 * @return
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
 	public static boolean addEmployee(Employee employee) throws ServiceException, ValidationException {
 		EmployeeValidator.isValidEmployee(employee);
 		String errorMessage = "Unable to add employee";
 		try {
 			boolean isAdded = employeeDAO.save(employee);
-			if(!isAdded) {
+			if (!isAdded) {
 				throw new ServiceException(errorMessage);
 			}
 			isAdded = leaveBalanceDAO.save(employee.getEmployeeId());
-			if(!isAdded) {
+			if (!isAdded) {
 				throw new ServiceException(errorMessage);
 			}
 			return isAdded;
 		} catch (DBException e) {
-			throw new ServiceException(e,errorMessage);
+			throw new ServiceException(e, errorMessage);
+		}
+	}
+
+	/**
+	 * This method is used to remove employee from the organization
+	 * 
+	 * @param employeeId
+	 * @return
+	 * @throws ValidationException
+	 * @throws ServiceException
+	 */
+	public static boolean removeEmployee(int employeeId) throws ValidationException, ServiceException {
+		try {
+			EmployeeValidator.isEmployee(employeeId);
+			boolean isRemoved = employeeDAO.remove(employeeId);
+			if (!isRemoved) {
+				throw new ServiceException("Unable to remove employee");
+			}
+			isRemoved = leaveBalanceDAO.remove(employeeId);
+			return isRemoved;
+		} catch (DBException e) {
+			throw new ServiceException("Unable to remove employee");
 		}
 	}
 }

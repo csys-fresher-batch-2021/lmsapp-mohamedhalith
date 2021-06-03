@@ -26,9 +26,9 @@ margin-left : -30px;
 		<span class="fas fa-eye-slash" id="eyefull"></span>
 		<br/>
 		<input type="radio" value="admin" name="role" id="admin" required/>
-		<label for="role">Admin</label>
+		<label for="admin">Admin</label>
 		<input type="radio" value ="employee" name="role" id="employee" required/>
-		<label for="role">Employee</label><br/>
+		<label for="employee">Employee</label><br/>
 		<button class="btn btn-primary">Submit</button>
 		<button class="btn btn-primary">Reset</button>
 	</form>

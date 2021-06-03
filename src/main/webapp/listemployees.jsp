@@ -21,6 +21,7 @@
 		<th id="serial">S.No</th>
 		<th id="id">Id</th>
 		<th id="name">Name</th>
+		<th id="viewbtn"></th>
 		</thead>
 		<tbody>
 		<%
@@ -33,6 +34,7 @@
 		<td><%=serial%></td>
 		<td><%=employee.getEmployeeId() %></td>
 		<td><%=employee.getName() %></td>
+		<td><a href="employeeDetails.jsp?employeeId=<%=employee.getEmployeeId()%>" class="btn btn-info">View</a>
 		<%
 					serial++;
 					}
