@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,8 +184,8 @@ public class EmployeeDAO {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = "INSERT INTO employees (name,employee_id,mobile_number,email,username,password,joined_date)"
-					+ "values(?,?,?,?,?,?,?)";
+			String query = "INSERT INTO employees (name,employee_id,mobile_number,email,username,password,joined_date,modified_time)"
+					+ "values(?,?,?,?,?,?,?,?)";
 
 			statement = connection.prepareStatement(query);
 			statement.setString(1, employee.getName());
@@ -194,6 +195,7 @@ public class EmployeeDAO {
 			statement.setString(5, employee.getUsername());
 			statement.setString(6, employee.getPassword());
 			statement.setDate(7, Date.valueOf(employee.getJoinedDate()));
+			statement.setTimestamp(8,Timestamp.valueOf(employee.getModifiedTime()));
 
 			int row = statement.executeUpdate();
 			boolean isAdded = false;
