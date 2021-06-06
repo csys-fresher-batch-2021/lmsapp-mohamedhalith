@@ -2,6 +2,7 @@ package in.mohamedhalith.servlet;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,6 +44,7 @@ public class AddEmployeeServlet extends HttpServlet {
 			employee.setEmployeeId(employeeId);
 			employee.setMobileNumber(mobileNumber);
 			employee.setJoinedDate(joinedDate);
+			employee.setModifiedTime(LocalDateTime.now());
 			
 			boolean isAdded = EmployeeService.addEmployee(employee);
 			if(isAdded) {

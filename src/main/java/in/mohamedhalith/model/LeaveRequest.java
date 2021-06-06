@@ -15,7 +15,6 @@ public class LeaveRequest {
 	private String type;
 	private String reason;
 	private String status = "Waiting for approval"; 
-	private LocalDateTime cancelledTime;
-	private LocalDateTime reviewedTime;
+	private LocalDateTime modifedTime;
 	private LocalDateTime appliedTime;
 }
