@@ -29,8 +29,8 @@ margin-left : -30px;
 		<label for="admin">Admin</label>
 		<input type="radio" value ="employee" name="role" id="employee" required/>
 		<label for="employee">Employee</label><br/>
-		<button class="btn btn-primary">Submit</button>
-		<button class="btn btn-primary">Reset</button>
+		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="reset" class="btn btn-danger">Reset</button>
 	</form>
 	</main>
 	<script type="text/javascript">
