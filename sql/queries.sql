@@ -36,7 +36,8 @@ status varchar(20) NOT NULL DEFAULT 'waiting for approval',
 reason varchar(50) NOT NULL,
 created_time timestamp without time zone NOT NULL,
 modified_time timestamp without time zone,
-FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
+check(status in ('waiting for approval','approved','cancelled','rejected'))
 );
 
 SELECT * FROM employees;
