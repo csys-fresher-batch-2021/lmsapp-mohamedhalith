@@ -33,6 +33,7 @@
 		<label for="joinedDate">Joined Date</label>
 		<input type="date" name="joinedDate" id="joinedDate"/><br/>
 		<input type="submit" class="btn btn-success" value="Add"/>
+		<input type="reset" class="btn btn-danger"/>
 		</form>
 	</main>
 	<script type="text/javascript">

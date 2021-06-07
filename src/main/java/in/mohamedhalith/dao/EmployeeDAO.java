@@ -195,7 +195,7 @@ public class EmployeeDAO {
 			statement.setString(5, employee.getUsername());
 			statement.setString(6, employee.getPassword());
 			statement.setDate(7, Date.valueOf(employee.getJoinedDate()));
-			statement.setTimestamp(8,Timestamp.valueOf(employee.getModifiedTime()));
+			statement.setTimestamp(8, Timestamp.valueOf(employee.getModifiedTime()));
 
 			int row = statement.executeUpdate();
 			boolean isAdded = false;
@@ -220,7 +220,7 @@ public class EmployeeDAO {
 	public boolean exists(int employeeId) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = EXISTING_QUERY + "where employee_id = ?";
+			String query = EXISTING_QUERY + " where employee_id = ?";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
