@@ -31,6 +31,7 @@ public class LeaveBalanceService {
 			LeaveBalance employeeLeaveBalance = null;
 			EmployeeValidator.isEmployee(employeeId);
 			employeeLeaveBalance = leaveBalanceDAO.findLeaveBalance(employeeId);
+			// If output is null, no data is found
 			if (employeeLeaveBalance == null) {
 				throw new ServiceException("Invalid employee id");
 			}
@@ -44,6 +45,7 @@ public class LeaveBalanceService {
 		try {
 			EmployeeValidator.isEmployee(employeeId);
 			boolean isRemoved = leaveBalanceDAO.remove(employeeId);
+			// If output is false, performed operation is not expected output
 			if (!isRemoved) {
 				throw new ServiceException("Unable to remove employee leave balance");
 			}

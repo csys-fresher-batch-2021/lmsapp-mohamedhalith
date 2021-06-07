@@ -7,15 +7,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ConnectionUtil {
-	
+
 	private ConnectionUtil() {
-		//Default constructor
+		// Default constructor
 	}
+
 	private static String driverClass = System.getenv("spring.datasource.driver-class-name");
 	private static String url = System.getenv("spring.datasource.url");
 	private static String username = System.getenv("spring.datasource.username");
 	private static String password = System.getenv("spring.datasource.password");
-	
+
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Class.forName(driverClass);
 		Connection connection = null;
@@ -32,6 +33,7 @@ public class ConnectionUtil {
 			e.printStackTrace();
 		}
 	}
+
 	// Method overriding
 	public static void closeConnection(Connection connection, Statement statement, ResultSet result) {
 		try {
@@ -48,6 +50,8 @@ public class ConnectionUtil {
 			e.printStackTrace();
 		}
 	}
+
+	// Method overriding
 	public static void closeConnection(Connection connection, Statement statement) {
 		try {
 			if (statement != null) {

@@ -29,13 +29,16 @@ margin-left : -30px;
 		<label for="admin">Admin</label>
 		<input type="radio" value ="employee" name="role" id="employee" required/>
 		<label for="employee">Employee</label><br/>
-		<button class="btn btn-primary">Submit</button>
-		<button class="btn btn-primary">Reset</button>
+		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="reset" class="btn btn-danger">Reset</button>
 	</form>
 	</main>
 	<script type="text/javascript">
 	let eyefull = document.getElementById('eyefull');
 	let password = document.getElementById("password");
+	/**
+	* Function to show password (toggle between the type of password)
+	*/
 	eyefull.addEventListener('click',function(){
 		let type = password.getAttribute('type') === 'password' ?'text' : 'password';
 		password.setAttribute('type',type);

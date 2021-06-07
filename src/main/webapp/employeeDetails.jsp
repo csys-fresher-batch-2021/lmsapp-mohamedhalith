@@ -25,6 +25,9 @@
 	</main>
 	<script type="text/javascript">
 		var params = window.location.search;
+		/**
+		* This function obtains details for the given employee id
+		*/
 		function getDetails(){
 			let url = "EmployeeDetailsServlet" + params;
 			let content = "";
@@ -39,6 +42,9 @@
 			});
 		}
 		getDetails();
+		/**
+		* This function confirms whether the client intend to do the action
+		*/
 		function confirmAction(){
 			let answer = window.confirm("Do you want to remove this employee");
 			console.log(answer);
@@ -48,6 +54,10 @@
 				console.log("Cancelled the operation");
 			}
 		}
+		/**
+		* This function sends parameters through url and obtains the result given by the
+		* servlet.
+		*/
 		function removeEmployee(){
 			let url = "RemoveEmployeeServlet" + params;
 			fetch(url).then(res=>res.json()).then(res=>{

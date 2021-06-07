@@ -72,10 +72,10 @@ public class LeaveRequestService {
 		try {
 			EmployeeValidator.isEmployee(employeeId);
 			LeaveRequestValidator.isValidRequest(leaveRequest, employeeId);
-			leaveBalanceDAO.updateLeaveBalance(UpdateAction.APPLY,employeeId, leaveRequest);
+			leaveBalanceDAO.updateLeaveBalance(UpdateAction.APPLY, employeeId, leaveRequest);
 			return leaveRequestDAO.save(leaveRequest);
 		} catch (DBException e) {
-			throw new ServiceException(e,"Unable to apply for leave");
+			throw new ServiceException(e, "Unable to apply for leave");
 		}
 	}
 
@@ -90,8 +90,7 @@ public class LeaveRequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static List<LeaveRequest> getUnapprovedRequest(int employeeId)
-			throws ServiceException, ValidationException {
+	public static List<LeaveRequest> getUnapprovedRequest(int employeeId) throws ServiceException, ValidationException {
 		try {
 			EmployeeValidator.isEmployee(employeeId);
 			return leaveRequestDAO.findPendingRequests(employeeId);
@@ -111,39 +110,40 @@ public class LeaveRequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public static boolean cancelLeaveRequest(int leaveId, int employeeId)
-			throws ServiceException, ValidationException {
+	public static boolean cancelLeaveRequest(int leaveId, int employeeId) throws ServiceException, ValidationException {
 		try {
 			LeaveRequestValidator.isValidId(leaveId);
 			EmployeeValidator.isEmployee(employeeId);
 			LeaveRequest leaveRequest = leaveRequestDAO.findById(leaveId);
-			leaveBalanceDAO.updateLeaveBalance(UpdateAction.CANCEL,employeeId, leaveRequest);
-			return leaveRequestDAO.update("cancel",leaveId);
+			leaveBalanceDAO.updateLeaveBalance(UpdateAction.CANCEL, employeeId, leaveRequest);
+			return leaveRequestDAO.update("cancel", leaveId);
 		} catch (DBException e) {
 			throw new ServiceException(e, "Unable to cancel the selected request");
 		}
 	}
 
-	public static boolean updateLeaveRequest(String action, int leaveId, int employeeId) throws ValidationException, ServiceException {
+	public static boolean updateLeaveRequest(String action, int leaveId, int employeeId)
+			throws ValidationException, ServiceException {
 		try {
 			LeaveRequestValidator.isValidId(leaveId);
 			StringValidator.isValidAction(action);
 			EmployeeValidator.isEmployee(employeeId);
 			LeaveRequest leaveRequest = leaveRequestDAO.findById(leaveId);
-			if(action.equalsIgnoreCase("reject")) {
-				leaveBalanceDAO.updateLeaveBalance(UpdateAction.REJECT,employeeId, leaveRequest);
+			if (action.equalsIgnoreCase("reject")) {
+				leaveBalanceDAO.updateLeaveBalance(UpdateAction.REJECT, employeeId, leaveRequest);
 			}
-			return leaveRequestDAO.update(action,leaveId);
+			return leaveRequestDAO.update(action, leaveId);
 		} catch (DBException e) {
 			throw new ServiceException(e, "Unable to cancel the selected request");
 		}
 	}
-	
+
 	public static LeaveRequest getLeaveRequest(int leaveId) throws ServiceException {
 		LeaveRequest leaveRequest = null;
 		try {
 			leaveRequest = leaveRequestDAO.findById(leaveId);
-			if(leaveRequest == null) {
+			// If output is false, performed operation is not expected output
+			if (leaveRequest == null) {
 				throw new ServiceException("Invalid Leave request Id");
 			}
 			return leaveRequest;

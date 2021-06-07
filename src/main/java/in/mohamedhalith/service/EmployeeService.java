@@ -52,6 +52,7 @@ public class EmployeeService {
 			Employee employee = null;
 			NumberValidator.isValidEmployeeId(employeeId);
 			employee = employeeDAO.findByEmployeeId(employeeId);
+			// If employee is null, no data is found for given id
 			if (employee == null) {
 				throw new ServiceException("Invalid Employee Id");
 			}
@@ -75,6 +76,7 @@ public class EmployeeService {
 		try {
 			StringValidator.isValidUsername(username);
 			Integer employeeId = employeeDAO.findEmployeeId(username);
+			// If employee is null, no data is found for given username
 			if (employeeId == null) {
 				throw new ServiceException("Invalid Employee username");
 			}
@@ -122,10 +124,12 @@ public class EmployeeService {
 		String errorMessage = "Unable to add employee";
 		try {
 			boolean isAdded = employeeDAO.save(employee);
+			// If isAdded is false, performed operation is not expected operation
 			if (!isAdded) {
 				throw new ServiceException(errorMessage);
 			}
 			isAdded = leaveBalanceDAO.save(employee.getEmployeeId());
+			// If isAdded is false, performed operation is not expected operation
 			if (!isAdded) {
 				throw new ServiceException(errorMessage);
 			}
@@ -147,6 +151,7 @@ public class EmployeeService {
 		try {
 			EmployeeValidator.isEmployee(employeeId);
 			boolean isRemoved = employeeDAO.remove(employeeId);
+			// If isAdded is false, performed operation is not expected operation
 			if (!isRemoved) {
 				throw new ServiceException("Unable to remove employee");
 			}
