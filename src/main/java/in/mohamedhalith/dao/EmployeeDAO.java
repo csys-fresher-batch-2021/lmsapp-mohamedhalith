@@ -22,7 +22,7 @@ public class EmployeeDAO {
 	private static final EmployeeDAO instance = new EmployeeDAO();
 	private static final String EMPLOYEE_ID = "employee_id";
 	private static final String EMPLOYEE_ERROR_MESSAGE = "Failed to get employee";
-	private static final String EXISTING_QUERY = "select id from employees";
+	private static final String EXISTING_QUERY = "select id from employees ";
 
 	private Connection connection = null;
 	private PreparedStatement statement = null;
@@ -220,7 +220,7 @@ public class EmployeeDAO {
 	public boolean exists(int employeeId) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
-			String query = EXISTING_QUERY + "where employee_id = ?";
+			String query = EXISTING_QUERY + " where employee_id = ?";
 
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, employeeId);
