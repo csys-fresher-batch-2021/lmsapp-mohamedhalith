@@ -1,5 +1,6 @@
 package in.mohamedhalith.validator;
 
+import in.mohamedhalith.constant.Role;
 import in.mohamedhalith.exception.ServiceException;
 import in.mohamedhalith.exception.ValidationException;
 import in.mohamedhalith.service.EmployeeService;
@@ -30,10 +31,10 @@ public class LoginValidator {
 			StringValidator.isValidUsername(username);
 			StringValidator.isValidPassword(password);
 			StringValidator.isValidString(role);
-			if (role.equalsIgnoreCase("admin") && username.equals("hradmin") && password.equals("realadmin")) {
-				valid = true;
+			if (role.equalsIgnoreCase("admin")) {
+				valid = EmployeeService.findByUsernameAndPassword(username, password,Role.MANAGER.toString());
 			}
-		} catch (ValidationException e) {
+		} catch (ValidationException | ServiceException e) {
 			e.printStackTrace();
 		}
 		return valid;
@@ -60,7 +61,7 @@ public class LoginValidator {
 			StringValidator.isValidString(role);
 			if (role.equalsIgnoreCase("employee")) {
 				// Verifies user name and password with employee list
-				valid = EmployeeService.findByUsernameAndPassword(username, password);
+				valid = EmployeeService.findByUsernameAndPassword(username, password,Role.EMPLOYEE.toString());
 			}
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
