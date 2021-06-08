@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 				HttpSession session = request.getSession();
 				session.setAttribute("ROLE", role);
 				session.setAttribute("LOGGEDIN_USERNAME", username);
-				if(role.equalsIgnoreCase("employee")) {
+				if(role != null) {
 					int employeeId = EmployeeService.getEmployeeId(username);
 					session.setAttribute("employeeId", employeeId);
 				}

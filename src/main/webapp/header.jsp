@@ -73,16 +73,21 @@
 	     </li>
       </ul>
       <% }
-      }else if(role != null && role.equalsIgnoreCase("admin")){ %>
+      }else if(role != null && role.equalsIgnoreCase("admin")){
+    	  int employeeId = (Integer) session.getAttribute("employeeId");
+      	   Employee employee = EmployeeService.getEmployee(employeeId);
+      	   if(employee != null){
+    	%>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 	     <li class="nav-item active">
-	       <a class="nav-link" href="#">Welcome Admin</a>
+	       <a class="nav-link" href="#">Welcome <%=employee.getName() %></a>
 	     </li>
 	     <li class="nav-item">
 	       <a class="nav-link" href="LogoutServlet">Logout</a>
 	     </li>
       </ul>
-      <% } %>
+      <% }
+      } %>
       
   </div>
 </nav>

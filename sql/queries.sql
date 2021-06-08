@@ -8,9 +8,11 @@ mobile_number bigint NOT NULL UNIQUE,
 email varchar(150) NOT NULL UNIQUE,
 username varchar(50) NOT NULL UNIQUE,
 password varchar(50) NOT NULL,
+role varchar(20) NOT NULL DEFAULT 'employee',
 active boolean NOT NULL DEFAULT TRUE,
 joined_date date NOT NULL,
-modified_time timestamp without time zone
+modified_time timestamp without time zone,
+check (role in ('employee','manager'))
 );
 
 
@@ -46,9 +48,10 @@ SELECT * FROM employee_leavebalance;
 
 SELECT * FROM leave_requests;
 
-INSERT INTO employees (name,employee_id,mobile_number,email,username,password,joined_date) 
-VALUES ('Mohamed',2627,9524896959,'mohamedhalith1994@gmail.com','moha2627','2627moha',now()),
-('Halith',2628,9487617616,'mohamedhalith@gmail.com','hali2628','2628hali',now());
+INSERT INTO employees (name,employee_id,mobile_number,email,username,password,joined_date,modified_time,role) 
+VALUES ('Mohamed',2627,9876543210,'mdhalith@gmail.com','moha2627','2627moha',current_date,now(),'employee'),
+('Halith',2628,9876543211,'mohamedhalith@gmail.com','hali2628','2628hali',current_date,now(),'employee'),
+('Naresh Kumar H',2008,987654213,'nareshkumar@gmail.com','naresh2008','2008naresh',current_date,now(),'manager');
 
 INSERT INTO employee_leavebalance (employee_id,type_of_leave,leave_balance,modified_time)
 VALUES(2627,'sickleave',2,now()),

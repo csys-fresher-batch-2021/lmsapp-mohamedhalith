@@ -44,7 +44,7 @@ public class EmployeeDAO {
 			// Get Database connection
 			connection = ConnectionUtil.getConnection();
 			// Query to be executed
-			String query = "select id,name,employee_id,username from employees where active = true order by name asc";
+			String query = "select id,name,employee_id,username from employees where active = true and role = \'employee\' order by name asc";
 			// Converting query to statement
 			statement = connection.prepareStatement(query);
 			// Executing query
@@ -124,16 +124,17 @@ public class EmployeeDAO {
 	 * @throws DBException
 	 * @throws ValidationException
 	 */
-	public Employee findByUsernameAndPassword(String username, String password) throws DBException {
+	public Employee findByUsernameAndPassword(String username, String password,String role) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
 
-			String query = "select id,name,employee_id from employees where username = ? and password = ?";
+			String query = "select id,name,employee_id from employees where username = ? and password = ? and role = ?";
 
 			statement = connection.prepareStatement(query);
 
 			statement.setString(1, username);
 			statement.setString(2, password);
+			statement.setString(3, role);
 
 			result = statement.executeQuery();
 			Employee employee = null;
