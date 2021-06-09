@@ -16,7 +16,7 @@
 			<thead class="table-primary">
 				<tr>
 					<th id="name">Name</th>
-					<th id="employeeid">Id</th>
+					<th id="employeeid">Emp. Id</th>
 					<th id="sickleave">Sick Leave</th>
 					<th id="casualleave">Casual Leave</th>
 					<th id="earnedleave">Earned Leave</th>
