@@ -35,12 +35,12 @@
 			let leaveBalance = res;
 			console.log(leaveBalance);
 			console.log(leaveBalance.employee.name);
-			content = "<tr>"+
-			"<td>"+leaveBalance.employee.name+"</td>"+
-			"<td>"+leaveBalance.employee.employeeId+"</td>"+
-			"<td>"+leaveBalance.sickLeave+"</td>"+
-			"<td>"+leaveBalance.casualLeave+"</td>"+
-			"<td>"+leaveBalance.earnedLeave+"</td>"+
+			content = "<tr><td>"+
+			leaveBalance.employee.name+"</td><td>"+
+			leaveBalance.employee.employeeId+"</td><td>"+
+			leaveBalance.sickLeave+"</td><td>"+
+			leaveBalance.casualLeave+"</td><td>"+
+			leaveBalance.earnedLeave+"</td><td>"+
 			"</tr>"
 			console.log(content);
 			document.querySelector("#table-body").innerHTML = content;
