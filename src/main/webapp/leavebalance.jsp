@@ -40,8 +40,7 @@
 			leaveBalance.employee.employeeId+"</td><td>"+
 			leaveBalance.sickLeave+"</td><td>"+
 			leaveBalance.casualLeave+"</td><td>"+
-			leaveBalance.earnedLeave+"</td><td>"+
-			"</tr>"
+			leaveBalance.earnedLeave+"</td></tr>"
 			console.log(content);
 			document.querySelector("#table-body").innerHTML = content;
 		})
