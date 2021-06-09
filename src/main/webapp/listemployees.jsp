@@ -59,7 +59,7 @@
 				"<td>" + serial + "</td>" +
 				"<td>" + employee.employeeId + "</td>"+
 				"<td>" + employee.name + "</td>"+
-				"<td><a class=\"btn btn-info\" href=\"employeeDetails.jsp?employeeId="+employee.employeeId+"\">View</a>"+ 
+				"<td><a class=\"btn btn-info\" href=\"employeeDetails.jsp?employeeId="+employee.employeeId+"\">View</a></td>"+ 
 				"</tr>";
 				serial +=1;
 			}
