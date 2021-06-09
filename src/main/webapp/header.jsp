@@ -34,10 +34,10 @@
       }else if(loggedInUsername != null && role != null && role.equalsIgnoreCase("employee")){
       %>
       <li class="nav-item">
-        <a class="nav-link" href="LeaveBalanceServlet?redirect=<%="view"%>">Leave Balance</a>
+        <a class="nav-link" href="viewbalance.jsp">Leave Balance</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="LeaveBalanceServlet?redirect=<%="apply"%>">Apply for Leave</a>
+        <a class="nav-link" href="applyleave.jsp">Apply for Leave</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="ListWaitingRequestServlet">Cancel a request</a>

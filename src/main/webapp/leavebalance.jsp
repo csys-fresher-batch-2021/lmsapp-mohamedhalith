@@ -10,9 +10,6 @@
 <title>Leave Balance</title>
 </head>
 <body>
-<%
-LeaveBalance employeeLeaveBalance = (LeaveBalance) session.getAttribute("leavebalance");
-%>
 	<main class="container-fluid">
 		<table class="table table-bordered">
 			<caption>Remaining Leaves</caption>
@@ -25,16 +22,31 @@ LeaveBalance employeeLeaveBalance = (LeaveBalance) session.getAttribute("leaveba
 					<th id="earnedleave">Earned Leave</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr>
-					<td><%=employeeLeaveBalance.getEmployee().getName() %></td>
-					<td><%=employeeLeaveBalance.getEmployee().getEmployeeId() %></td>
-					<td><%=employeeLeaveBalance.getSickLeave() %></td>
-					<td><%=employeeLeaveBalance.getCasualLeave() %></td>
-					<td><%=employeeLeaveBalance.getEarnedLeave() %></td>
-				</tr>
+			<tbody id="table-body">
+				
 			</tbody>
 		</table>
 	</main>
+	<script type="text/javascript">
+	function getLeaveBalance(){
+		let url = "LeaveBalanceServlet";
+		let content = "";
+		fetch(url).then(res => res.json()).then(res =>{
+			let leaveBalance = res;
+			console.log(leaveBalance);
+			console.log(leaveBalance.employee.name);
+			content = "<tr>"+
+			"<td>"+leaveBalance.employee.name+"</td>"+
+			"<td>"+leaveBalance.employee.employeeId+"</td>"+
+			"<td>"+leaveBalance.sickLeave+"</td>"+
+			"<td>"+leaveBalance.casualLeave+"</td>"+
+			"<td>"+leaveBalance.earnedLeave+"</td>"+
+			"</tr>"
+			console.log(content);
+			document.querySelector("#table-body").innerHTML = content;
+		})
+	}
+	getLeaveBalance();
+	</script>
 </body>
 </html>
