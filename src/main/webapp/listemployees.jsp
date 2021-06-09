@@ -14,6 +14,18 @@
 <jsp:include page="header.jsp"></jsp:include>
 	<main class="container-fluid">
 		<h3>List Employees</h3>
+		<div>
+			<div style="float:left" class="form-group">
+			<label for="alphabetical" class="input-group-prepend">Sort by</label>
+			<select name="alphabetical" id="alphabetical" onchange="getEmployees()"  class="custom-select">
+			<option value="a" selected>A-Z</option>
+			<option value="z">Z-A</option>
+			</select>
+			</div>
+			<div style="float:right" class="form-group">
+			<input type="text" id="search" name="search" oninput="getEmployees()" placeholder="Search" class="form-control form-rounded">
+			</div>
+		</div>
 		<table class="table table-bordered">
 		<caption>List of Employees</caption>
 		<thead>
@@ -23,25 +35,57 @@
 		<th id="name">Name</th>
 		<th id="viewbtn"></th>
 		</thead>
-		<tbody>
-		<%
-		int serial = 1;
-				List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeList");
-				if(employeeList != null){
-					for(Employee employee : employeeList){
-		%>
-		<tr>
-		<td><%=serial%></td>
-		<td><%=employee.getEmployeeId() %></td>
-		<td><%=employee.getName() %></td>
-		<td><a href="employeeDetails.jsp?employeeId=<%=employee.getEmployeeId()%>" class="btn btn-info">View</a>
-		<%
-					serial++;
-					}
-				}
-		%>
+		<tbody id="table-body">
 		</tbody>
 		</table>
 	</main>
+	<script type="text/javascript">
+	function getEmployees(){
+		let url = "ListEmployeeServlet";
+		let content = "";
+		let val = document.querySelector("#alphabetical").value;
+		let searchKey = document.querySelector("#search").value.trim();
+		fetch(url).then(res => res.json()).then(res =>{
+			let employees = res;
+			let serial = 1;
+			if(val != null){
+				employees = sort(employees,val);
+			}
+			if(search != null){
+				employees = search(employees,searchKey);
+			}
+			for(employee of employees){
+				content += "<tr>" +
+				"<td>" + serial + "</td>" +
+				"<td>" + employee.employeeId + "</td>"+
+				"<td>" + employee.name + "</td>"+
+				"<td><a class=\"btn btn-info\" href=\"employeeDetails.jsp?employeeId="+employee.employeeId+"\">View</a>"+ 
+				"</tr>";
+				serial +=1;
+			}
+			document.querySelector("#table-body").innerHTML = content;
+		})
+	}
+	getEmployees();
+	
+	function sort(res,value){
+		res.sort(function(a,b){
+			a = a.name.toLowerCase();
+		  	b = b.name.toLowerCase();
+		  	  return a < b ? -1 : a > b ? 1 : 0;
+		})
+		if(value === "a"){
+			res = res;
+		}else{
+			res = res.reverse();
+		}
+		return res;
+	}
+	function search(res,value){
+		res = res.filter(res => res.name.toLowerCase().includes(value.toLowerCase()) ||
+				res.employeeId.toString().includes(value.toLowerCase()));
+		return res;
+	}
+	</script>
 </body>
 </html>

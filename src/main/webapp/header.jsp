@@ -22,7 +22,7 @@
             if(loggedInUsername!=null && role != null && role.equalsIgnoreCase("admin")){
       %>
       <li class="nav-item">
-        <a class="nav-link" href="ListEmployeeServlet">Employees</a>
+        <a class="nav-link" href="listemployees.jsp">Employees</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="viewrequests.jsp">View Requests</a>
