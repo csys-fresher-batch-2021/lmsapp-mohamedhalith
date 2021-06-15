@@ -51,4 +51,4 @@ function setUsername() {
 	document.querySelector("#username").value = username;
 	let password = secondFour + firstFour;
 	document.querySelector("#password").value = password;
-};
+}

@@ -15,7 +15,7 @@ function getEmployees() {
 		if (search != null) {
 			employees = search(employees, searchKey);
 		}
-		for (employee of employees) {
+		for (let employee of employees) {
 			content += "<tr>" +
 				"<td>" + serial + "</td>" +
 				"<td>" + employee.employeeId + "</td>" +
@@ -36,11 +36,15 @@ function sort(res, value) {
 	res.sort(function(a, b) {
 		a = a.name.toLowerCase();
 		b = b.name.toLowerCase();
-		return a < b ? -1 : a > b ? 1 : 0;
+		let no = -1;
+		if(a>b){
+			no = 1;
+		}else if(a==b){
+			no = 0;
+		}
+		return no;
 	})
-	if (value === "a") {
-		res = res;
-	} else {
+	if (value === "z") {
 		res = res.reverse();
 	}
 	return res;

@@ -34,4 +34,4 @@ function findDuration() {
 	let difference = endDate.getTime() - startDate.getTime();
 	difference = difference / (24 * 3600 * 1000);
 	duration.setAttribute("value", difference + 1);
-};
+}
