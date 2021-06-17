@@ -109,7 +109,7 @@ public class LeaveRequestDAO {
 	 * Return a list of leave request of an employee
 	 * 
 	 * @param employee
-	 * @return
+	 * @return List<LeaveRequest>
 	 * @throws DBException
 	 */
 	public List<LeaveRequest> findRequestsByEmployeeId(int employeeId) throws DBException {
@@ -217,7 +217,7 @@ public class LeaveRequestDAO {
 	 * This method is used to set status of the request to cancelled
 	 * 
 	 * @param leaveId
-	 * @return
+	 * @return boolean
 	 * @throws DBException
 	 */
 	public boolean update(String action, int leaveId) throws DBException {

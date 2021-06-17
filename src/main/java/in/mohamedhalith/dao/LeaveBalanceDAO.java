@@ -148,6 +148,12 @@ public class LeaveBalanceDAO {
 		}
 	}
 
+	/**
+	 * This method is used to make employee leavebalance inactive
+	 * @param employeeId
+	 * @return boolean
+	 * @throws DBException
+	 */
 	public boolean remove(int employeeId) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();

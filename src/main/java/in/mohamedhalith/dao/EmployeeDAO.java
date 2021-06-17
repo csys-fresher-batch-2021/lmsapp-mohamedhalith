@@ -181,6 +181,12 @@ public class EmployeeDAO {
 		}
 	}
 
+	/**
+	 * This method is used to save the employee to the records
+	 * @param employee
+	 * @return true (if successfully added)
+	 * @throws DBException
+	 */
 	public boolean save(Employee employee) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
@@ -297,6 +303,12 @@ public class EmployeeDAO {
 		}
 	}
 
+	/**
+	 * This method is used to remove employee from the records (make employee inactive)
+	 * @param employeeId
+	 * @return boolean
+	 * @throws DBException
+	 */
 	public boolean remove(int employeeId) throws DBException {
 		try {
 			connection = ConnectionUtil.getConnection();
